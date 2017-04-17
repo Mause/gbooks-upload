@@ -6,10 +6,11 @@ import time
 import types
 import logging
 from pprint import pprint
-from os.path import splitext, basename
+from os.path import splitext, basename, exists
 from mimetypes import guess_type, add_type
 
 import httplib2
+import requests
 from oauth2client.file import Storage
 from oauth2client.tools import run_flow, argparser
 from oauth2client.client import flow_from_clientsecrets
@@ -17,6 +18,13 @@ from apiclient.discovery import build_from_document, build
 
 logging.basicConfig(level=logging.DEBUG)
 add_type('application/epub+zip', '.epub')
+
+for service in ['books_v1', 'drive_v3']:
+    filename = service + '.json'
+    if not exists(filename):
+        url = 'https://www.googleapis.com/discovery/v1/apis/{}/{}/rest'.format(*service.split('_'))
+        with open(filename, 'wb') as fh:
+            fh.write(requests.get(url).content)
 
 
 def get_http():
