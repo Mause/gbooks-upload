@@ -14,7 +14,7 @@ import requests
 from oauth2client.file import Storage
 from oauth2client.tools import run_flow, argparser
 from oauth2client.client import flow_from_clientsecrets
-from apiclient.discovery import build_from_document, build
+from googleapiclient.discovery import build_from_document, build
 
 logging.basicConfig(level=logging.DEBUG)
 add_type('application/epub+zip', '.epub')
