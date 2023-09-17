@@ -15,7 +15,7 @@ import requests
 from oauth2client.file import Storage
 from oauth2client.tools import run_flow, argparser
 from oauth2client.client import flow_from_clientsecrets
-from googleapiclient.discovery import build_from_document, build
+from googleapiclient.discovery import build_from_document, build, Resource
 
 logging.basicConfig(level=logging.DEBUG)
 add_type('application/epub+zip', '.epub')
@@ -23,7 +23,9 @@ add_type('application/epub+zip', '.epub')
 for service in ['books_v1', 'drive_v3']:
     filename = service + '.json'
     if not exists(filename):
-        url = 'https://www.googleapis.com/discovery/v1/apis/{}/{}/rest'.format(*service.split('_'))
+        url = 'https://www.googleapis.com/discovery/v1/apis/{}/{}/rest'.format(
+            *service.split('_')
+        )
         with open(filename, 'wb') as fh:
             fh.write(requests.get(url).content)
 
@@ -34,8 +36,8 @@ def get_http():
         'client_secrets.json',
         scope=[
             'https://www.googleapis.com/auth/drive.file',
-            'https://www.googleapis.com/auth/books'
-        ]
+            'https://www.googleapis.com/auth/books',
+        ],
     )
     storage = Storage('credentials.json')
     credentials = storage.get()
@@ -51,33 +53,31 @@ def upload(drive, books, filename):
     name = splitext(basename(filename))[0]
     mime_type = guess_type(filename)[0]
 
-    response = drive.files().create(
-        media_body=filename,
-        media_mime_type=mime_type
-    ).execute()
+    response = (
+        drive.files().create(media_body=filename, media_mime_type=mime_type).execute()
+    )
 
-    return books.cloudloading().addBook(
-        # A drive document id. The upload_client_token must not be set.
-        drive_document_id=response['id'],
+    return (
+        books.cloudloading()
+        .addBook(
+            # A drive document id. The upload_client_token must not be set.
+            drive_document_id=response['id'],
+            # The document MIME type.
+            # It can be set only if the drive_document_id is set.
+            mime_type=mime_type,
+            # The document name.
+            # It can be set only if the drive_document_id is set.
+            name=name,
+        )
+        .execute()
+    )
 
-        # The document MIME type.
-        # It can be set only if the drive_document_id is set.
-        mime_type=mime_type,
 
-        # The document name.
-        # It can be set only if the drive_document_id is set.
-        name=name
-    ).execute()
-
-
-def get_volume(books, name=None, volumeId=None):
+def get_volume(books: Resource, name: str = None, volumeId: str = None):
     return next(
         volume
         for volume in books.volumes().useruploaded().list().execute()['items']
-        if (
-            volume['volumeInfo']['title'] == name or
-            volume['id'] == volumeId
-        )
+        if (volume['volumeInfo']['title'] == name or volume['id'] == volumeId)
     )
 
 
@@ -97,11 +97,13 @@ def main():
         monitor(books, response['volumeId'])
 
 
-def monitor(books, volume_id):
+def monitor(books: Resource, volume_id: str) -> None:
     wait = 1
 
     while True:
-        state = get_volume(books, volumeId=volume_id)['userInfo']['userUploadedVolumeInfo']['processingState']
+        state = get_volume(books, volumeId=volume_id)['userInfo'][
+            'userUploadedVolumeInfo'
+        ]['processingState']
         print(state)
         if state.startswith('COMPLETED_'):
             break
@@ -111,4 +113,3 @@ def monitor(books, volume_id):
 
 if __name__ == '__main__':
     main()
-
