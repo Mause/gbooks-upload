@@ -5,6 +5,7 @@ import json
 import time
 import types
 import logging
+import argparse
 from pprint import pprint
 from os.path import splitext, basename, exists
 from mimetypes import guess_type, add_type
@@ -80,19 +81,27 @@ def get_volume(books, name=None, volumeId=None):
     )
 
 
-def main(argv=sys.argv[1:]):
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('files', action='append', nargs='+')
+    args = parser.parse_args()
+
     http = get_http()
     build = lambda filename: build_from_document(open(filename).read(), http=http)
     books = build('books_v1.json')
     drive = build('drive_v3.json')
 
-    response = upload(drive, books, argv[0])
-    get = lambda: get_volume(books, volumeId=response['volumeId'])
+    for filename in args.files:
+        response = upload(drive, books, filename)
 
+        monitor(books, response['volumeId'])
+
+
+def monitor(books, volume_id):
     wait = 1
 
     while True:
-        state = get()['userInfo']['userUploadedVolumeInfo']['processingState']
+        state = get_volume(books, volumeId=volume_id)['userInfo']['userUploadedVolumeInfo']['processingState']
         print(state)
         if state.startswith('COMPLETED_'):
             break
