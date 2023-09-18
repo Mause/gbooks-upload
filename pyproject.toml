@@ -19,6 +19,7 @@ google-api-python-client = "^2.99.0"
 
 [tool.poetry.group.dev.dependencies]
 pdbpp = "^0.10.3"
+pre-commit = "^3.4.0"
 
 [build-system]
 requires = ["poetry-core"]
