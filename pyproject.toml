@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "fiction"
+version = "0.1.0"
+description = ""
+authors = ["Elliana May <me@mause.me>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+lxml = "*"
+ebooklib = "*"
+markdown = "*"
+tqdm = "*"
+pillow = "*"
+pyyaml = "*"
+requests = "*"
+
+[tool.poetry.group.dev.dependencies]
+pdbpp = "^0.10.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
