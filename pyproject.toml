@@ -15,6 +15,7 @@ tqdm = "*"
 pillow = "*"
 pyyaml = "*"
 requests = "*"
+google-api-python-client = "^2.99.0"
 
 [tool.poetry.group.dev.dependencies]
 pdbpp = "^0.10.3"
