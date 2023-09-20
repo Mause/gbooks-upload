@@ -83,7 +83,7 @@ def get_volume(books: Resource, name: str = None, volumeId: str = None):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('files', action='append', nargs='+')
+    parser.add_argument("files", nargs="+")
     args = parser.parse_args()
 
     http = get_http()
