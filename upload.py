@@ -8,6 +8,7 @@ import types
 import logging
 import argparse
 from pprint import pprint
+from typing import Callable
 from os.path import splitext, basename, exists
 from mimetypes import guess_type, add_type
 
@@ -83,6 +84,18 @@ def get_volume(books: Resource, name: str = None, volumeId: str = None):
         for volume in books.volumes().useruploaded().list().execute()["items"]
         if (volume["volumeInfo"]["title"] == name or volume["id"] == volumeId)
     )
+
+
+def paginate(method: Callable, *args, **kwargs):
+    request = method(*args, **kwargs)
+    start_index = 0
+    while request:
+        res = request.execute()
+        if "items" not in res:
+            break
+        yield from res["items"]
+        start_index += len(res["items"])
+        request = method(*args, startIndex=start_index, **kwargs)
 
 
 def main():
