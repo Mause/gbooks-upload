@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import re
 import sys
 import json
 import time
@@ -19,6 +20,9 @@ from googleapiclient.discovery import build_from_document, build, Resource
 
 logging.basicConfig(level=logging.DEBUG)
 add_type("application/epub+zip", ".epub")
+LNCR = re.compile(r"^(?P<title>.*) c(?P<start>\d+)-(?P<end>\d+)$")
+assert LNCR.search("Season Of Fools c1-2")
+
 
 for service in ["books_v1", "drive_v3"]:
     filename = service + ".json"
