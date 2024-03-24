@@ -108,10 +108,9 @@ def main():
     books = build("books_v1.json")
     drive = build("drive_v3.json")
 
-    for filename in args.files:
-        response = upload(drive, books, filename)
-
-        monitor(books, response["volumeId"])
+    uploads = [upload(drive, books, filename) for filename in args.files]
+    for upl in uploads:
+        monitor(books, upl["volumeId"])
 
 
 def monitor(books: Resource, volume_id: str) -> None:
