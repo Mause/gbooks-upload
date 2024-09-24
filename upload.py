@@ -19,6 +19,10 @@ from oauth2client.tools import run_flow, argparser
 from oauth2client.client import flow_from_clientsecrets
 from googleapiclient.discovery import build_from_document, build, Resource
 
+import dotenv
+
+dotenv.load_dotenv()
+
 logging.basicConfig(level=logging.DEBUG)
 add_type("application/epub+zip", ".epub")
 LNCR = re.compile(r"^(?P<title>.*) c(?P<start>\d+)-(?P<end>\d+)$")
