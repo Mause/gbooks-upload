@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 
+import os.path
 import re
-import sys
-import json
 import time
-import types
 import logging
 import argparse
 from pprint import pprint
 from typing import Callable
 from os.path import splitext, basename, exists
 from mimetypes import guess_type, add_type
+from typing_extensions import Optional
 
 import httplib2
 import requests
@@ -18,6 +17,11 @@ from oauth2client.file import Storage
 from oauth2client.tools import run_flow, argparser
 from oauth2client.client import flow_from_clientsecrets
 from googleapiclient.discovery import build_from_document, build, Resource
+from requests.sessions import Session
+
+import dotenv
+
+dotenv.load_dotenv()
 
 import dotenv
 
@@ -29,14 +33,14 @@ LNCR = re.compile(r"^(?P<title>.*) c(?P<start>\d+)-(?P<end>\d+)$")
 assert LNCR.search("Season Of Fools c1-2")
 
 
-for service in ["books_v1", "drive_v3"]:
-    filename = service + ".json"
-    if not exists(filename):
-        url = "https://www.googleapis.com/discovery/v1/apis/{}/{}/rest".format(
-            *service.split("_")
-        )
-        with open(filename, "wb") as fh:
-            fh.write(requests.get(url).content)
+# for service in ["books_v1", "drive_v3"]:
+#     filename = service + ".json"
+#     if not exists(filename):
+#         url = "https://www.googleapis.com/discovery/v1/apis/{}/{}/rest".format(
+#             *service.split("_")
+#         )
+#         with open(filename, "wb") as fh:
+#             fh.write(requests.get(url).content)
 
 
 def get_http():
@@ -45,6 +49,8 @@ def get_http():
         "client_secrets.json",
         scope=[
             "https://www.googleapis.com/auth/drive.file",
+            "openid",
+            "https://www.googleapis.com/auth/drive",
             "https://www.googleapis.com/auth/books",
         ],
     )
@@ -62,27 +68,20 @@ def upload(drive, books, filename):
     name = splitext(basename(filename))[0]
     mime_type = guess_type(filename)[0]
 
-    response = (
-        drive.files().create(media_body=filename, media_mime_type=mime_type).execute()
-    )
+    content_id = resume_upload(filename)
 
     return (
         books.cloudloading()
         .addBook(
-            # A drive document id. The upload_client_token must not be set.
-            drive_document_id=response["id"],
-            # The document MIME type.
-            # It can be set only if the drive_document_id is set.
-            mime_type=mime_type,
-            # The document name.
-            # It can be set only if the drive_document_id is set.
-            name=name,
+            upload_client_token=content_id,
         )
         .execute()
     )
 
 
-def get_volume(books: Resource, name: str = None, volumeId: str = None):
+def get_volume(
+    books: Resource, name: Optional[str] = None, volumeId: Optional[str] = None
+):
     return next(
         volume
         for volume in books.volumes().useruploaded().list().execute()["items"]
@@ -108,13 +107,179 @@ def main():
     args = parser.parse_args()
 
     http = get_http()
-    build = lambda filename: build_from_document(open(filename).read(), http=http)
-    books = build("books_v1.json")
-    drive = build("drive_v3.json")
+
+    books = build("books", "v1", http=http)
+    drive = build("drive", "v3", http=http)
 
     uploads = [upload(drive, books, filename) for filename in args.files]
     for upl in uploads:
         monitor(books, upl["volumeId"])
+
+
+def start_upload(session: requests.Session, filename: str, mimetype: str):
+    stat = os.stat(filename)
+    filesize = stat.st_size
+    title = os.path.basename(filename)
+
+    res = session.post(
+        "https://docs.google.com/upload/books/library/upload",
+        params={"authuser": "0", "opi": "113040485"},
+        headers={
+            "accept": "*/*",
+            # "content-length": "557",
+            "origin": "https://docs.google.com",
+            "priority": "u=1, i",
+            "referer": "https://docs.google.com/",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-origin",
+            "x-goog-upload-command": "start",
+            "x-goog-upload-header-content-length": str(filesize),
+            "x-goog-upload-header-content-type": mimetype,
+            "x-goog-upload-protocol": "resumable",
+        },
+        json={
+            "protocolVersion": "0.8",
+            "createSessionRequest": {
+                "fields": [
+                    {
+                        "external": {
+                            "name": "file",
+                            "filename": title,
+                            "put": {},
+                            "size": filesize,
+                        }
+                    },
+                    {
+                        "inlined": {
+                            "name": "title",
+                            "content": title,
+                            "contentType": "text/plain",
+                        }
+                    },
+                    {
+                        "inlined": {
+                            "name": "addtime",
+                            "content":
+                            # int(stat.st_atime * 1000),
+                            "1723462164781",
+                            "contentType": "text/plain",
+                        }
+                    },
+                    {
+                        "inlined": {
+                            "name": "onepick_version",
+                            "content": "v2",
+                            "contentType": "text/plain",
+                        }
+                    },
+                    {
+                        "inlined": {
+                            "name": "onepick_host_id",
+                            "content": "20",
+                            "contentType": "text/plain",
+                        }
+                    },
+                    {
+                        "inlined": {
+                            "name": "onepick_host_usecase",
+                            "content": "PlayBooks.Web",
+                            "contentType": "text/plain",
+                        }
+                    },
+                ]
+            },
+        },
+    )
+    """
+    X-Goog-Upload-Chunk-Granularity:
+    262144
+    X-Goog-Upload-Control-Url:
+    https://docs.google.com/upload/books/library/upload?authuser=0&opi=113040485&upload_id=AHxI1nMkzatj-c5HRv1gmlu1-AME4SLqMPzCKrBPPvMJJtcDHtbrY-MyVI9q84dRBRG-GStp0MKj_bhLYiXyvfPlHGpWKQdaKJeKqPtHutcsL8Qc-Q&upload_protocol=resumable
+    X-Goog-Upload-Status:
+    active
+    X-Goog-Upload-Url:
+    https://docs.google.com/upload/books/library/upload?authuser=0&opi=113040485&upload_id=AHxI1nMkzatj-c5HRv1gmlu1-AME4SLqMPzCKrBPPvMJJtcDHtbrY-MyVI9q84dRBRG-GStp0MKj_bhLYiXyvfPlHGpWKQdaKJeKqPtHutcsL8Qc-Q&upload_protocol=resumable
+    X-Guploader-Uploadid:
+    AHxI1nMkzatj-c5HRv1gmlu1-AME4SLqMPzCKrBPPvMJJtcDHtbrY-MyVI9q84dRBRG-GStp0MKj_bhLYiXyvfPlHGpWKQdaKJeKqPtHutcsL8Qc-Q
+    """
+
+    res.raise_for_status()
+
+    return res.headers["X-Goog-Upload-Url"]
+
+
+def resume_upload(filename):
+    session = requests.Session()
+    session.headers.update(
+        {
+            "User-Agent": (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+            ),
+            "cookie": os.environ["COOKIE"],
+        }
+    )
+
+    mimetype = guess_type(filename)[0]
+    if not mimetype:
+        raise Exception(f"Could not determine mimetype for {filename}")
+
+    url = start_upload(session, filename, mimetype)
+
+    res = session.put(
+        url,
+        headers={
+            "accept": "*/*",
+            "content-type": mimetype,
+            "origin": "https://docs.google.com",
+            "priority": "u=1, i",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-origin",
+            "x-goog-upload-command": "upload, finalize",
+            "x-goog-upload-offset": "0",
+            "referer": "https://docs.google.com/",
+        },
+        data=open(filename, "rb").read(),
+    )
+
+    js = res.json()
+    completion_info = js["sessionStatus"]["additionalInfo"][
+        "uploader_service.GoogleRupioAdditionalInfo"
+    ]["completionInfo"]
+
+    assert completion_info["status"] == "SUCCESS"
+
+    return completion_info["customerSpecificInfo"]["contentId"]
+
+    {
+        "sessionStatus": {
+            "state": "FINALIZED",
+            "externalFieldTransfers": [
+                {
+                    "name": "file",
+                    "status": "COMPLETED",
+                    "bytesTransferred": 213100,
+                    "bytesTotal": 213100,
+                    "putInfo": {
+                        "url": "https://docs.google.com/upload/books/library/upload?authuser=0&opi=113040485&upload_id=AD-8ljva6g_u96BdWoPW4mgmtgcb1mBjYqegPdrwly-sD_IthPCoClcF_3ZJz963db5xg9svFnPZQF2lFWTpflURqyny2wbU4yhfWGKrwZ4ZMp4WQA&file_id=000"
+                    },
+                    "content_type": "application/epub+zip",
+                }
+            ],
+            "additionalInfo": {
+                "uploader_service.GoogleRupioAdditionalInfo": {
+                    "completionInfo": {
+                        "status": "SUCCESS",
+                        "customerSpecificInfo": {
+                            "contentId": "CPj40ae31IgDEhwuLi9wYXRyZW9uX3N0b3JpZXMvdGVzdC5lcHViGhRhcHBsaWNhdGlvbi9lcHViK3ppcCDsgA0"
+                        },
+                    }
+                }
+            },
+            "upload_id": "AD-8ljva6g_u96BdWoPW4mgmtgcb1mBjYqegPdrwly-sD_IthPCoClcF_3ZJz963db5xg9svFnPZQF2lFWTpflURqyny2wbU4yhfWGKrwZ4ZMp4WQA",
+        }
+    }
 
 
 def monitor(books: Resource, volume_id: str) -> None:
