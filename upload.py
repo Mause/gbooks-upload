@@ -203,8 +203,8 @@ def start_upload(session: requests.Session, filename: str, mimetype: str):
     X-Guploader-Uploadid:
     AHxI1nMkzatj-c5HRv1gmlu1-AME4SLqMPzCKrBPPvMJJtcDHtbrY-MyVI9q84dRBRG-GStp0MKj_bhLYiXyvfPlHGpWKQdaKJeKqPtHutcsL8Qc-Q
     """
-
-    res.raise_for_status()
+    if not res.ok or "x-goog-upload-url" not in res.headers:
+        raise Exception(res.text)
 
     return res.headers["X-Goog-Upload-Url"]
 
@@ -244,6 +244,9 @@ def resume_upload(filename):
     )
 
     js = res.json()
+    if "errorMessage" in js:
+        raise Exception(js["errorMessage"])
+
     completion_info = js["sessionStatus"]["additionalInfo"][
         "uploader_service.GoogleRupioAdditionalInfo"
     ]["completionInfo"]
