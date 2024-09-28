@@ -23,6 +23,9 @@ python-dotenv = "^1.0.1"
 pdbpp = "^0.10.3"
 pre-commit = "^3.4.0"
 
+[tool.ruff.lint]
+select = ["I", "E", "W", "F", "C", "R"]
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

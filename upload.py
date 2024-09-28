@@ -1,29 +1,21 @@
 #!/usr/bin/env python3
 
+import argparse
+import logging
 import os.path
 import re
 import time
-import logging
-import argparse
-from pprint import pprint
+from mimetypes import add_type, guess_type
 from typing import Callable
-from os.path import splitext, basename, exists
-from mimetypes import guess_type, add_type
-from typing_extensions import Optional
 
+import dotenv
 import httplib2
 import requests
-from oauth2client.file import Storage
-from oauth2client.tools import run_flow, argparser
+from googleapiclient.discovery import Resource, build
 from oauth2client.client import flow_from_clientsecrets
-from googleapiclient.discovery import build_from_document, build, Resource
-from requests.sessions import Session
-
-import dotenv
-
-dotenv.load_dotenv()
-
-import dotenv
+from oauth2client.file import Storage
+from oauth2client.tools import argparser, run_flow
+from typing_extensions import Optional
 
 dotenv.load_dotenv()
 
@@ -65,9 +57,6 @@ def get_http():
 
 
 def upload(drive, books, filename):
-    name = splitext(basename(filename))[0]
-    mime_type = guess_type(filename)[0]
-
     content_id = resume_upload(filename)
 
     return (
@@ -214,7 +203,9 @@ def resume_upload(filename):
     session.headers.update(
         {
             "User-Agent": (
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/126.0.0.0 Safari/537.36"
             ),
             "cookie": os.environ["COOKIE"],
         }
@@ -254,35 +245,6 @@ def resume_upload(filename):
     assert completion_info["status"] == "SUCCESS"
 
     return completion_info["customerSpecificInfo"]["contentId"]
-
-    {
-        "sessionStatus": {
-            "state": "FINALIZED",
-            "externalFieldTransfers": [
-                {
-                    "name": "file",
-                    "status": "COMPLETED",
-                    "bytesTransferred": 213100,
-                    "bytesTotal": 213100,
-                    "putInfo": {
-                        "url": "https://docs.google.com/upload/books/library/upload?authuser=0&opi=113040485&upload_id=AD-8ljva6g_u96BdWoPW4mgmtgcb1mBjYqegPdrwly-sD_IthPCoClcF_3ZJz963db5xg9svFnPZQF2lFWTpflURqyny2wbU4yhfWGKrwZ4ZMp4WQA&file_id=000"
-                    },
-                    "content_type": "application/epub+zip",
-                }
-            ],
-            "additionalInfo": {
-                "uploader_service.GoogleRupioAdditionalInfo": {
-                    "completionInfo": {
-                        "status": "SUCCESS",
-                        "customerSpecificInfo": {
-                            "contentId": "CPj40ae31IgDEhwuLi9wYXRyZW9uX3N0b3JpZXMvdGVzdC5lcHViGhRhcHBsaWNhdGlvbi9lcHViK3ppcCDsgA0"
-                        },
-                    }
-                }
-            },
-            "upload_id": "AD-8ljva6g_u96BdWoPW4mgmtgcb1mBjYqegPdrwly-sD_IthPCoClcF_3ZJz963db5xg9svFnPZQF2lFWTpflURqyny2wbU4yhfWGKrwZ4ZMp4WQA",
-        }
-    }
 
 
 def monitor(books: Resource, volume_id: str) -> None:
