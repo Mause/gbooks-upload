@@ -15,7 +15,7 @@ from googleapiclient.discovery import Resource, build
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 from oauth2client.tools import argparser, run_flow
-from typing_extensions import Optional
+from typing import Optional
 
 dotenv.load_dotenv()
 
