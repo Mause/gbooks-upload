@@ -25,17 +25,8 @@ LNCR = re.compile(r"^(?P<title>.*) c(?P<start>\d+)-(?P<end>\d+)$")
 assert LNCR.search("Season Of Fools c1-2")
 
 
-# for service in ["books_v1", "drive_v3"]:
-#     filename = service + ".json"
-#     if not exists(filename):
-#         url = "https://www.googleapis.com/discovery/v1/apis/{}/{}/rest".format(
-#             *service.split("_")
-#         )
-#         with open(filename, "wb") as fh:
-#             fh.write(requests.get(url).content)
-
-
 def get_http():
+    assert argparser
     args = argparser.parse_args(["--noauth_local_webserver"])
     flow = flow_from_clientsecrets(
         "client_secrets.json",
@@ -56,7 +47,30 @@ def get_http():
     return http
 
 
-def upload(drive, books, filename):
+def upload_with_drive(drive: Resource, books: Resource, filename: str) -> dict:
+    name = splitext(basename(filename))[0]
+    mime_type = guess_type(filename)[0]
+    response = (
+        drive.files().create(media_body=filename, media_mime_type=mime_type).execute()
+    )
+
+    return (
+        books.cloudloading()
+        .addBook(
+            # A drive document id. The upload_client_token must not be set.
+            drive_document_id=response["id"],
+            # The document MIME type.
+            # It can be set only if the drive_document_id is set.
+            mime_type=mime_type,
+            # The document name.
+            # It can be set only if the drive_document_id is set.
+            name=name,
+        )
+        .execute()
+    )
+
+
+def upload_with_scotty(books: Resource, filename: str) -> dict:
     content_id = resume_upload(filename)
 
     return (
@@ -100,7 +114,7 @@ def main():
     books = build("books", "v1", http=http)
     drive = build("drive", "v3", http=http)
 
-    uploads = [upload(drive, books, filename) for filename in args.files]
+    uploads = [upload_with_scotty(books, filename) for filename in args.files]
     for upl in uploads:
         monitor(books, upl["volumeId"])
 
