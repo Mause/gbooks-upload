@@ -6,6 +6,7 @@ import os.path
 import re
 import time
 from mimetypes import add_type, guess_type
+from os.path import basename, splitext
 from typing import Callable
 
 import dotenv
