@@ -3,7 +3,6 @@
 import argparse
 import logging
 import os.path
-import re
 import time
 from mimetypes import add_type, guess_type
 from os.path import basename, splitext
@@ -22,8 +21,6 @@ dotenv.load_dotenv()
 
 logging.basicConfig(level=logging.DEBUG)
 add_type("application/epub+zip", ".epub")
-LNCR = re.compile(r"^(?P<title>.*) c(?P<start>\d+)-(?P<end>\d+)$")
-assert LNCR.search("Season Of Fools c1-2")
 
 
 def get_http():
