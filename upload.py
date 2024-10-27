@@ -19,7 +19,6 @@ from typing import Optional
 
 dotenv.load_dotenv()
 
-logging.basicConfig(level=logging.DEBUG)
 add_type("application/epub+zip", ".epub")
 
 
@@ -103,6 +102,8 @@ def paginate(method: Callable, *args, **kwargs):
 
 
 def main():
+    logging.basicConfig(level=logging.DEBUG)
+
     parser = argparse.ArgumentParser()
     parser.add_argument("files", nargs="+")
     args = parser.parse_args()
