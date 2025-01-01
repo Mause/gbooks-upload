@@ -19,6 +19,9 @@ rich-click = "^1.8.5"
 pdbpp = "^0.10.3"
 pre-commit = "^3.4.0"
 
+[tool.poetry.scripts]
+gbooks-upload = "upload:main"
+
 [tool.ruff.lint]
 select = ["I", "E", "W", "F", "C", "R"]
 
