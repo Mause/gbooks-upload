@@ -6,7 +6,7 @@ import os.path
 import time
 from mimetypes import add_type, guess_type
 from os.path import basename, splitext
-from typing import Callable
+from typing import Callable, Optional
 
 import dotenv
 import httplib2
@@ -15,7 +15,6 @@ from googleapiclient.discovery import Resource, build
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 from oauth2client.tools import argparser, run_flow
-from typing import Optional
 
 dotenv.load_dotenv()
 
@@ -106,6 +105,7 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("files", nargs="+")
+    parser.add_argument("--drive", action="store_true")
     args = parser.parse_args()
 
     http = get_http()
@@ -113,7 +113,12 @@ def main():
     books = build("books", "v1", http=http)
     drive = build("drive", "v3", http=http)
 
-    uploads = [upload_with_scotty(books, filename) for filename in args.files]
+    uploads = [
+        upload_with_drive(drive, books, filename)
+        if args.drive
+        else upload_with_scotty(books, filename)
+        for filename in args.files
+    ]
     for upl in uploads:
         monitor(books, upl["volumeId"])
 
