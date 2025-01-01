@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import argparse
 import logging
 import os.path
 import time
@@ -11,6 +10,7 @@ from typing import Callable, Optional
 import dotenv
 import httplib2
 import requests
+import rich_click as click
 from googleapiclient.discovery import Resource, build
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
@@ -100,13 +100,13 @@ def paginate(method: Callable, *args, **kwargs):
         request = method(*args, startIndex=start_index, **kwargs)
 
 
-def main():
+@click.command()
+@click.argument(
+    "files", required=True, nargs=-1, type=click.Path(exists=True, readable=True)
+)
+@click.option("--drive", is_flag=True)
+def main(files: list[str], drive: bool):
     logging.basicConfig(level=logging.DEBUG)
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("files", nargs="+")
-    parser.add_argument("--drive", action="store_true")
-    args = parser.parse_args()
 
     http = get_http()
 
@@ -115,9 +115,9 @@ def main():
 
     uploads = [
         upload_with_drive(drive, books, filename)
-        if args.drive
+        if drive
         else upload_with_scotty(books, filename)
-        for filename in args.files
+        for filename in files
     ]
     for upl in uploads:
         monitor(books, upl["volumeId"])
