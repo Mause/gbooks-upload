@@ -104,8 +104,8 @@ def paginate(method: Callable, *args, **kwargs):
 @click.argument(
     "files", required=True, nargs=-1, type=click.Path(exists=True, readable=True)
 )
-@click.option("--drive", is_flag=True)
-def main(files: list[str], drive: bool):
+@click.option("--use-drive", is_flag=True)
+def main(files: list[str], use_drive: bool):
     logging.basicConfig(level=logging.DEBUG)
 
     http = get_http()
@@ -115,7 +115,7 @@ def main(files: list[str], drive: bool):
 
     uploads = [
         upload_with_drive(drive, books, filename)
-        if drive
+        if use_drive
         else upload_with_scotty(books, filename)
         for filename in files
     ]
