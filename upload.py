@@ -229,7 +229,7 @@ def resume_upload(filename):
                 "AppleWebKit/537.36 (KHTML, like Gecko) "
                 "Chrome/126.0.0.0 Safari/537.36"
             ),
-            "cookie": os.environ["COOKIE"],
+            "cookie": steal_cookie("~/downloads/chrome-net-export-log.json"),
         }
     )
 
@@ -281,6 +281,21 @@ def monitor(books: Resource, volume_id: str) -> None:
             break
         time.sleep(wait)
         wait *= 1.5
+
+
+def steal_cookie(filename):
+    with open(filename) as f:
+        events = json.load(f)["events"]
+    events = json.load(open("chrome-net-export-log.json"))["events"]
+    events = [event["params"] for event in events if event["type"] == 201]
+
+    for event in events:
+        headers = event["headers"]
+        headers = dict(header.split(": ", 1) for header in headers)
+
+        if "playbooks" in headers[":host:"]:
+            return headers["cookie"]
+    return None
 
 
 if __name__ == "__main__":
