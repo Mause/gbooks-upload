@@ -8,7 +8,6 @@ from os.path import basename, splitext
 from pathlib import Path
 from typing import Callable, Optional
 
-import dotenv
 import httplib2
 import requests
 import rich_click as click
@@ -19,8 +18,6 @@ from oauth2client.tools import argparser, run_flow
 from platformdirs import user_cache_dir
 
 PATH = Path(user_cache_dir("gbooks-upload", "Elliana May"))
-
-dotenv.load_dotenv()
 
 add_type("application/epub+zip", ".epub")
 
