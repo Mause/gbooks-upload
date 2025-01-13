@@ -101,13 +101,21 @@ def paginate(method: Callable, *args, **kwargs):
         request = method(*args, startIndex=start_index, **kwargs)
 
 
-@click.command()
+@click.group()
+def main():
+    pass
+
+
+@main.command()
 @click.argument(
     "files", required=True, nargs=-1, type=click.Path(exists=True, readable=True)
 )
 @click.option("--use-drive", is_flag=True)
-def main(files: list[str], use_drive: bool):
-    logging.basicConfig(level=logging.DEBUG)
+@click.option("--verbose", is_flag=True)
+@click.option("--bookshelf")
+def upload(files: list[str], use_drive: bool, verbose: bool, bookshelf: str):
+    if verbose:
+        logging.basicConfig(level=logging.DEBUG)
 
     http = get_http()
 
@@ -122,6 +130,12 @@ def main(files: list[str], use_drive: bool):
     ]
     for upl in uploads:
         monitor(books, upl["volumeId"])
+
+
+@main.command()
+@click.argument("filename", type=click.Path(exists=True, readable=True))
+def steal(filename: str):
+    print(steal_cookie(filename))
 
 
 def start_upload(session: requests.Session, filename: str, mimetype: str):
