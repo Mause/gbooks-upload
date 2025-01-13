@@ -5,6 +5,7 @@ import os.path
 import time
 from mimetypes import add_type, guess_type
 from os.path import basename, splitext
+from pathlib import Path
 from typing import Callable, Optional
 
 import dotenv
@@ -15,6 +16,9 @@ from googleapiclient.discovery import Resource, build
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 from oauth2client.tools import argparser, run_flow
+from platformdirs import user_cache_dir
+
+PATH = Path(user_cache_dir("gbooks-upload", "Elliana May"))
 
 dotenv.load_dotenv()
 
@@ -25,7 +29,7 @@ def get_http():
     assert argparser
     args = argparser.parse_args(["--noauth_local_webserver"])
     flow = flow_from_clientsecrets(
-        "client_secrets.json",
+        PATH / "client_secrets.json",
         scope=[
             "https://www.googleapis.com/auth/drive.file",
             "openid",
@@ -33,7 +37,7 @@ def get_http():
             "https://www.googleapis.com/auth/books",
         ],
     )
-    storage = Storage("credentials.json")
+    storage = Storage(PATH / "credentials.json")
     credentials = storage.get()
     if credentials is None:
         credentials = run_flow(flags=args, flow=flow, storage=storage)
@@ -104,8 +108,8 @@ def paginate(method: Callable, *args, **kwargs):
 @click.argument(
     "files", required=True, nargs=-1, type=click.Path(exists=True, readable=True)
 )
-@click.option("--drive", is_flag=True)
-def main(files: list[str], drive: bool):
+@click.option("--use-drive", is_flag=True)
+def main(files: list[str], use_drive: bool):
     logging.basicConfig(level=logging.DEBUG)
 
     http = get_http()
@@ -115,7 +119,7 @@ def main(files: list[str], drive: bool):
 
     uploads = [
         upload_with_drive(drive, books, filename)
-        if drive
+        if use_drive
         else upload_with_scotty(books, filename)
         for filename in files
     ]
