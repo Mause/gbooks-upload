@@ -26,8 +26,8 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip poetry
-        poetry install
+        python -m pip install --upgrade pip uv
+        uv sync
     - name: Test
       run: |
-        poetry run gbooks-upload --help
+        uv run gbooks-upload --help
