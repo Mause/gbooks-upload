@@ -8,7 +8,6 @@ from os.path import basename, splitext
 from pathlib import Path
 from typing import Callable, Optional
 
-import dotenv
 import httplib2
 import requests
 import rich_click as click
@@ -19,8 +18,7 @@ from oauth2client.tools import argparser, run_flow
 from platformdirs import user_cache_dir
 
 PATH = Path(user_cache_dir("gbooks-upload", "Elliana May"))
-
-dotenv.load_dotenv()
+COOKIE_TXT = PATH / "cookie.txt"
 
 add_type("application/epub+zip", ".epub")
 
@@ -104,13 +102,21 @@ def paginate(method: Callable, *args, **kwargs):
         request = method(*args, startIndex=start_index, **kwargs)
 
 
-@click.command()
+@click.group()
+def main():
+    pass
+
+
+@main.command()
 @click.argument(
     "files", required=True, nargs=-1, type=click.Path(exists=True, readable=True)
 )
 @click.option("--use-drive", is_flag=True)
-def main(files: list[str], use_drive: bool):
-    logging.basicConfig(level=logging.DEBUG)
+@click.option("--verbose", is_flag=True)
+@click.option("--bookshelf")
+def upload(files: list[str], use_drive: bool, verbose: bool, bookshelf: str):
+    if verbose:
+        logging.basicConfig(level=logging.DEBUG)
 
     http = get_http()
 
@@ -125,6 +131,12 @@ def main(files: list[str], use_drive: bool):
     ]
     for upl in uploads:
         monitor(books, upl["volumeId"])
+
+
+@main.command()
+@click.argument("filename", type=click.Path(exists=True, readable=True))
+def steal(filename: str):
+    COOKIE_TXT.write_text(steal_cookie(filename))
 
 
 def start_upload(session: requests.Session, filename: str, mimetype: str):
@@ -229,7 +241,7 @@ def resume_upload(filename):
                 "AppleWebKit/537.36 (KHTML, like Gecko) "
                 "Chrome/126.0.0.0 Safari/537.36"
             ),
-            "cookie": os.environ["COOKIE"],
+            "cookie": COOKIE_TXT.read_text(),
         }
     )
 
@@ -281,6 +293,21 @@ def monitor(books: Resource, volume_id: str) -> None:
             break
         time.sleep(wait)
         wait *= 1.5
+
+
+def steal_cookie(filename):
+    with open(filename) as f:
+        events = json.load(f)["events"]
+    events = json.load(open("chrome-net-export-log.json"))["events"]
+    events = [event["params"] for event in events if event["type"] == 201]
+
+    for event in events:
+        headers = event["headers"]
+        headers = dict(header.split(": ", 1) for header in headers)
+
+        if "playbooks" in headers[":host:"]:
+            return headers["cookie"]
+    return None
 
 
 if __name__ == "__main__":
