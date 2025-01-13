@@ -30,4 +30,4 @@ jobs:
         poetry install
     - name: Test
       run: |
-        poetry run gbooks-upload
+        poetry run gbooks-upload --help
