@@ -18,6 +18,7 @@ from oauth2client.tools import argparser, run_flow
 from platformdirs import user_cache_dir
 
 PATH = Path(user_cache_dir("gbooks-upload", "Elliana May"))
+COOKIE_TXT = PATH / "cookie.txt"
 
 add_type("application/epub+zip", ".epub")
 
@@ -135,7 +136,7 @@ def upload(files: list[str], use_drive: bool, verbose: bool, bookshelf: str):
 @main.command()
 @click.argument("filename", type=click.Path(exists=True, readable=True))
 def steal(filename: str):
-    print(steal_cookie(filename))
+    COOKIE_TXT.write_text(steal_cookie(filename))
 
 
 def start_upload(session: requests.Session, filename: str, mimetype: str):
@@ -240,7 +241,7 @@ def resume_upload(filename):
                 "AppleWebKit/537.36 (KHTML, like Gecko) "
                 "Chrome/126.0.0.0 Safari/537.36"
             ),
-            "cookie": steal_cookie("~/downloads/chrome-net-export-log.json"),
+            "cookie": COOKIE_TXT.read_text(),
         }
     )
 
