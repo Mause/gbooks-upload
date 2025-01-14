@@ -115,7 +115,7 @@ def main(verbose: bool) -> None:
     "files", required=True, nargs=-1, type=click.Path(exists=True, readable=True)
 )
 @click.option("--use-drive", is_flag=True)
-@click.option("--bookshelf")
+@click.option("--bookshelf", help="Add the uploaded books to this bookshelf")
 def upload(files: list[str], use_drive: bool, bookshelf: str):
     """
     Upload files to Google Books
