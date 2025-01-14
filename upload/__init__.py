@@ -120,6 +120,18 @@ def upload(files: list[str], use_drive: bool, bookshelf: str):
     for upl in uploads:
         monitor(books, upl["volumeId"])
 
+    if not bookshelf:
+        return
+
+    shelves = books.mylibrary().bookshelves()
+    bookshelf = next(
+        shelf
+        for shelf in paginate(shelves.list)
+        if shelf["title"].lower() == bookshelf.lower()
+    )
+    for upl in uploads:
+        shelves.addVolume(shelf=bookshelf["id"], volumeId=upl["volumeId"]).execute()
+
 
 def load_json(ctx, param, filename):
     try:
