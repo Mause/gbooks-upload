@@ -99,7 +99,7 @@ def verbose_flag(func):
     type=click.Path(exists=True, readable=True, path_type=Path, dir_okay=False),
 )
 @click.option("--use-drive", is_flag=True)
-@click.option("--bookshelf")
+@click.option("--bookshelf", help="Add the uploaded books to this bookshelf")
 @verbose_flag
 def upload(files: list[str], use_drive: bool, bookshelf: str):
     """
