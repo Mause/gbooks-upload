@@ -116,6 +116,10 @@ def main():
 @click.option("--verbose", is_flag=True)
 @click.option("--bookshelf")
 def upload(files: list[str], use_drive: bool, verbose: bool, bookshelf: str):
+    """
+    Upload files to Google Books
+    """
+
     if verbose:
         logging.basicConfig(level=logging.DEBUG)
 
@@ -137,6 +141,9 @@ def upload(files: list[str], use_drive: bool, verbose: bool, bookshelf: str):
 @main.command()
 @click.argument("filename", type=click.Path(exists=True, readable=True))
 def steal(filename: str):
+    """
+    Steal the cookie from a Chrome net-export log
+    """
     COOKIE_TXT.write_text(steal_cookie(filename))
 
 
