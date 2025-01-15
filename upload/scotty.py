@@ -1,72 +1,26 @@
-#!/usr/bin/env python3
-
 import json
-import logging
-import os.path
-import time
-from mimetypes import add_type, guess_type
-from os.path import basename, splitext
-from pathlib import Path
-from typing import Callable, Optional
+import os
+from mimetypes import guess_type
 
-import httplib2
 import requests
-import rich_click as click
-from googleapiclient.discovery import Resource, build
-from oauth2client.client import flow_from_clientsecrets
-from oauth2client.file import Storage
-from oauth2client.tools import argparser, run_flow
-from platformdirs import user_cache_dir
+from googleapiclient.discovery import Resource
 
-PATH = Path(user_cache_dir("gbooks-upload", "Elliana May"))
-COOKIE_TXT = PATH / "cookie.txt"
-
-add_type("application/epub+zip", ".epub")
+from .const import COOKIE_TXT
 
 
-def get_http():
-    assert argparser
-    args = argparser.parse_args(["--noauth_local_webserver"])
-    flow = flow_from_clientsecrets(
-        PATH / "client_secrets.json",
-        scope=[
-            "https://www.googleapis.com/auth/drive.file",
-            "openid",
-            "https://www.googleapis.com/auth/drive",
-            "https://www.googleapis.com/auth/books",
-        ],
-    )
-    storage = Storage(PATH / "credentials.json")
-    credentials = storage.get()
-    if credentials is None:
-        credentials = run_flow(flags=args, flow=flow, storage=storage)
-    http = credentials.authorize(httplib2.Http())
-    if credentials.access_token_expired:
-        credentials.refresh(http)
-    return http
+def steal_cookie(filename: str) -> str | None:
+    with open(filename) as f:
+        events = json.load(f)["events"]
+    events = [event["params"] for event in events if event["type"] == 201]
 
+    for event in events:
+        headers = event["headers"]
+        headers = dict(header.split(": ", 1) for header in headers)
 
-def upload_with_drive(drive: Resource, books: Resource, filename: str) -> dict:
-    name = splitext(basename(filename))[0]
-    mime_type = guess_type(filename)[0]
-    response = (
-        drive.files().create(media_body=filename, media_mime_type=mime_type).execute()
-    )
-
-    return (
-        books.cloudloading()
-        .addBook(
-            # A drive document id. The upload_client_token must not be set.
-            drive_document_id=response["id"],
-            # The document MIME type.
-            # It can be set only if the drive_document_id is set.
-            mime_type=mime_type,
-            # The document name.
-            # It can be set only if the drive_document_id is set.
-            name=name,
-        )
-        .execute()
-    )
+        authority = headers.get(":authority")
+        if authority and "playbooks" in authority:
+            return headers["cookie"]
+    return None
 
 
 def upload_with_scotty(books: Resource, filename: str) -> dict:
@@ -79,74 +33,6 @@ def upload_with_scotty(books: Resource, filename: str) -> dict:
         )
         .execute()
     )
-
-
-def get_volume(
-    books: Resource, name: Optional[str] = None, volumeId: Optional[str] = None
-):
-    return next(
-        volume
-        for volume in books.volumes().useruploaded().list().execute()["items"]
-        if (volume["volumeInfo"]["title"] == name or volume["id"] == volumeId)
-    )
-
-
-def paginate(method: Callable, *args, **kwargs):
-    request = method(*args, **kwargs)
-    start_index = 0
-    while request:
-        res = request.execute()
-        if "items" not in res:
-            break
-        yield from res["items"]
-        start_index += len(res["items"])
-        request = method(*args, startIndex=start_index, **kwargs)
-
-
-@click.group()
-@click.option("--verbose", is_flag=True)
-def main(verbose: bool) -> None:
-    if verbose:
-        logging.basicConfig(level=logging.DEBUG)
-
-
-@main.command()
-@click.argument(
-    "files", required=True, nargs=-1, type=click.Path(exists=True, readable=True)
-)
-@click.option("--use-drive", is_flag=True)
-@click.option("--bookshelf")
-def upload(files: list[str], use_drive: bool, bookshelf: str):
-    """
-    Upload files to Google Books
-    """
-
-    http = get_http()
-
-    books = build("books", "v1", http=http)
-    drive = build("drive", "v3", http=http)
-
-    uploads = [
-        upload_with_drive(drive, books, filename)
-        if use_drive
-        else upload_with_scotty(books, filename)
-        for filename in files
-    ]
-    for upl in uploads:
-        monitor(books, upl["volumeId"])
-
-
-@main.command()
-@click.argument("filename", type=click.Path(exists=True, readable=True))
-def steal(filename: str):
-    """
-    Steal the cookie from a Chrome net-export log
-    """
-    cookie = steal_cookie(filename)
-    if not cookie:
-        raise Exception("Could not find cookie")
-    PATH.mkdir(parents=True, exist_ok=True)
-    COOKIE_TXT.write_text(cookie)
 
 
 def start_upload(session: requests.Session, filename: str, mimetype: str):
@@ -289,36 +175,3 @@ def resume_upload(filename):
     assert completion_info["status"] == "SUCCESS"
 
     return completion_info["customerSpecificInfo"]["contentId"]
-
-
-def monitor(books: Resource, volume_id: str) -> None:
-    wait = 1
-
-    while True:
-        state = get_volume(books, volumeId=volume_id)["userInfo"][
-            "userUploadedVolumeInfo"
-        ]["processingState"]
-        print(state)
-        if state.startswith("COMPLETED_"):
-            break
-        time.sleep(wait)
-        wait *= 1.5
-
-
-def steal_cookie(filename):
-    with open(filename) as f:
-        events = json.load(f)["events"]
-    events = [event["params"] for event in events if event["type"] == 201]
-
-    for event in events:
-        headers = event["headers"]
-        headers = dict(header.split(": ", 1) for header in headers)
-
-        authority = headers.get(":authority")
-        if authority and "playbooks" in authority:
-            return headers["cookie"]
-    return None
-
-
-if __name__ == "__main__":
-    main()
