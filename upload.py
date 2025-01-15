@@ -104,8 +104,10 @@ def paginate(method: Callable, *args, **kwargs):
 
 
 @click.group()
-def main():
-    pass
+@click.option("--verbose", is_flag=True)
+def main(verbose: bool) -> None:
+    if verbose:
+        logging.basicConfig(level=logging.DEBUG)
 
 
 @main.command()
@@ -113,15 +115,11 @@ def main():
     "files", required=True, nargs=-1, type=click.Path(exists=True, readable=True)
 )
 @click.option("--use-drive", is_flag=True)
-@click.option("--verbose", is_flag=True)
-@click.option("--bookshelf")
-def upload(files: list[str], use_drive: bool, verbose: bool, bookshelf: str):
+@click.option("--bookshelf", help="Add the uploaded books to this bookshelf")
+def upload(files: list[str], use_drive: bool, bookshelf: str):
     """
     Upload files to Google Books
     """
-
-    if verbose:
-        logging.basicConfig(level=logging.DEBUG)
 
     http = get_http()
 
@@ -136,6 +134,18 @@ def upload(files: list[str], use_drive: bool, verbose: bool, bookshelf: str):
     ]
     for upl in uploads:
         monitor(books, upl["volumeId"])
+
+    if not bookshelf:
+        return
+
+    shelves = books.mylibrary().bookshelves()
+    bookshelf = next(
+        shelf
+        for shelf in paginate(shelves.list)
+        if shelf["title"].lower() == bookshelf.lower()
+    )
+    for upl in uploads:
+        shelves.addVolume(shelf=bookshelf["id"], volumeId=upl["volumeId"]).execute()
 
 
 @main.command()
