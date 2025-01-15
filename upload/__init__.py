@@ -125,10 +125,15 @@ def upload(files: list[str], use_drive: bool, bookshelf: str):
 
     shelves = books.mylibrary().bookshelves()
     bookshelf = next(
-        shelf
-        for shelf in paginate(shelves.list)
-        if shelf["title"].lower() == bookshelf.lower()
+        (
+            shelf
+            for shelf in shelves.list().execute()["items"]
+            if shelf["title"].lower() == bookshelf.lower()
+        ),
+        None,
     )
+    if not bookshelf:
+        raise Exception(f"Could not find bookshelf {bookshelf}")
     for upl in uploads:
         shelves.addVolume(shelf=bookshelf["id"], volumeId=upl["volumeId"]).execute()
 
