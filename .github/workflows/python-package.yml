@@ -30,4 +30,4 @@ jobs:
         uv sync
     - name: Test
       run: |
-        uv run gbooks-upload --help
+        uv run pytest
