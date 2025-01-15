@@ -306,7 +306,6 @@ def monitor(books: Resource, volume_id: str) -> None:
 def steal_cookie(filename):
     with open(filename) as f:
         events = json.load(f)["events"]
-    events = json.load(open("chrome-net-export-log.json"))["events"]
     events = [event["params"] for event in events if event["type"] == 201]
 
     for event in events:
