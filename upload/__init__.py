@@ -3,6 +3,7 @@
 import json
 import logging
 import time
+from functools import wraps
 from json import JSONDecodeError
 from mimetypes import add_type
 from pathlib import Path
@@ -15,10 +16,13 @@ from googleapiclient.discovery import Resource, build
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 from oauth2client.tools import argparser, run_flow
+from rich.logging import RichHandler
 
 from .const import COOKIE_TXT, PATH
 from .drive import upload_with_drive
 from .scotty import steal_cookie, upload_with_scotty
+
+logging.basicConfig(handlers=[RichHandler(rich_tracebacks=True)])
 
 add_type("application/epub+zip", ".epub")
 
@@ -68,10 +72,20 @@ def paginate(method: Callable, *args, **kwargs):
 
 
 @click.group()
-@click.option("--verbose", is_flag=True)
-def main(verbose: bool) -> None:
-    if verbose:
-        logging.basicConfig(level=logging.DEBUG)
+def main() -> None:
+    pass
+
+
+def verbose_flag(func):
+    @click.option("--verbose", is_flag=True)
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        verbose = kwargs.pop("verbose")
+        if verbose:
+            logging.getLogger().setLevel(logging.DEBUG)
+        return func(*args, **kwargs)
+
+    return wrapper
 
 
 @main.command()
@@ -83,6 +97,7 @@ def main(verbose: bool) -> None:
 )
 @click.option("--use-drive", is_flag=True)
 @click.option("--bookshelf")
+@verbose_flag
 def upload(files: list[str], use_drive: bool, bookshelf: str):
     """
     Upload files to Google Books
@@ -118,6 +133,7 @@ def load_json(ctx, param, filename):
     callback=load_json,
 )
 @click.pass_context
+@verbose_flag
 def steal(ctx, data: dict):
     """
     Steal the cookie from a Chrome net-export log
