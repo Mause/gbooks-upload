@@ -1,4 +1,3 @@
-import json
 import os
 from mimetypes import guess_type
 
@@ -8,9 +7,8 @@ from googleapiclient.discovery import Resource
 from .const import COOKIE_TXT
 
 
-def steal_cookie(filename: str) -> str | None:
-    with open(filename) as f:
-        events = json.load(f)["events"]
+def steal_cookie(data: dict) -> str | None:
+    events = data["events"]
     events = [event["params"] for event in events if event["type"] == 201]
 
     for event in events:

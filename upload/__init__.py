@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 
+import json
 import logging
 import time
+from json import JSONDecodeError
 from mimetypes import add_type
+from pathlib import Path
 from typing import Callable, Optional
 
 import httplib2
 import rich_click as click
+from click.exceptions import BadParameter
 from googleapiclient.discovery import Resource, build
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
@@ -72,7 +76,10 @@ def main(verbose: bool) -> None:
 
 @main.command()
 @click.argument(
-    "files", required=True, nargs=-1, type=click.Path(exists=True, readable=True)
+    "files",
+    required=True,
+    nargs=-1,
+    type=click.Path(exists=True, readable=True, path_type=Path, dir_okay=False),
 )
 @click.option("--use-drive", is_flag=True)
 @click.option("--bookshelf")
@@ -96,13 +103,26 @@ def upload(files: list[str], use_drive: bool, bookshelf: str):
         monitor(books, upl["volumeId"])
 
 
+def load_json(ctx, param, filename):
+    try:
+        with open(filename) as f:
+            return json.load(f)
+    except JSONDecodeError as e:
+        raise BadParameter(e) from e
+
+
 @main.command()
-@click.argument("filename", type=click.Path(exists=True, readable=True))
-def steal(filename: str):
+@click.argument(
+    "filename",
+    type=click.Path(exists=True, readable=True, path_type=Path, dir_okay=False),
+    callback=load_json,
+)
+@click.pass_context
+def steal(ctx, data: dict):
     """
     Steal the cookie from a Chrome net-export log
     """
-    cookie = steal_cookie(filename)
+    cookie = steal_cookie(data)
     if not cookie:
         raise Exception("Could not find cookie")
     PATH.mkdir(parents=True, exist_ok=True)
