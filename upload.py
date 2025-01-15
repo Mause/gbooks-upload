@@ -142,7 +142,11 @@ def steal(filename: str):
     """
     Steal the cookie from a Chrome net-export log
     """
-    COOKIE_TXT.write_text(steal_cookie(filename))
+    cookie = steal_cookie(filename)
+    if not cookie:
+        raise Exception("Could not find cookie")
+    PATH.mkdir(parents=True, exist_ok=True)
+    COOKIE_TXT.write_text(cookie)
 
 
 def start_upload(session: requests.Session, filename: str, mimetype: str):
@@ -310,7 +314,8 @@ def steal_cookie(filename):
         headers = event["headers"]
         headers = dict(header.split(": ", 1) for header in headers)
 
-        if "playbooks" in headers[":host:"]:
+        authority = headers.get(":authority")
+        if authority and "playbooks" in authority:
             return headers["cookie"]
     return None
 
