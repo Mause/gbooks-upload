@@ -2,8 +2,7 @@
 
 import logging
 import time
-from mimetypes import add_type, guess_type
-from os.path import basename, splitext
+from mimetypes import add_type
 from typing import Callable, Optional
 
 import httplib2
@@ -14,6 +13,7 @@ from oauth2client.file import Storage
 from oauth2client.tools import argparser, run_flow
 
 from .const import COOKIE_TXT, PATH
+from .drive import upload_with_drive
 from .scotty import steal_cookie, upload_with_scotty
 
 add_type("application/epub+zip", ".epub")
@@ -39,29 +39,6 @@ def get_http():
     if credentials.access_token_expired:
         credentials.refresh(http)
     return http
-
-
-def upload_with_drive(drive: Resource, books: Resource, filename: str) -> dict:
-    name = splitext(basename(filename))[0]
-    mime_type = guess_type(filename)[0]
-    response = (
-        drive.files().create(media_body=filename, media_mime_type=mime_type).execute()
-    )
-
-    return (
-        books.cloudloading()
-        .addBook(
-            # A drive document id. The upload_client_token must not be set.
-            drive_document_id=response["id"],
-            # The document MIME type.
-            # It can be set only if the drive_document_id is set.
-            mime_type=mime_type,
-            # The document name.
-            # It can be set only if the drive_document_id is set.
-            name=name,
-        )
-        .execute()
-    )
 
 
 def get_volume(
