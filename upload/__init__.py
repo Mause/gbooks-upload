@@ -20,6 +20,7 @@ from rich.logging import RichHandler
 
 from .const import COOKIE_TXT, PATH
 from .drive import upload_with_drive
+from .playbooks import LibraryService
 from .scotty import steal_cookie, upload_with_scotty
 
 logging.basicConfig(handlers=[RichHandler(rich_tracebacks=True)])
@@ -143,6 +144,13 @@ def steal(ctx, data: dict):
         raise Exception("Could not find cookie")
     PATH.mkdir(parents=True, exist_ok=True)
     COOKIE_TXT.write_text(cookie)
+
+
+@main.command()
+@verbose_flag
+def rpc():
+    service = LibraryService()
+    logging.info("response: %s", service.list_tags())
 
 
 def monitor(books: Resource, volume_id: str) -> None:
