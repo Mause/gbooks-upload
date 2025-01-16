@@ -82,8 +82,7 @@ def verbose_flag(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         verbose = kwargs.pop("verbose")
-        if verbose:
-            logging.getLogger().setLevel(logging.DEBUG)
+        logging.getLogger().setLevel(logging.DEBUG if verbose else logging.INFO)
         return func(*args, **kwargs)
 
     return wrapper
