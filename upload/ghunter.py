@@ -11,7 +11,7 @@ def camel(s: str):
     return "".join(word.title() for word in s.split("_"))
 
 
-class PeoplePaHttp(GAPI):
+class PlayBooksPaRpc(GAPI):
     def __init__(self, creds: GHuntCreds, headers: dict[str, str] = {}):
         super().__init__()
 

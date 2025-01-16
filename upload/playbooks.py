@@ -4,7 +4,7 @@ import httpx
 from ghunt.knowledge.keys import keys
 from ghunt.objects.base import GHuntCreds
 
-from .ghunter import PeoplePaHttp
+from .ghunter import PlayBooksPaRpc
 
 keys["play"] = {
     "key": "AIzaSyCWq1--9JnN9QM7k57Rc_qmt9c0OVy0rME",
@@ -14,9 +14,9 @@ keys["play"] = {
 
 async def ghunt(service, method):
     creds = GHuntCreds()
-    creds.load_creds(silent=False)
+    creds.load_creds(silent=True)
 
-    api = PeoplePaHttp(creds)
+    api = PlayBooksPaRpc(creds)
 
     client = httpx.AsyncClient()
 
