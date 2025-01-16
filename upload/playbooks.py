@@ -1,8 +1,8 @@
 from asyncio import get_event_loop
 
 import httpx
+from ghunt.helpers import auth
 from ghunt.knowledge.keys import keys
-from ghunt.objects.base import GHuntCreds
 
 from .ghunter import PlayBooksPaRpc
 
@@ -13,12 +13,11 @@ keys["play"] = {
 
 
 async def ghunt(service, method):
-    creds = GHuntCreds()
-    creds.load_creds(silent=True)
+    client = httpx.AsyncClient()
+
+    creds = await auth.load_and_auth(client)
 
     api = PlayBooksPaRpc(creds)
-
-    client = httpx.AsyncClient()
 
     return await api.call_rpc(method, client)
 
