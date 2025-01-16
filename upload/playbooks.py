@@ -20,7 +20,7 @@ async def ghunt(service, method):
 
     client = httpx.AsyncClient()
 
-    return await api.list_tags(client)
+    return await api.call_rpc(method, client)
 
 
 class RpcService:

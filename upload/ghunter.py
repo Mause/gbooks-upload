@@ -1,14 +1,9 @@
-import inspect
 from email.message import Message
 
 import ghunt.globals as gb
 import httpx
 from ghunt.objects.apis import GAPI
 from ghunt.objects.base import GHuntCreds
-
-
-def camel(s: str):
-    return "".join(word.title() for word in s.split("_"))
 
 
 class PlayBooksPaRpc(GAPI):
@@ -36,9 +31,7 @@ class PlayBooksPaRpc(GAPI):
 
         self._load_api(creds, headers)
 
-    async def list_tags(self, as_client: httpx.AsyncClient):
-        method = camel(inspect.currentframe().f_code.co_name)
-
+    async def call_rpc(self, method, as_client: httpx.AsyncClient):
         self._load_endpoint(method)
 
         message = Message()
