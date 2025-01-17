@@ -55,7 +55,7 @@ class RpcService(GAPI):
             f"/$rpc/{self.service}/{method}",
             {"$httpHeaders": message.as_string()},
             data,
-            "json",
+            "data" if isinstance(data, str) else "json",
         )
         if not res.is_success:
             raise Exception(res, res.text)
