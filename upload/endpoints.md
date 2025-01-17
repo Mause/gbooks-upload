@@ -35,7 +35,7 @@
 "/google.internal.play.books.library.v1.LibraryService/HideLibraryDocuments"
 "/google.internal.play.books.library.v1.LibraryService/ListTags"
 "/google.internal.play.books.library.v1.LibraryService/LookupCopyLimit"
-"/google.internal.play.books.library.v1.LibraryService/RemoveTags"
+"/google.internal.play.books.library.v1.LibraryService/RemoveTags" [[["hdYTCAAAQBAJ","Completed",1737103382078]]]
 "/google.internal.play.books.library.v1.LibraryService/SyncDocumentPosition" ["84XKNwAAAEAJ",["384DC38E-1A56-4F48-8AE1-1C3F446F41E5",null,"1737093647557",[null,null,[2]],null,[["GBS.PA68.w.0.0.0.2"],null,0.9066666666666666]]]
 "/google.internal.play.books.library.v1.LibraryService/SyncExtendedLibrary"
 "/google.internal.play.books.library.v1.LibraryService/SyncUserLibrary"

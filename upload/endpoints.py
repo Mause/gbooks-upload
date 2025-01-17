@@ -131,8 +131,8 @@ class LibraryService(RpcService):
     async def lookup_copy_limit(self):
         return await self.call_rpc("LookupCopyLimit")
 
-    async def remove_tags(self):
-        return await self.call_rpc("RemoveTags")
+    async def remove_tags(self, data='[[["hdYTCAAAQBAJ","Completed",1737103382078]]]'):
+        return await self.call_rpc("RemoveTags", data=data)
 
     async def sync_document_position(
         self,
