@@ -135,9 +135,8 @@ def load_json(ctx, param, filename):
     type=click.Path(exists=True, readable=True, path_type=Path, dir_okay=False),
     callback=load_json,
 )
-@click.pass_context
 @verbose_flag
-def steal(ctx, data: dict):
+def steal(data: dict):
     """
     Steal the cookie from a Chrome net-export log
     """
