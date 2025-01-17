@@ -166,8 +166,8 @@ class SeriesOnePlatformService(RpcService):
     ):
         return await self.call_rpc("Fetch", data=data)
 
-    async def fetch_members(self):
-        return await self.call_rpc("FetchMembers")
+    async def fetch_members(self, data='[["u4P3GgAAABBNmM"],[100]]'):
+        return await self.call_rpc("FetchMembers", data=data)
 
 
 class SettingsOnePlatformService(RpcService):

@@ -44,7 +44,7 @@
 "/google.internal.play.books.library.v1.LibraryService/UpdateCustomTag"
 
 "/google.internal.play.books.series.v1.SeriesOnePlatformService/Fetch" [[["u4P3GgAAABBNmM"],["PL4pGwAAABAUpM"],["bW8uGwAAABBCdM"],["i1YuGwAAABCkTM"],["crbMGgAAABC_rM"]]]
-"/google.internal.play.books.series.v1.SeriesOnePlatformService/FetchMembers"
+"/google.internal.play.books.series.v1.SeriesOnePlatformService/FetchMembers" [["u4P3GgAAABBNmM"],[100]]
 
 "/google.internal.play.books.settings.v1.SettingsOnePlatformService/GetUserSettings"
 "/google.internal.play.books.settings.v1.SettingsOnePlatformService/UpdateUserSettings"
