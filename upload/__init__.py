@@ -123,19 +123,28 @@ def upload(files: list[str], use_drive: bool, bookshelf: str):
     if not bookshelf:
         return
 
-    shelves = books.mylibrary().bookshelves()
-    bookshelf = next(
-        (
-            shelf
-            for shelf in shelves.list().execute()["items"]
-            if shelf["title"].lower() == bookshelf.lower()
-        ),
-        None,
+    uvloop.run(add_multiple_to_shelf([upl["volumeId"] for upl in uploads], bookshelf))
+
+
+async def add_multiple_to_shelf(book_ids: list[str], shelf_name: str):
+    client = httpx.AsyncClient()
+    creds = await auth.load_and_auth(client)
+    service = LibraryService(creds, client)
+
+    tags = await list_tags(service)
+
+    tag_id = tags["tags"][shelf_name]
+
+    print(
+        await service.add_tags(
+            [
+                [
+                    [book_id, tag_id, str(int(datetime.now().timestamp() * 1000))]
+                    for book_id in book_ids
+                ]
+            ]
+        )
     )
-    if not bookshelf:
-        raise Exception(f"Could not find bookshelf {bookshelf}")
-    for upl in uploads:
-        shelves.addVolume(shelf=bookshelf["id"], volumeId=upl["volumeId"]).execute()
 
 
 def load_json(ctx, param, filename):
