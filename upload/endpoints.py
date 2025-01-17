@@ -1,4 +1,4 @@
-from .playbooks import RpcService
+from .ghunter import RpcService
 
 
 class InternalPeopleService(RpcService):

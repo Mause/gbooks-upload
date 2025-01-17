@@ -2,11 +2,17 @@ from email.message import Message
 
 import ghunt.globals as gb
 import httpx
+from ghunt.knowledge.keys import keys
 from ghunt.objects.apis import GAPI
 from ghunt.objects.base import GHuntCreds
 
+keys["play"] = {
+    "key": "AIzaSyCWq1--9JnN9QM7k57Rc_qmt9c0OVy0rME",
+    "origin": "https://play.google.com",
+}
 
-class PlayBooksPaRpc(GAPI):
+
+class RpcService(GAPI):
     def __init__(
         self,
         creds: GHuntCreds,
