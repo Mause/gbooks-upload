@@ -20,6 +20,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "jinja2>=3.1.5",
     "pdbpp<1.0.0,>=0.10.3",
     "pre-commit<4.0.0,>=3.4.0",
     "pudb>=2024.1.3",
