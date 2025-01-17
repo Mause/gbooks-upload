@@ -22,7 +22,7 @@
 "/google.internal.play.books.family.v1.FamilyOnePlatformService/Share"
 "/google.internal.play.books.family.v1.FamilyOnePlatformService/Unshare"
 
-"/google.internal.play.books.layers.v1.VolumeAnnotationService/GetDictionaryDefinition"
+"/google.internal.play.books.layers.v1.VolumeAnnotationService/GetDictionaryDefinition" [null," unwrapping",[null,null,"en"]]
 
 "/google.internal.play.books.library.v1.LibraryService/AddLibraryDocument"
 "/google.internal.play.books.library.v1.LibraryService/AddTags"

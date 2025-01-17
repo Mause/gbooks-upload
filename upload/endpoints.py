@@ -55,8 +55,8 @@ class EnterpriseService(RpcService):
     async def get_license_history(self):
         return await self.call_rpc("GetLicenseHistory")
 
-    async def get_licenses(self):
-        return await self.call_rpc("GetLicenses")
+    async def get_licenses(self, data="[null,null,null,1]"):
+        return await self.call_rpc("GetLicenses", data=data)
 
     async def grant_free_book_licenses(self):
         return await self.call_rpc("GrantFreeBookLicenses")
@@ -86,8 +86,10 @@ class VolumeAnnotationService(RpcService):
     hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.layers.v1.VolumeAnnotationService"
 
-    async def get_dictionary_definition(self):
-        return await self.call_rpc("GetDictionaryDefinition")
+    async def get_dictionary_definition(
+        self, data='[null," unwrapping",[null,null,"en"]]'
+    ):
+        return await self.call_rpc("GetDictionaryDefinition", data=data)
 
 
 class LibraryService(RpcService):
@@ -156,8 +158,11 @@ class SeriesOnePlatformService(RpcService):
     hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.series.v1.SeriesOnePlatformService"
 
-    async def fetch(self):
-        return await self.call_rpc("Fetch")
+    async def fetch(
+        self,
+        data='[[["u4P3GgAAABBNmM"],["PL4pGwAAABAUpM"],["bW8uGwAAABBCdM"],["i1YuGwAAABCkTM"],["crbMGgAAABC_rM"]]]',
+    ):
+        return await self.call_rpc("Fetch", data=data)
 
     async def fetch_members(self):
         return await self.call_rpc("FetchMembers")
