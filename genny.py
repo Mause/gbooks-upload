@@ -13,13 +13,16 @@ with open("upload/endpoints.md") as f:
 PREFIX = "https://"
 methods = []
 for line in lines:
+    body = None
     hostname = "playbooks-pa.clients6.google.com"
+    if " " in line:
+        line, body = line.split(" ", 1)
     line = line[1:-1]
     if line.startswith(PREFIX):
         hostname, line = line.split("/$rpc")
         hostname = hostname[len(PREFIX) :]
     _, service, method = line.split("/")
-    methods.append((hostname, service, method))
+    methods.append((hostname, service, method, body))
 
 
 key = itemgetter(slice(0, 2))
@@ -30,9 +33,9 @@ class {{classname}}(RpcService):
     hostname = "{{hostname}}"
     service = "{{service}}"
 
-    {% for hostname, _, method in methods %}
-    async def {{lower(method)}}(self):
-        return await self.call_rpc("{{method}}")
+    {% for hostname, _, method, body in methods %}
+    async def {{lower(method)}}(self{% if body %}, data={{repr(body)}}{% endif %}):
+        return await self.call_rpc({{repr(method)}}{% if body %}, data=data{% endif %})
     {% endfor %}
 
 
@@ -58,6 +61,7 @@ with open(OUT, "w") as f:
                 service=service,
                 methods=sorted(methods),
                 lower=lower,
+                repr=repr,
             )
         )
 check_call([find_ruff_bin(), "format", OUT])

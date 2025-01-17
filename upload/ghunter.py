@@ -41,7 +41,7 @@ class RpcService(GAPI):
 
         self._load_api(creds, headers)
 
-    async def call_rpc(self, method):
+    async def call_rpc(self, method, data=None):
         self._load_endpoint(method)
 
         message = Message()
@@ -54,8 +54,9 @@ class RpcService(GAPI):
             method,
             f"/$rpc/{self.service}/{method}",
             {"$httpHeaders": message.as_string()},
-            None,
+            data,
             "json",
         )
-        res.raise_for_status()
+        if not res.is_success:
+            raise Exception(res, res.text)
         return res.json()

@@ -2,11 +2,14 @@ from .ghunter import RpcService
 
 
 class InternalPeopleService(RpcService):
-    hostname = "playbooks-pa.clients6.google.com"
+    hostname = "people-pa.clients6.google.com"
     service = "google.internal.people.v2.InternalPeopleService"
 
-    async def get_people(self):
-        return await self.call_rpc("GetPeople")
+    async def get_people(
+        self,
+        data='[["me"],[[["person.name","person.email","person.photo"]],null,[5,1,7]]]',
+    ):
+        return await self.call_rpc("GetPeople", data=data)
 
 
 class AudiobookService(RpcService):
@@ -127,8 +130,11 @@ class LibraryService(RpcService):
     async def remove_tags(self):
         return await self.call_rpc("RemoveTags")
 
-    async def sync_document_position(self):
-        return await self.call_rpc("SyncDocumentPosition")
+    async def sync_document_position(
+        self,
+        data='["84XKNwAAAEAJ",["384DC38E-1A56-4F48-8AE1-1C3F446F41E5",null,"1737093647557",[null,null,[2]],null,[["GBS.PA68.w.0.0.0.2"],null,0.9066666666666666]]]',
+    ):
+        return await self.call_rpc("SyncDocumentPosition", data=data)
 
     async def sync_extended_library(self):
         return await self.call_rpc("SyncExtendedLibrary")
@@ -184,11 +190,15 @@ class UserAnnotationService(RpcService):
     async def delete_collection(self):
         return await self.call_rpc("DeleteCollection")
 
-    async def list_annotations(self):
-        return await self.call_rpc("ListAnnotations")
+    async def list_annotations(
+        self, data='[[["84XKNwAAAEAJ",null,"full-1.0.0"]],[1,2],null,1,1]'
+    ):
+        return await self.call_rpc("ListAnnotations", data=data)
 
-    async def list_shared_annotations(self):
-        return await self.call_rpc("ListSharedAnnotations")
+    async def list_shared_annotations(
+        self, data='[["84XKNwAAAEAJ",null,"full-1.0.0"],1,null,null,1]'
+    ):
+        return await self.call_rpc("ListSharedAnnotations", data=data)
 
     async def trigger_export(self):
         return await self.call_rpc("TriggerExport")
@@ -207,8 +217,11 @@ class PlayGatewayBooksService(RpcService):
     hostname = "playgateway-pa.clients6.google.com"
     service = "play.gateway.adapter.books.v1.PlayGatewayBooksService"
 
-    async def get_in_app_stream(self):
-        return await self.call_rpc("GetInAppStream")
+    async def get_in_app_stream(
+        self,
+        data='[[4,null,["84XKNwAAAEAJ",1]],null,null,null,null,[null,null,null,null,null,null,[3]],null,null,[null,[2],[1]]]',
+    ):
+        return await self.call_rpc("GetInAppStream", data=data)
 
 
 class Waa(RpcService):
