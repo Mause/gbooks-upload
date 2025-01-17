@@ -6,10 +6,18 @@ from ghunt.knowledge.keys import keys
 from ghunt.objects.apis import GAPI
 from ghunt.objects.base import GHuntCreds
 
-keys["play"] = {
-    "key": "AIzaSyCWq1--9JnN9QM7k57Rc_qmt9c0OVy0rME",
-    "origin": "https://play.google.com",
-}
+keys.update(
+    {
+        "play": {
+            "key": "AIzaSyCWq1--9JnN9QM7k57Rc_qmt9c0OVy0rME",
+            "origin": "https://play.google.com",
+        },
+        "waa": {
+            "key": "AIzaSyBGb5fGAyC-pRcRU6MUHb__b_vKha71HRE",
+            "origin": "https://www.googleapis.com",  # TODO: confirm this value
+        },
+    }
+)
 
 
 class RpcService(GAPI):
