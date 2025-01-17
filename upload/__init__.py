@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-
 import json
 import logging
 import time
+from datetime import datetime
 from functools import wraps
 from json import JSONDecodeError
 from mimetypes import add_type
@@ -10,8 +10,11 @@ from pathlib import Path
 from typing import Callable, Optional
 
 import httplib2
+import httpx
 import rich_click as click
+import uvloop
 from click.exceptions import BadParameter
+from ghunt.helpers import auth
 from googleapiclient.discovery import Resource, build
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
@@ -20,6 +23,7 @@ from rich.logging import RichHandler
 
 from .const import COOKIE_TXT, PATH
 from .drive import upload_with_drive
+from .endpoints import LibraryService
 from .scotty import steal_cookie, upload_with_scotty
 
 logging.basicConfig(handlers=[RichHandler(rich_tracebacks=True)])
@@ -30,18 +34,18 @@ add_type("application/epub+zip", ".epub")
 def get_http():
     assert argparser
     args = argparser.parse_args(["--noauth_local_webserver"])
-    flow = flow_from_clientsecrets(
-        PATH / "client_secrets.json",
-        scope=[
-            "https://www.googleapis.com/auth/drive.file",
-            "openid",
-            "https://www.googleapis.com/auth/drive",
-            "https://www.googleapis.com/auth/books",
-        ],
-    )
     storage = Storage(PATH / "credentials.json")
     credentials = storage.get()
     if credentials is None:
+        flow = flow_from_clientsecrets(
+            PATH / "client_secrets.json",
+            scope=[
+                "https://www.googleapis.com/auth/drive.file",
+                "openid",
+                "https://www.googleapis.com/auth/drive",
+                "https://www.googleapis.com/auth/books",
+            ],
+        )
         credentials = run_flow(flags=args, flow=flow, storage=storage)
     http = credentials.authorize(httplib2.Http())
     if credentials.access_token_expired:
@@ -81,8 +85,7 @@ def verbose_flag(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         verbose = kwargs.pop("verbose")
-        if verbose:
-            logging.getLogger().setLevel(logging.DEBUG)
+        logging.getLogger().setLevel(logging.DEBUG if verbose else logging.INFO)
         return func(*args, **kwargs)
 
     return wrapper
@@ -126,15 +129,22 @@ def load_json(ctx, param, filename):
         raise BadParameter(e) from e
 
 
+def asyncio(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        return uvloop.run(func(*args, **kwargs))
+
+    return wrapper
+
+
 @main.command()
 @click.argument(
     "filename",
     type=click.Path(exists=True, readable=True, path_type=Path, dir_okay=False),
     callback=load_json,
 )
-@click.pass_context
 @verbose_flag
-def steal(ctx, data: dict):
+def steal(data: dict):
     """
     Steal the cookie from a Chrome net-export log
     """
@@ -143,6 +153,74 @@ def steal(ctx, data: dict):
         raise Exception("Could not find cookie")
     PATH.mkdir(parents=True, exist_ok=True)
     COOKIE_TXT.write_text(cookie)
+
+
+@main.group()
+def shelves():
+    pass
+
+
+@shelves.command("add", help="add book to shelf")
+@click.argument("book_id")
+@click.argument("shelf_name")
+@verbose_flag
+@asyncio
+async def add_to_shelf(book_id: str, shelf_name: str):
+    client = httpx.AsyncClient()
+    creds = await auth.load_and_auth(client)
+    service = LibraryService(creds, client)
+
+    tags = await list_tags(service)
+
+    tag_id = tags["tags"][shelf_name]
+
+    print(
+        await service.add_tags(
+            [[[book_id, tag_id, str(int(datetime.now().timestamp() * 1000))]]]
+        )
+    )
+
+
+@shelves.command("list", help="list shelves")
+@verbose_flag
+@asyncio
+async def list_shelves():
+    client = httpx.AsyncClient()
+    creds = await auth.load_and_auth(client)
+    service = LibraryService(creds, client)
+
+    tags = await list_tags(service)
+
+    for name in tags["tags"]:
+        print(name)
+
+
+@main.command()
+@verbose_flag
+@asyncio
+async def rpc():
+    client = httpx.AsyncClient()
+
+    creds = await auth.load_and_auth(client)
+
+    service = LibraryService(creds, client)
+    logging.info("tags: %s", await list_tags(service))
+
+
+async def list_tags(service: LibraryService):
+    [tags, tagged] = await service.list_tags()
+
+    return {
+        "tags": {name: tag_id for name, tag_id, *_ in tags},
+        "tagged": [
+            {
+                "book_id": book_id,
+                "tag_id": tag_id,
+                "tagged_at": datetime.fromtimestamp(int(tagged_at) / 1000),
+            }
+            for book_id, tag_id, tagged_at, *_ in tagged
+        ],
+    }
 
 
 def monitor(books: Resource, volume_id: str) -> None:
