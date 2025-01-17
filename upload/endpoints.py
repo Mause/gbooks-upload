@@ -99,8 +99,10 @@ class LibraryService(RpcService):
     async def add_library_document(self):
         return await self.call_rpc("AddLibraryDocument")
 
-    async def add_tags(self):
-        return await self.call_rpc("AddTags")
+    async def add_tags(
+        self, data='[[["5QuwNwAAAEAJ","a0c746137-5723-4740-89a8-4ef7311aad16"]]]'
+    ):
+        return await self.call_rpc("AddTags", data=data)
 
     async def create_custom_tag(self):
         return await self.call_rpc("CreateCustomTag")

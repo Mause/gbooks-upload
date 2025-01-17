@@ -154,6 +154,30 @@ def rpc():
     uvloop.run(_rpc())
 
 
+@main.group()
+def shelves():
+    pass
+
+
+@shelves.command("add", help="add book to shelf")
+@click.argument("book_id")
+@click.argument("shelf_name")
+def add_to_shelf(book_id: str, shelf_name: str):
+    uvloop.run(_add_to_shelf(book_id, shelf_name))
+
+
+async def _add_to_shelf(book_id: str, shelf_name: str):
+    client = httpx.AsyncClient()
+    creds = await auth.load_and_auth(client)
+    service = LibraryService(creds, client)
+
+    tags = await list_tags(service)
+
+    tag_id = tags["tags"][shelf_name]
+
+    print(await service.add_tags([[[book_id, tag_id]]]))
+
+
 async def _rpc():
     client = httpx.AsyncClient()
 
