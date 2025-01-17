@@ -20,7 +20,7 @@
 "/google.internal.play.books.enterprise.v1.EnterpriseService/ClaimLicense"
 "/google.internal.play.books.enterprise.v1.EnterpriseService/GetLicenseHistory"
 "/google.internal.play.books.enterprise.v1.EnterpriseService/GetLicenseHistory"
-"/google.internal.play.books.enterprise.v1.EnterpriseService/GetLicenses"
+"/google.internal.play.books.enterprise.v1.EnterpriseService/GetLicenses" [null,null,null,1]
 "/google.internal.play.books.enterprise.v1.EnterpriseService/GetLicenses"
 "/google.internal.play.books.enterprise.v1.EnterpriseService/GrantFreeBookLicenses"
 "/google.internal.play.books.enterprise.v1.EnterpriseService/ListFreeBooksForLicense"
@@ -71,8 +71,7 @@
 "/google.internal.play.books.library.v1.LibraryService/UpdateCustomTag"
 "/google.internal.play.books.library.v1.LibraryService/UpdateCustomTag"
 
-"/google.internal.play.books.series.v1.SeriesOnePlatformService/Fetch"
-"/google.internal.play.books.series.v1.SeriesOnePlatformService/Fetch"
+"/google.internal.play.books.series.v1.SeriesOnePlatformService/Fetch" [[["u4P3GgAAABBNmM"],["PL4pGwAAABAUpM"],["bW8uGwAAABBCdM"],["i1YuGwAAABCkTM"],["crbMGgAAABC_rM"]]]
 "/google.internal.play.books.series.v1.SeriesOnePlatformService/FetchMembers"
 "/google.internal.play.books.series.v1.SeriesOnePlatformService/FetchMembers"
 
