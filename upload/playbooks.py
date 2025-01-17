@@ -12,7 +12,7 @@ keys["play"] = {
 }
 
 
-async def ghunt(service, method):
+async def call_rpc(service, method):
     client = httpx.AsyncClient()
 
     creds = await auth.load_and_auth(client)
@@ -27,7 +27,7 @@ class RpcService:
         assert getattr(self, "service", None)
 
     def call_rpc(self, method: str):
-        return get_event_loop().run_until_complete(ghunt(self.service, method))
+        return get_event_loop().run_until_complete(call_rpc(self.service, method))
 
 
 class EnterpriseService(RpcService):
