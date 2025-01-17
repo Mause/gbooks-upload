@@ -34,18 +34,18 @@ add_type("application/epub+zip", ".epub")
 def get_http():
     assert argparser
     args = argparser.parse_args(["--noauth_local_webserver"])
-    flow = flow_from_clientsecrets(
-        PATH / "client_secrets.json",
-        scope=[
-            "https://www.googleapis.com/auth/drive.file",
-            "openid",
-            "https://www.googleapis.com/auth/drive",
-            "https://www.googleapis.com/auth/books",
-        ],
-    )
     storage = Storage(PATH / "credentials.json")
     credentials = storage.get()
     if credentials is None:
+        flow = flow_from_clientsecrets(
+            PATH / "client_secrets.json",
+            scope=[
+                "https://www.googleapis.com/auth/drive.file",
+                "openid",
+                "https://www.googleapis.com/auth/drive",
+                "https://www.googleapis.com/auth/books",
+            ],
+        )
         credentials = run_flow(flags=args, flow=flow, storage=storage)
     http = credentials.authorize(httplib2.Http())
     if credentials.access_token_expired:
