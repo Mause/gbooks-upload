@@ -1,3 +1,5 @@
+"/google.internal.waa.v1.Waa/Ping"
+
 "/google.internal.people.v2.InternalPeopleService/GetPeople"
 
 "/google.internal.play.books.audiobook.v1.AudiobookService/GetAudiobookResource"
