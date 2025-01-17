@@ -17,7 +17,7 @@ async def call_rpc(service, method):
 
     creds = await auth.load_and_auth(client)
 
-    api = PlayBooksPaRpc(creds)
+    api = PlayBooksPaRpc(service, creds)
 
     return await api.call_rpc(method, client)
 

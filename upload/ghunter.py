@@ -7,7 +7,7 @@ from ghunt.objects.base import GHuntCreds
 
 
 class PlayBooksPaRpc(GAPI):
-    def __init__(self, creds: GHuntCreds, headers: dict[str, str] = {}):
+    def __init__(self, service, creds: GHuntCreds, headers: dict[str, str] = {}):
         super().__init__()
 
         if not headers:
@@ -22,7 +22,7 @@ class PlayBooksPaRpc(GAPI):
 
         self.hostname = "playbooks-pa.clients6.google.com"
         self.scheme = "https"
-        self.service = "google.internal.play.books.library.v1.LibraryService"
+        self.service = service
 
         self.authentication_mode = (
             "sapisidhash"  # sapisidhash, cookies_only, oauth or None
