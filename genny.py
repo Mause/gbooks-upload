@@ -5,8 +5,10 @@
 import re
 from itertools import groupby
 from operator import itemgetter
+from subprocess import check_call
 
 from jinja2 import Template
+from ruff.__main__ import find_ruff_bin
 
 with open("upload/endpoints.md") as f:
     lines = {line[1:-1] for line in f.read().splitlines() if line}
@@ -40,15 +42,18 @@ def lower(s):
     return re.sub("([a-z])([A-Z])", r"\1_\2", s).lower()
 
 
-with open("upload/endpoints.py", "w") as f:
-    f.write("from .playbooks import RpcService\n\n")
+OUT = "upload/endpoints.py"
+
+with open(OUT, "w") as f:
+    f.write("from .ghunter import RpcService\n\n")
 
     for service, methods in groupby(sorted(methods, key=key), key=key):
         f.write(
             t.render(
                 classname=service.split(".")[-1],
                 service=service,
-                methods=methods,
+                methods=sorted(methods),
                 lower=lower,
             )
         )
+check_call([find_ruff_bin(), "format", OUT])
