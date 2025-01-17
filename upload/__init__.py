@@ -2,6 +2,7 @@
 import json
 import logging
 import time
+from datetime import datetime
 from functools import wraps
 from json import JSONDecodeError
 from mimetypes import add_type
@@ -13,6 +14,7 @@ import httpx
 import rich_click as click
 import uvloop
 from click.exceptions import BadParameter
+from ghunt.helpers import auth
 from googleapiclient.discovery import Resource, build
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
@@ -21,6 +23,7 @@ from rich.logging import RichHandler
 
 from .const import COOKIE_TXT, PATH
 from .drive import upload_with_drive
+from .endpoints import LibraryService
 from .scotty import steal_cookie, upload_with_scotty
 
 logging.basicConfig(handlers=[RichHandler(rich_tracebacks=True)])
@@ -152,16 +155,28 @@ def rpc():
 
 
 async def _rpc():
-    from ghunt.helpers import auth
-
-    from .endpoints import LibraryService
-
     client = httpx.AsyncClient()
 
     creds = await auth.load_and_auth(client)
 
     service = LibraryService(creds, client)
-    logging.info("tags: %s", await service.list_tags())
+    logging.info("tags: %s", await list_tags(service))
+
+
+async def list_tags(service: LibraryService):
+    [tags, tagged] = await service.list_tags()
+
+    return {
+        "tags": {name: tag_id for name, tag_id, *_ in tags},
+        "tagged": [
+            {
+                "book_id": book_id,
+                "tag_id": tag_id,
+                "tagged_at": datetime.fromtimestamp(int(tagged_at) / 1000),
+            }
+            for book_id, tag_id, tagged_at, *_ in tagged
+        ],
+    }
 
 
 def monitor(books: Resource, volume_id: str) -> None:

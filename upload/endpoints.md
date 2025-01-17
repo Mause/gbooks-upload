@@ -25,7 +25,7 @@
 "/google.internal.play.books.layers.v1.VolumeAnnotationService/GetDictionaryDefinition" [null," unwrapping",[null,null,"en"]]
 
 "/google.internal.play.books.library.v1.LibraryService/AddLibraryDocument"
-"/google.internal.play.books.library.v1.LibraryService/AddTags"
+"/google.internal.play.books.library.v1.LibraryService/AddTags" [[["5QuwNwAAAEAJ","a0c746137-5723-4740-89a8-4ef7311aad16"]]]
 "/google.internal.play.books.library.v1.LibraryService/CreateCustomTag"
 "/google.internal.play.books.library.v1.LibraryService/DeleteCustomTag"
 "/google.internal.play.books.library.v1.LibraryService/DeleteLibraryDocument"
