@@ -14,6 +14,7 @@ import httpx
 import rich_click as click
 import uvloop
 from click.exceptions import BadParameter
+from click.globals import get_current_context
 from ghunt.helpers import auth
 from googleapiclient.discovery import Resource, build
 from oauth2client.client import flow_from_clientsecrets
@@ -188,22 +189,24 @@ async def get_shelf(service: LibraryService, shelf_name: str):
     tags = await list_tags(service)
 
     if shelf_name not in tags["tags"]:
-        raise BadParameter(f"Shelf by name {shelf_name} not found")
+        ctx = get_current_context()
+        param = next(p for p in ctx.command.params if p.name == "bookshelf")
+        raise BadParameter(f'Shelf with name "{shelf_name}" not found', param=param)
 
     return tags["tags"][shelf_name]
 
 
 @shelves.command("add", help="add book to shelf")
 @click.argument("book_id")
-@click.argument("shelf_name")
+@click.argument("bookshelf")
 @verbose_flag
 @asyncio
-async def add_to_shelf(book_id: str, shelf_name: str):
+async def add_to_shelf(book_id: str, bookshelf: str):
     client = httpx.AsyncClient()
     creds = await auth.load_and_auth(client)
     service = LibraryService(creds, client)
 
-    tag_id = await get_shelf(service, shelf_name)
+    tag_id = await get_shelf(service, bookshelf)
 
     print(
         await service.add_tags(
