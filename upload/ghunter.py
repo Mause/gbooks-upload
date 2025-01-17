@@ -38,14 +38,14 @@ class PlayBooksPaRpc(GAPI):
         for k, v in self.loaded_endpoints[method].headers.items():
             message.add_header(k, v)
 
-        return (
-            await self._query(
-                as_client,
-                "POST",
-                method,
-                f"/$rpc/{self.service}/{method}",
-                {"$httpHeaders": message.as_string()},
-                None,
-                "json",
-            )
-        ).json()
+        res = await self._query(
+            as_client,
+            "POST",
+            method,
+            f"/$rpc/{self.service}/{method}",
+            {"$httpHeaders": message.as_string()},
+            None,
+            "json",
+        )
+        res.raise_for_status()
+        return res.json()
