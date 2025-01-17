@@ -129,6 +129,14 @@ def load_json(ctx, param, filename):
         raise BadParameter(e) from e
 
 
+def asyncio(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        return uvloop.run(func(*args, **kwargs))
+
+    return wrapper
+
+
 @main.command()
 @click.argument(
     "filename",
@@ -147,12 +155,6 @@ def steal(data: dict):
     COOKIE_TXT.write_text(cookie)
 
 
-@main.command()
-@verbose_flag
-def rpc():
-    uvloop.run(_rpc())
-
-
 @main.group()
 def shelves():
     pass
@@ -161,11 +163,9 @@ def shelves():
 @shelves.command("add", help="add book to shelf")
 @click.argument("book_id")
 @click.argument("shelf_name")
-def add_to_shelf(book_id: str, shelf_name: str):
-    uvloop.run(_add_to_shelf(book_id, shelf_name))
-
-
-async def _add_to_shelf(book_id: str, shelf_name: str):
+@verbose_flag
+@asyncio
+async def add_to_shelf(book_id: str, shelf_name: str):
     client = httpx.AsyncClient()
     creds = await auth.load_and_auth(client)
     service = LibraryService(creds, client)
@@ -177,7 +177,24 @@ async def _add_to_shelf(book_id: str, shelf_name: str):
     print(await service.add_tags([[[book_id, tag_id]]]))
 
 
-async def _rpc():
+@shelves.command("list", help="list shelves")
+@verbose_flag
+@asyncio
+async def list_shelves():
+    client = httpx.AsyncClient()
+    creds = await auth.load_and_auth(client)
+    service = LibraryService(creds, client)
+
+    tags = await list_tags(service)
+
+    for name in tags["tags"]:
+        print(name)
+
+
+@main.command()
+@verbose_flag
+@asyncio
+async def rpc():
     client = httpx.AsyncClient()
 
     creds = await auth.load_and_auth(client)
