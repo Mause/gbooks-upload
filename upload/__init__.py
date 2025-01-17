@@ -131,9 +131,7 @@ async def add_multiple_to_shelf(book_ids: list[str], shelf_name: str):
     creds = await auth.load_and_auth(client)
     service = LibraryService(creds, client)
 
-    tags = await list_tags(service)
-
-    tag_id = tags["tags"][shelf_name]
+    tag_id = await get_shelf(service, shelf_name)
 
     print(
         await service.add_tags(
@@ -186,6 +184,15 @@ def shelves():
     pass
 
 
+async def get_shelf(service: LibraryService, shelf_name: str):
+    tags = await list_tags(service)
+
+    if shelf_name not in tags["tags"]:
+        raise BadParameter(f"Shelf by name {shelf_name} not found")
+
+    return tags["tags"][shelf_name]
+
+
 @shelves.command("add", help="add book to shelf")
 @click.argument("book_id")
 @click.argument("shelf_name")
@@ -196,9 +203,7 @@ async def add_to_shelf(book_id: str, shelf_name: str):
     creds = await auth.load_and_auth(client)
     service = LibraryService(creds, client)
 
-    tags = await list_tags(service)
-
-    tag_id = tags["tags"][shelf_name]
+    tag_id = await get_shelf(service, shelf_name)
 
     print(
         await service.add_tags(
