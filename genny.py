@@ -1,7 +1,3 @@
-"""
-"https://waa-pa.clients6.google.com"
-"""
-
 import re
 from itertools import groupby
 from operator import itemgetter
@@ -11,23 +7,30 @@ from jinja2 import Template
 from ruff.__main__ import find_ruff_bin
 
 with open("upload/endpoints.md") as f:
-    lines = {line[1:-1] for line in f.read().splitlines() if line}
+    lines = {line for line in f.read().splitlines() if line}
 
 
+PREFIX = "https://"
 methods = []
 for line in lines:
+    hostname = "playbooks-pa.clients6.google.com"
+    line = line[1:-1]
+    if line.startswith(PREFIX):
+        hostname, line = line.split("/$rpc")
+        hostname = hostname[len(PREFIX) :]
     _, service, method = line.split("/")
-    methods.append((service, method))
+    methods.append((hostname, service, method))
 
 
-key = itemgetter(0)
+key = itemgetter(slice(0, 2))
 
 
 template = """
 class {{classname}}(RpcService):
+    hostname = "{{hostname}}"
     service = "{{service}}"
 
-    {% for _, method in methods %}
+    {% for hostname, _, method in methods %}
     async def {{lower(method)}}(self):
         return await self.call_rpc("{{method}}")
     {% endfor %}
@@ -47,10 +50,11 @@ OUT = "upload/endpoints.py"
 with open(OUT, "w") as f:
     f.write("from .ghunter import RpcService\n\n")
 
-    for service, methods in groupby(sorted(methods, key=key), key=key):
+    for (hostname, service), methods in groupby(sorted(methods, key=key), key=key):
         f.write(
             t.render(
                 classname=service.split(".")[-1],
+                hostname=hostname,
                 service=service,
                 methods=sorted(methods),
                 lower=lower,

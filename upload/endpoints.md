@@ -1,4 +1,4 @@
-"/google.internal.waa.v1.Waa/Ping"
+"https://waa-pa.clients6.google.com/$rpc/google.internal.waa.v1.Waa/Ping"
 
 "/google.internal.people.v2.InternalPeopleService/GetPeople"
 
@@ -91,3 +91,5 @@
 "/google.internal.play.books.userannotations.v1.UserAnnotationService/UpdateAnnotations"
 "/google.internal.play.books.userannotations.v1.UserAnnotationService/UpdateCollection"
 "/google.internal.play.books.userannotations.v1.UserAnnotationService/UpdateSubscriptions"
+
+"https://playgateway-pa.clients6.google.com/$rpc/play.gateway.adapter.books.v1.PlayGatewayBooksService/GetInAppStream"

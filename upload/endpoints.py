@@ -2,6 +2,7 @@ from .ghunter import RpcService
 
 
 class InternalPeopleService(RpcService):
+    hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.people.v2.InternalPeopleService"
 
     async def get_people(self):
@@ -9,6 +10,7 @@ class InternalPeopleService(RpcService):
 
 
 class AudiobookService(RpcService):
+    hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.audiobook.v1.AudiobookService"
 
     async def get_audiobook_resource(self):
@@ -19,6 +21,7 @@ class AudiobookService(RpcService):
 
 
 class CloudLoadingOnePlatformService(RpcService):
+    hostname = "playbooks-pa.clients6.google.com"
     service = (
         "google.internal.play.books.cloudloading.v1.CloudLoadingOnePlatformService"
     )
@@ -31,6 +34,7 @@ class CloudLoadingOnePlatformService(RpcService):
 
 
 class EnterpriseService(RpcService):
+    hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.enterprise.v1.EnterpriseService"
 
     async def add_classroom_books_attachment(self):
@@ -65,6 +69,7 @@ class EnterpriseService(RpcService):
 
 
 class FamilyOnePlatformService(RpcService):
+    hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.family.v1.FamilyOnePlatformService"
 
     async def share(self):
@@ -75,6 +80,7 @@ class FamilyOnePlatformService(RpcService):
 
 
 class VolumeAnnotationService(RpcService):
+    hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.layers.v1.VolumeAnnotationService"
 
     async def get_dictionary_definition(self):
@@ -82,6 +88,7 @@ class VolumeAnnotationService(RpcService):
 
 
 class LibraryService(RpcService):
+    hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.library.v1.LibraryService"
 
     async def add_library_document(self):
@@ -140,6 +147,7 @@ class LibraryService(RpcService):
 
 
 class SeriesOnePlatformService(RpcService):
+    hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.series.v1.SeriesOnePlatformService"
 
     async def fetch(self):
@@ -150,6 +158,7 @@ class SeriesOnePlatformService(RpcService):
 
 
 class SettingsOnePlatformService(RpcService):
+    hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.settings.v1.SettingsOnePlatformService"
 
     async def get_user_settings(self):
@@ -160,6 +169,7 @@ class SettingsOnePlatformService(RpcService):
 
 
 class UserAnnotationService(RpcService):
+    hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.userannotations.v1.UserAnnotationService"
 
     async def create_annotations(self):
@@ -193,7 +203,16 @@ class UserAnnotationService(RpcService):
         return await self.call_rpc("UpdateSubscriptions")
 
 
+class PlayGatewayBooksService(RpcService):
+    hostname = "playgateway-pa.clients6.google.com"
+    service = "play.gateway.adapter.books.v1.PlayGatewayBooksService"
+
+    async def get_in_app_stream(self):
+        return await self.call_rpc("GetInAppStream")
+
+
 class Waa(RpcService):
+    hostname = "waa-pa.clients6.google.com"
     service = "google.internal.waa.v1.Waa"
 
     async def ping(self):

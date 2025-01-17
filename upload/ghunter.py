@@ -31,7 +31,6 @@ class RpcService(GAPI):
 
         headers = {**headers, **base_headers}
 
-        self.hostname = "playbooks-pa.clients6.google.com"
         self.scheme = "https"
         self.as_client = as_client
 
