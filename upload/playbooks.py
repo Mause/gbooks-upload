@@ -1,33 +1,11 @@
-from asyncio import get_event_loop
-
-import httpx
-from ghunt.helpers import auth
 from ghunt.knowledge.keys import keys
 
-from .ghunter import PlayBooksPaRpc
+from .ghunter import PlayBooksPaRpc as RpcService
 
 keys["play"] = {
     "key": "AIzaSyCWq1--9JnN9QM7k57Rc_qmt9c0OVy0rME",
     "origin": "https://play.google.com",
 }
-
-
-async def call_rpc(service, method):
-    client = httpx.AsyncClient()
-
-    creds = await auth.load_and_auth(client)
-
-    api = PlayBooksPaRpc(service, creds)
-
-    return await api.call_rpc(method, client)
-
-
-class RpcService:
-    def __init__(self):
-        assert getattr(self, "service", None)
-
-    def call_rpc(self, method: str):
-        return get_event_loop().run_until_complete(call_rpc(self.service, method))
 
 
 class EnterpriseService(RpcService):

@@ -16,6 +16,7 @@ dependencies = [
     "rich-click<2.0.0,>=1.8.5",
     "platformdirs>=4.3.6",
     "ghunt>=2.2.0",
+    "uvloop>=0.21.0",
 ]
 
 [dependency-groups]

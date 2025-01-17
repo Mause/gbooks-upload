@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 import json
 import logging
 import time
@@ -10,7 +9,9 @@ from pathlib import Path
 from typing import Callable, Optional
 
 import httplib2
+import httpx
 import rich_click as click
+import uvloop
 from click.exceptions import BadParameter
 from googleapiclient.discovery import Resource, build
 from oauth2client.client import flow_from_clientsecrets
@@ -20,7 +21,6 @@ from rich.logging import RichHandler
 
 from .const import COOKIE_TXT, PATH
 from .drive import upload_with_drive
-from .playbooks import LibraryService
 from .scotty import steal_cookie, upload_with_scotty
 
 logging.basicConfig(handlers=[RichHandler(rich_tracebacks=True)])
@@ -148,8 +148,20 @@ def steal(ctx, data: dict):
 @main.command()
 @verbose_flag
 def rpc():
-    service = LibraryService()
-    logging.info("response: %s", service.list_tags())
+    uvloop.run(_rpc())
+
+
+async def _rpc():
+    from ghunt.helpers import auth
+
+    from .endpoints import LibraryService
+
+    client = httpx.AsyncClient()
+
+    creds = await auth.load_and_auth(client)
+
+    service = LibraryService(creds, client)
+    logging.info("tags: %s", await service.list_tags())
 
 
 def monitor(books: Resource, volume_id: str) -> None:

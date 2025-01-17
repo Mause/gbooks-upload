@@ -7,7 +7,12 @@ from ghunt.objects.base import GHuntCreds
 
 
 class PlayBooksPaRpc(GAPI):
-    def __init__(self, service, creds: GHuntCreds, headers: dict[str, str] = {}):
+    def __init__(
+        self,
+        creds: GHuntCreds,
+        as_client: httpx.AsyncClient,
+        headers: dict[str, str] = {},
+    ):
         super().__init__()
 
         if not headers:
@@ -22,7 +27,7 @@ class PlayBooksPaRpc(GAPI):
 
         self.hostname = "playbooks-pa.clients6.google.com"
         self.scheme = "https"
-        self.service = service
+        self.as_client = as_client
 
         self.authentication_mode = (
             "sapisidhash"  # sapisidhash, cookies_only, oauth or None
@@ -31,7 +36,7 @@ class PlayBooksPaRpc(GAPI):
 
         self._load_api(creds, headers)
 
-    async def call_rpc(self, method, as_client: httpx.AsyncClient):
+    async def call_rpc(self, method):
         self._load_endpoint(method)
 
         message = Message()
@@ -39,7 +44,7 @@ class PlayBooksPaRpc(GAPI):
             message.add_header(k, v)
 
         res = await self._query(
-            as_client,
+            self.as_client,
             "POST",
             method,
             f"/$rpc/{self.service}/{method}",

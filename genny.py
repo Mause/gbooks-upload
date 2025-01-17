@@ -26,8 +26,8 @@ class {{classname}}(RpcService):
     service = "{{service}}"
 
     {% for _, method in methods %}
-    def {{lower(method)}}(self):
-        return self.call_rpc("{{method}}")
+    async def {{lower(method)}}(self):
+        return await self.call_rpc("{{method}}")
     {% endfor %}
 
 
