@@ -174,7 +174,11 @@ async def add_to_shelf(book_id: str, shelf_name: str):
 
     tag_id = tags["tags"][shelf_name]
 
-    print(await service.add_tags([[[book_id, tag_id]]]))
+    print(
+        await service.add_tags(
+            [[[book_id, tag_id, str(int(datetime.now().timestamp() * 1000))]]]
+        )
+    )
 
 
 @shelves.command("list", help="list shelves")
