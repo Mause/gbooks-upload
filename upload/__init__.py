@@ -13,7 +13,7 @@ import httplib2
 import httpx
 import rich_click as click
 import uvloop
-from click.exceptions import BadParameter
+from click.exceptions import Abort, BadParameter
 from click.globals import get_current_context
 from ghunt.helpers import auth
 from googleapiclient.discovery import Resource, build
@@ -87,7 +87,11 @@ def verbose_flag(func):
     def wrapper(*args, **kwargs):
         verbose = kwargs.pop("verbose")
         logging.getLogger().setLevel(logging.DEBUG if verbose else logging.INFO)
-        return func(*args, **kwargs)
+        try:
+            return func(*args, **kwargs)
+        except BaseException as e:
+            logging.exception(e)
+            raise Abort(e)
 
     return wrapper
 
