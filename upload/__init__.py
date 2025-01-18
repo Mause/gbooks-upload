@@ -92,7 +92,6 @@ def verbose_flag(func):
         try:
             return func(*args, **kwargs)
         except BaseException as e:
-            breakpoint()
             logging.exception(e)
             raise Abort(e)
 
