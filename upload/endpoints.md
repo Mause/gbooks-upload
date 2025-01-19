@@ -1,6 +1,8 @@
 "https://waa-pa.clients6.google.com/$rpc/google.internal.waa.v1.Waa/Ping"
 
 "https://people-pa.clients6.google.com/$rpc/google.internal.people.v2.InternalPeopleService/GetPeople" [["me"],[[["person.name","person.email","person.photo"]],null,[5,1,7]]]
+"https://people-pa.clients6.google.com/$rpc/google.internal.people.v2.InternalPeopleService/GetPersonPhotoEncoded"
+"https://people-pa.clients6.google.com/$rpc/google.internal.people.v2.InternalPeopleService/UpdatePersonPhoto"
 
 "/google.internal.play.books.audiobook.v1.AudiobookService/GetAudiobookResource"
 "/google.internal.play.books.audiobook.v1.AudiobookService/GetAudiobookSupplement"
