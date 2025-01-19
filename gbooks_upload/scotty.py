@@ -1,10 +1,11 @@
 import os
 from mimetypes import guess_type
 
+import httpx
 import requests
+import uvloop
+from ghunt.helpers import auth
 from googleapiclient.discovery import Resource
-
-from .const import COOKIE_TXT
 
 
 def steal_cookie(data: dict) -> str | None:
@@ -127,7 +128,11 @@ def start_upload(session: requests.Session, filename: str, mimetype: str):
 
 
 def resume_upload(filename):
+    client = httpx.AsyncClient()
+    creds = uvloop.run(auth.load_and_auth(client))
+
     session = requests.Session()
+    session.cookies = creds.cookies
     session.headers.update(
         {
             "User-Agent": (
@@ -135,7 +140,6 @@ def resume_upload(filename):
                 "AppleWebKit/537.36 (KHTML, like Gecko) "
                 "Chrome/126.0.0.0 Safari/537.36"
             ),
-            "cookie": COOKIE_TXT.read_text(),
         }
     )
 
