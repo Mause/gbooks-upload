@@ -131,7 +131,11 @@ def upload(files: list[str], use_drive: bool, bookshelf: str):
     if not bookshelf:
         return
 
-    uvloop.run(add_multiple_to_shelf([upl["volumeId"] for upl in uploads], bookshelf))
+    print(
+        uvloop.run(
+            add_multiple_to_shelf([upl["volumeId"] for upl in uploads], bookshelf)
+        )
+    )
 
 
 async def add_multiple_to_shelf(book_ids: list[str], shelf_name: str):
@@ -139,7 +143,7 @@ async def add_multiple_to_shelf(book_ids: list[str], shelf_name: str):
 
     tag_id = await get_shelf(service, shelf_name)
 
-    print(await service.add_tags(book_ids, tag_id))
+    return await service.add_tags(book_ids, tag_id)
 
 
 def load_json(ctx, param, filename):
