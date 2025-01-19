@@ -4,7 +4,6 @@ from operator import itemgetter
 from subprocess import check_call
 
 from jinja2 import Template
-from ruff.__main__ import find_ruff_bin
 
 with open("upload/endpoints.md") as f:
     lines = {line for line in f.read().splitlines() if line}
@@ -64,4 +63,4 @@ with open(OUT, "w") as f:
                 repr=repr,
             )
         )
-check_call([find_ruff_bin(), "format", OUT])
+check_call(["ruff", "format", OUT])

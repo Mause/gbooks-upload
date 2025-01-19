@@ -7,13 +7,13 @@ from functools import wraps
 from json import JSONDecodeError
 from mimetypes import add_type
 from pathlib import Path
-from typing import Callable, Optional
+from typing import Callable, Optional, TypeVar
 
 import httplib2
 import httpx
 import rich_click as click
 import uvloop
-from click.exceptions import BadParameter
+from click.exceptions import Abort, BadParameter
 from click.globals import get_current_context
 from ghunt.helpers import auth
 from googleapiclient.discovery import Resource, build
@@ -22,9 +22,11 @@ from oauth2client.file import Storage
 from oauth2client.tools import argparser, run_flow
 from rich.logging import RichHandler
 
+from . import endpoints
 from .const import COOKIE_TXT, PATH
 from .drive import upload_with_drive
 from .endpoints import LibraryService
+from .ghunter import RpcService
 from .scotty import steal_cookie, upload_with_scotty
 
 logging.basicConfig(handlers=[RichHandler(rich_tracebacks=True)])
@@ -87,7 +89,12 @@ def verbose_flag(func):
     def wrapper(*args, **kwargs):
         verbose = kwargs.pop("verbose")
         logging.getLogger().setLevel(logging.DEBUG if verbose else logging.INFO)
-        return func(*args, **kwargs)
+        try:
+            return func(*args, **kwargs)
+        except BaseException as e:
+            breakpoint()
+            logging.exception(e)
+            raise Abort(e)
 
     return wrapper
 
@@ -196,15 +203,22 @@ async def get_shelf(service: LibraryService, shelf_name: str):
     return tags["tags"][shelf_name]
 
 
+T = TypeVar("T", bound=RpcService)
+
+
+async def get_client(t: type[T]) -> T:
+    client = httpx.AsyncClient()
+    creds = await auth.load_and_auth(client)
+    return t(creds, client)
+
+
 @shelves.command("add", help="add book to shelf")
 @click.argument("book_id")
 @click.argument("bookshelf")
 @verbose_flag
 @asyncio
 async def add_to_shelf(book_id: str, bookshelf: str):
-    client = httpx.AsyncClient()
-    creds = await auth.load_and_auth(client)
-    service = LibraryService(creds, client)
+    service = await get_client(LibraryService)
 
     tag_id = await get_shelf(service, bookshelf)
 
@@ -219,9 +233,7 @@ async def add_to_shelf(book_id: str, bookshelf: str):
 @verbose_flag
 @asyncio
 async def list_shelves():
-    client = httpx.AsyncClient()
-    creds = await auth.load_and_auth(client)
-    service = LibraryService(creds, client)
+    service = await get_client(LibraryService)
 
     tags = await list_tags(service)
 
@@ -229,16 +241,32 @@ async def list_shelves():
         print(name)
 
 
+def validate_method(ctx, param, value):
+    service = ctx.params["service"]
+
+    stype = click.Choice([k for k, v in vars(service).items() if callable(v)])
+
+    return stype(value)
+
+
 @main.command()
+@click.argument(
+    "service",
+    type=click.Choice(
+        [
+            k
+            for k, v in vars(endpoints).items()
+            if isinstance(v, type) and issubclass(v, RpcService)
+        ]
+    ),
+    callback=lambda ctx, param, value: getattr(endpoints, value),
+)
+@click.argument("method", callback=validate_method)
 @verbose_flag
 @asyncio
-async def rpc():
-    client = httpx.AsyncClient()
-
-    creds = await auth.load_and_auth(client)
-
-    service = LibraryService(creds, client)
-    logging.info("tags: %s", await list_tags(service))
+async def rpc(service: type[RpcService], method: str):
+    service = await get_client(service)
+    logging.info("tags: %s", await getattr(service, method)())
 
 
 async def list_tags(service: LibraryService):

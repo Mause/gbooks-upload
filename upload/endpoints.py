@@ -11,6 +11,12 @@ class InternalPeopleService(RpcService):
     ):
         return await self.call_rpc("GetPeople", data=data)
 
+    async def get_person_photo_encoded(self):
+        return await self.call_rpc("GetPersonPhotoEncoded")
+
+    async def update_person_photo(self):
+        return await self.call_rpc("UpdatePersonPhoto")
+
 
 class AudiobookService(RpcService):
     hostname = "playbooks-pa.clients6.google.com"
