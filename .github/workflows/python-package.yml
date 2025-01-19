@@ -33,3 +33,4 @@ jobs:
         uv run pytest
       env:
         NO_COLOR: 1
+        TERM: dumb
