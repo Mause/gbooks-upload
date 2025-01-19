@@ -30,4 +30,7 @@ jobs:
         uv sync
     - name: Test
       run: |
-        uv run gbooks-upload --help
+        uv run pytest
+      env:
+        NO_COLOR: 1
+        TERM: dumb
