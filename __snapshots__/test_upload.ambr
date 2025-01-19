@@ -8,8 +8,10 @@
   │ --help      Show this message and exit.                                      │
   ╰──────────────────────────────────────────────────────────────────────────────╯
   ╭─ Commands ───────────────────────────────────────────────────────────────────╮
-  │ steal       Steal the cookie from a Chrome net-export log                    │
-  │ upload      Upload files to Google Books                                     │
+  │ rpc                                                                          │
+  │ shelves                                                                      │
+  │ steal        Steal the cookie from a Chrome net-export log                   │
+  │ upload       Upload files to Google Books                                    │
   ╰──────────────────────────────────────────────────────────────────────────────╯
   
   
