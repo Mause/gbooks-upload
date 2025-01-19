@@ -22,6 +22,7 @@ from oauth2client.file import Storage
 from oauth2client.tools import argparser, run_flow
 from rich.logging import RichHandler
 
+from . import endpoints
 from .const import COOKIE_TXT, PATH
 from .drive import upload_with_drive
 from .endpoints import LibraryService
@@ -240,15 +241,33 @@ async def list_shelves():
         print(name)
 
 
+def validate_method(ctx, param, value):
+    service = ctx.params["service"]
+
+    if not hasattr(service, value):
+        raise BadParameter(
+            f"Method {value} not found in service {ctx.params['service']}"
+        )
+    return value
+
+
 @main.command()
-@click.argument("service")
-@click.argument("method")
+@click.argument(
+    "service",
+    type=click.Choice(
+        [
+            k
+            for k, v in vars(endpoints).items()
+            if isinstance(v, type) and issubclass(v, RpcService)
+        ]
+    ),
+    callback=lambda ctx, param, value: getattr(endpoints, value),
+)
+@click.argument("method", callback=validate_method)
 @verbose_flag
 @asyncio
-async def rpc(service: str, method: str):
-    from . import endpoints
-
-    service = await get_client(getattr(endpoints, service))
+async def rpc(service: type[RpcService], method: str):
+    service = await get_client(service)
     logging.info("tags: %s", await getattr(service, method)())
 
 
