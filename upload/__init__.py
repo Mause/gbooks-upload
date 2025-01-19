@@ -244,11 +244,9 @@ async def list_shelves():
 def validate_method(ctx, param, value):
     service = ctx.params["service"]
 
-    if not hasattr(service, value):
-        raise BadParameter(
-            f"Method {value} not found in service {ctx.params['service']}"
-        )
-    return value
+    stype = click.Choice([k for k, v in vars(service).items() if callable(v)])
+
+    return stype(value)
 
 
 @main.command()
