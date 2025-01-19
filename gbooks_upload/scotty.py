@@ -132,7 +132,7 @@ def resume_upload(filename):
     creds = uvloop.run(auth.load_and_auth(client))
 
     session = requests.Session()
-    session.cookies = creds.cookies
+    session.cookies.update(creds.cookies)
     session.headers.update(
         {
             "User-Agent": (
