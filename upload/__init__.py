@@ -25,6 +25,7 @@ from rich.logging import RichHandler
 from .const import COOKIE_TXT, PATH
 from .drive import upload_with_drive
 from .endpoints import LibraryService
+from .ghunter import RpcService
 from .scotty import steal_cookie, upload_with_scotty
 
 logging.basicConfig(handlers=[RichHandler(rich_tracebacks=True)])
@@ -198,6 +199,13 @@ async def get_shelf(service: LibraryService, shelf_name: str):
         raise BadParameter(f'Shelf with name "{shelf_name}" not found', param=param)
 
     return tags["tags"][shelf_name]
+type T = RpcService
+
+
+async def get_client(t: type[T]) -> T:
+    client = httpx.AsyncClient()
+    creds = await auth.load_and_auth(client)
+    return t(creds, client)
 
 
 @shelves.command("add", help="add book to shelf")
@@ -206,9 +214,7 @@ async def get_shelf(service: LibraryService, shelf_name: str):
 @verbose_flag
 @asyncio
 async def add_to_shelf(book_id: str, bookshelf: str):
-    client = httpx.AsyncClient()
-    creds = await auth.load_and_auth(client)
-    service = LibraryService(creds, client)
+    service = await get_client(LibraryService)
 
     tag_id = await get_shelf(service, bookshelf)
 
@@ -223,9 +229,7 @@ async def add_to_shelf(book_id: str, bookshelf: str):
 @verbose_flag
 @asyncio
 async def list_shelves():
-    client = httpx.AsyncClient()
-    creds = await auth.load_and_auth(client)
-    service = LibraryService(creds, client)
+    service = await get_client(LibraryService)
 
     tags = await list_tags(service)
 
@@ -234,15 +238,15 @@ async def list_shelves():
 
 
 @main.command()
+@click.argument("service")
+@click.argument("method")
 @verbose_flag
 @asyncio
-async def rpc():
-    client = httpx.AsyncClient()
+async def rpc(service: str, method: str):
+    from . import endpoints
 
-    creds = await auth.load_and_auth(client)
-
-    service = LibraryService(creds, client)
-    logging.info("tags: %s", await list_tags(service))
+    service = await get_client(getattr(endpoints, service))
+    logging.info("tags: %s", await getattr(service, method)())
 
 
 async def list_tags(service: LibraryService):
