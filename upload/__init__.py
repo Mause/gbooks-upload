@@ -7,7 +7,7 @@ from functools import wraps
 from json import JSONDecodeError
 from mimetypes import add_type
 from pathlib import Path
-from typing import Callable, Optional
+from typing import Callable, Optional, TypeVar
 
 import httplib2
 import httpx
@@ -91,6 +91,7 @@ def verbose_flag(func):
         try:
             return func(*args, **kwargs)
         except BaseException as e:
+            breakpoint()
             logging.exception(e)
             raise Abort(e)
 
@@ -199,7 +200,9 @@ async def get_shelf(service: LibraryService, shelf_name: str):
         raise BadParameter(f'Shelf with name "{shelf_name}" not found', param=param)
 
     return tags["tags"][shelf_name]
-type T = RpcService
+
+
+T = TypeVar("T", bound=RpcService)
 
 
 async def get_client(t: type[T]) -> T:
