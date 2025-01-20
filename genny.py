@@ -1,3 +1,4 @@
+import json
 import re
 from itertools import groupby
 from operator import itemgetter
@@ -25,6 +26,25 @@ for line in lines:
 
 
 key = itemgetter(slice(0, 2))
+
+
+with open("upload/endpoints.json", "w") as fh:
+    json.dump(
+        [
+            {
+                "hostname": hostname,
+                "service": service,
+                "methods": [
+                    {"method": method, "body": body} for (_, _, method, body) in methods
+                ],
+            }
+            for (hostname, service), methods in groupby(
+                sorted(methods, key=key), key=key
+            )
+        ],
+        fh,
+        indent=2,
+    )
 
 
 template = """
