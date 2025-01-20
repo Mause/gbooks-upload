@@ -157,6 +157,18 @@ wheels = [
 ]
 
 [[package]]
+name = "betamax"
+version = "0.9.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "requests" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c2/a2/b5a47f7c57ef30337503bf7ea959e498a314018eb74dd833d4bd4a689e03/betamax-0.9.0.tar.gz", hash = "sha256:82316e1679bc6879e3c83318d016b54b7c9225ff08c4462de4813e22038d5f94", size = 79957 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ac/80/84dfae1dea86beb985c9aeaf907a7c98e1dd9de2156c8dd2e336d868f38a/betamax-0.9.0-py2.py3-none-any.whl", hash = "sha256:880d6da87eaf7e61c42bdc4240f0ac04ab5365bd7f2798784c18d37d8cf747bc", size = 33418 },
+]
+
+[[package]]
 name = "cachetools"
 version = "5.5.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1733,6 +1745,7 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "betamax" },
     { name = "jinja2" },
     { name = "mypy" },
     { name = "pdbpp" },
@@ -1760,6 +1773,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "betamax", specifier = ">=0.9.0" },
     { name = "jinja2", specifier = ">=3.1.5" },
     { name = "mypy", specifier = ">=1.14.1" },
     { name = "pdbpp", specifier = ">=0.10.3,<1.0.0" },

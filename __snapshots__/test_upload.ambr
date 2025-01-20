@@ -17,7 +17,7 @@
   
   '''
 # ---
-# name: test_login
+# name: test_non_existent
   '''
                                                                                   
    Usage: main upload [OPTIONS] FILES...                                          

@@ -1,4 +1,5 @@
 import os
+from zipfile import ZipFile
 
 from click.testing import CliRunner
 
@@ -15,7 +16,16 @@ def test_hello_world(snapshot):
 
 
 def test_non_existing_file(snapshot):
-    runner = CliRunner(echo_stdin=True)
+    runner = CliRunner()
     result = runner.invoke(upload, ["upload", "dummy.epub"])
     assert result.exit_code == 2
-    assert result.output == snapshot
+
+
+def test_upload(snapshot, betamax_session):
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        with ZipFile("dummy.epub", "w") as f:
+            f.writestr("dummy", "dummy")
+        result = runner.invoke(upload, ["upload", "dummy.epub"])
+        assert result.exit_code == 0
+        assert result.output == snapshot
