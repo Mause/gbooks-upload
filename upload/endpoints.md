@@ -32,7 +32,7 @@
 "/google.internal.play.books.library.v1.LibraryService/DeleteCustomTag"
 "/google.internal.play.books.library.v1.LibraryService/DeleteLibraryDocument"
 "/google.internal.play.books.library.v1.LibraryService/ExpungeLibraryDocuments"
-"/google.internal.play.books.library.v1.LibraryService/GetLibraryDocument"
+"/google.internal.play.books.library.v1.LibraryService/GetLibraryDocument" [[], "hdYTCAAAQBAJ"]
 "/google.internal.play.books.library.v1.LibraryService/GetVolumeOverviews"
 "/google.internal.play.books.library.v1.LibraryService/HideLibraryDocuments"
 "/google.internal.play.books.library.v1.LibraryService/ListTags"
@@ -43,7 +43,7 @@
 "/google.internal.play.books.library.v1.LibraryService/SyncUserLibrary"
 "/google.internal.play.books.library.v1.LibraryService/UnhideLibraryDocuments"
 "/google.internal.play.books.library.v1.LibraryService/UpdateCopyLimit"
-"/google.internal.play.books.library.v1.LibraryService/UpdateCustomTag"
+"/google.internal.play.books.library.v1.LibraryService/UpdateCustomTag" ["a0c746137-5723-4740-89a8-4ef7311aad16","test 1"]
 
 "/google.internal.play.books.series.v1.SeriesOnePlatformService/Fetch" [[["u4P3GgAAABBNmM"],["PL4pGwAAABAUpM"],["bW8uGwAAABBCdM"],["i1YuGwAAABCkTM"],["crbMGgAAABC_rM"]]]
 "/google.internal.play.books.series.v1.SeriesOnePlatformService/FetchMembers" [["u4P3GgAAABBNmM"],[100]]
