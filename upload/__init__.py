@@ -2,7 +2,6 @@
 import json
 import logging
 import time
-from datetime import datetime
 from functools import wraps
 from json import JSONDecodeError
 from mimetypes import add_type
@@ -134,22 +133,11 @@ def upload(files: list[str], use_drive: bool, bookshelf: str):
 
 
 async def add_multiple_to_shelf(book_ids: list[str], shelf_name: str):
-    client = httpx.AsyncClient()
-    creds = await auth.load_and_auth(client)
-    service = LibraryService(creds, client)
+    service = await get_client(LibraryService)
 
     tag_id = await get_shelf(service, shelf_name)
 
-    print(
-        await service.add_tags(
-            [
-                [
-                    [book_id, tag_id, str(int(datetime.now().timestamp() * 1000))]
-                    for book_id in book_ids
-                ]
-            ]
-        )
-    )
+    print(await service.add_tags(book_ids, tag_id))
 
 
 def load_json(ctx, param, filename):
@@ -221,11 +209,7 @@ async def add_to_shelf(book_id: str, bookshelf: str):
 
     tag_id = await get_shelf(service, bookshelf)
 
-    print(
-        await service.add_tags(
-            [[[book_id, tag_id, str(int(datetime.now().timestamp() * 1000))]]]
-        )
-    )
+    print(await service.add_tags([book_id], tag_id))
 
 
 @shelves.command("list", help="list shelves")
