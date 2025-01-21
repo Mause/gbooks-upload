@@ -34,4 +34,4 @@ jobs:
       env:
         NO_COLOR: 1
         TERM: dumb
-    - run: uvx mypy upload/
+    - run: uv run mypy upload/
