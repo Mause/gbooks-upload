@@ -1,7 +1,7 @@
 from .ghunter import RpcService
 
 
-class InternalPeopleService(RpcService):
+class InternalPeopleServiceRpc(RpcService):
     hostname = "people-pa.clients6.google.com"
     service = "google.internal.people.v2.InternalPeopleService"
 
@@ -18,7 +18,7 @@ class InternalPeopleService(RpcService):
         return await self.call_rpc("UpdatePersonPhoto")
 
 
-class AudiobookService(RpcService):
+class AudiobookServiceRpc(RpcService):
     hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.audiobook.v1.AudiobookService"
 
@@ -29,7 +29,7 @@ class AudiobookService(RpcService):
         return await self.call_rpc("GetAudiobookSupplement")
 
 
-class CloudLoadingOnePlatformService(RpcService):
+class CloudLoadingOnePlatformServiceRpc(RpcService):
     hostname = "playbooks-pa.clients6.google.com"
     service = (
         "google.internal.play.books.cloudloading.v1.CloudLoadingOnePlatformService"
@@ -42,7 +42,7 @@ class CloudLoadingOnePlatformService(RpcService):
         return await self.call_rpc("Insert")
 
 
-class EnterpriseService(RpcService):
+class EnterpriseServiceRpc(RpcService):
     hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.enterprise.v1.EnterpriseService"
 
@@ -77,7 +77,7 @@ class EnterpriseService(RpcService):
         return await self.call_rpc("RemoveLicenseRedeemers")
 
 
-class FamilyOnePlatformService(RpcService):
+class FamilyOnePlatformServiceRpc(RpcService):
     hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.family.v1.FamilyOnePlatformService"
 
@@ -88,7 +88,7 @@ class FamilyOnePlatformService(RpcService):
         return await self.call_rpc("Unshare")
 
 
-class VolumeAnnotationService(RpcService):
+class VolumeAnnotationServiceRpc(RpcService):
     hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.layers.v1.VolumeAnnotationService"
 
@@ -98,7 +98,7 @@ class VolumeAnnotationService(RpcService):
         return await self.call_rpc("GetDictionaryDefinition", data=data)
 
 
-class LibraryService(RpcService):
+class LibraryServiceRpc(RpcService):
     hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.library.v1.LibraryService"
 
@@ -164,7 +164,7 @@ class LibraryService(RpcService):
         return await self.call_rpc("UpdateCustomTag", data=data)
 
 
-class SeriesOnePlatformService(RpcService):
+class SeriesOnePlatformServiceRpc(RpcService):
     hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.series.v1.SeriesOnePlatformService"
 
@@ -178,7 +178,7 @@ class SeriesOnePlatformService(RpcService):
         return await self.call_rpc("FetchMembers", data=data)
 
 
-class SettingsOnePlatformService(RpcService):
+class SettingsOnePlatformServiceRpc(RpcService):
     hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.settings.v1.SettingsOnePlatformService"
 
@@ -189,7 +189,7 @@ class SettingsOnePlatformService(RpcService):
         return await self.call_rpc("UpdateUserSettings")
 
 
-class UserAnnotationService(RpcService):
+class UserAnnotationServiceRpc(RpcService):
     hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.userannotations.v1.UserAnnotationService"
 
@@ -228,7 +228,7 @@ class UserAnnotationService(RpcService):
         return await self.call_rpc("UpdateSubscriptions")
 
 
-class PlayGatewayBooksService(RpcService):
+class PlayGatewayBooksServiceRpc(RpcService):
     hostname = "playgateway-pa.clients6.google.com"
     service = "play.gateway.adapter.books.v1.PlayGatewayBooksService"
 
@@ -239,7 +239,7 @@ class PlayGatewayBooksService(RpcService):
         return await self.call_rpc("GetInAppStream", data=data)
 
 
-class Waa(RpcService):
+class WaaRpc(RpcService):
     hostname = "waa-pa.clients6.google.com"
     service = "google.internal.waa.v1.Waa"
 
