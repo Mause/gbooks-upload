@@ -239,7 +239,7 @@ def validate_method(ctx, param, value):
         [
             k
             for k, v in vars(endpoints_rpc).items()
-            if isinstance(v, type) and issubclass(v, RpcService)
+            if isinstance(v, type) and issubclass(v, RpcService) and v != RpcService
         ]
     ),
     callback=lambda ctx, param, value: getattr(endpoints_rpc, value),
