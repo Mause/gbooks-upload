@@ -44,3 +44,6 @@ select = ["I", "E", "W", "F", "C", "R"]
 
 [tool.uv]
 package = true
+
+[tool.mypy]
+ignore_missing_imports = true

@@ -285,7 +285,7 @@ async def list_tags(service: LibraryService):
 
 
 def monitor(books: Resource, volume_id: str) -> None:
-    wait = 1
+    wait = 1.0
 
     while True:
         state = get_volume(books, volumeId=volume_id)["userInfo"][
