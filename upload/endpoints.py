@@ -3,12 +3,9 @@ from datetime import datetime
 from .endpoints_rpc import LibraryServiceRpc
 
 
-class LibraryService:
-    def __init__(self, creds, client):
-        self._library = LibraryServiceRpc(creds, client)
-
+class LibraryService(LibraryServiceRpc):
     async def add_tags(self, book_ids, tag_id):
-        return await self._library.add_tags(
+        return await super().add_tags(
             [
                 [
                     [book_id, tag_id, str(int(datetime.now().timestamp() * 1000))]
@@ -18,7 +15,7 @@ class LibraryService:
         )
 
     async def list_tags(self):
-        [tags, tagged] = await self._library.list_tags()
+        [tags, tagged] = await super().list_tags()
 
         return {
             "tags": {name: tag_id for name, tag_id, *_ in tags},

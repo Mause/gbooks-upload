@@ -9,13 +9,13 @@ class InternalPeopleServiceRpc(RpcService):
         self,
         data='[["me"],[[["person.name","person.email","person.photo"]],null,[5,1,7]]]',
     ):
-        return await self.call_rpc("GetPeople", data=data)
+        return await self._call_rpc("GetPeople", data=data)
 
     async def get_person_photo_encoded(self):
-        return await self.call_rpc("GetPersonPhotoEncoded")
+        return await self._call_rpc("GetPersonPhotoEncoded")
 
     async def update_person_photo(self):
-        return await self.call_rpc("UpdatePersonPhoto")
+        return await self._call_rpc("UpdatePersonPhoto")
 
 
 class AudiobookServiceRpc(RpcService):
@@ -23,10 +23,10 @@ class AudiobookServiceRpc(RpcService):
     service = "google.internal.play.books.audiobook.v1.AudiobookService"
 
     async def get_audiobook_resource(self):
-        return await self.call_rpc("GetAudiobookResource")
+        return await self._call_rpc("GetAudiobookResource")
 
     async def get_audiobook_supplement(self):
-        return await self.call_rpc("GetAudiobookSupplement")
+        return await self._call_rpc("GetAudiobookSupplement")
 
 
 class CloudLoadingOnePlatformServiceRpc(RpcService):
@@ -36,10 +36,10 @@ class CloudLoadingOnePlatformServiceRpc(RpcService):
     )
 
     async def delete(self):
-        return await self.call_rpc("Delete")
+        return await self._call_rpc("Delete")
 
     async def insert(self):
-        return await self.call_rpc("Insert")
+        return await self._call_rpc("Insert")
 
 
 class EnterpriseServiceRpc(RpcService):
@@ -47,34 +47,34 @@ class EnterpriseServiceRpc(RpcService):
     service = "google.internal.play.books.enterprise.v1.EnterpriseService"
 
     async def add_classroom_books_attachment(self):
-        return await self.call_rpc("AddClassroomBooksAttachment")
+        return await self._call_rpc("AddClassroomBooksAttachment")
 
     async def add_license_owners(self):
-        return await self.call_rpc("AddLicenseOwners")
+        return await self._call_rpc("AddLicenseOwners")
 
     async def add_license_redeemers(self):
-        return await self.call_rpc("AddLicenseRedeemers")
+        return await self._call_rpc("AddLicenseRedeemers")
 
     async def claim_license(self):
-        return await self.call_rpc("ClaimLicense")
+        return await self._call_rpc("ClaimLicense")
 
     async def get_license_history(self):
-        return await self.call_rpc("GetLicenseHistory")
+        return await self._call_rpc("GetLicenseHistory")
 
     async def get_licenses(self, data="[null,null,null,1]"):
-        return await self.call_rpc("GetLicenses", data=data)
+        return await self._call_rpc("GetLicenses", data=data)
 
     async def grant_free_book_licenses(self):
-        return await self.call_rpc("GrantFreeBookLicenses")
+        return await self._call_rpc("GrantFreeBookLicenses")
 
     async def list_free_books_for_license(self):
-        return await self.call_rpc("ListFreeBooksForLicense")
+        return await self._call_rpc("ListFreeBooksForLicense")
 
     async def remove_license_owners(self):
-        return await self.call_rpc("RemoveLicenseOwners")
+        return await self._call_rpc("RemoveLicenseOwners")
 
     async def remove_license_redeemers(self):
-        return await self.call_rpc("RemoveLicenseRedeemers")
+        return await self._call_rpc("RemoveLicenseRedeemers")
 
 
 class FamilyOnePlatformServiceRpc(RpcService):
@@ -82,10 +82,10 @@ class FamilyOnePlatformServiceRpc(RpcService):
     service = "google.internal.play.books.family.v1.FamilyOnePlatformService"
 
     async def share(self):
-        return await self.call_rpc("Share")
+        return await self._call_rpc("Share")
 
     async def unshare(self):
-        return await self.call_rpc("Unshare")
+        return await self._call_rpc("Unshare")
 
 
 class VolumeAnnotationServiceRpc(RpcService):
@@ -95,7 +95,7 @@ class VolumeAnnotationServiceRpc(RpcService):
     async def get_dictionary_definition(
         self, data='[null," unwrapping",[null,null,"en"]]'
     ):
-        return await self.call_rpc("GetDictionaryDefinition", data=data)
+        return await self._call_rpc("GetDictionaryDefinition", data=data)
 
 
 class LibraryServiceRpc(RpcService):
@@ -103,65 +103,65 @@ class LibraryServiceRpc(RpcService):
     service = "google.internal.play.books.library.v1.LibraryService"
 
     async def add_library_document(self):
-        return await self.call_rpc("AddLibraryDocument")
+        return await self._call_rpc("AddLibraryDocument")
 
     async def add_tags(
         self, data='[[["5QuwNwAAAEAJ","a0c746137-5723-4740-89a8-4ef7311aad16"]]]'
     ):
-        return await self.call_rpc("AddTags", data=data)
+        return await self._call_rpc("AddTags", data=data)
 
     async def create_custom_tag(self):
-        return await self.call_rpc("CreateCustomTag")
+        return await self._call_rpc("CreateCustomTag")
 
     async def delete_custom_tag(self):
-        return await self.call_rpc("DeleteCustomTag")
+        return await self._call_rpc("DeleteCustomTag")
 
     async def delete_library_document(self):
-        return await self.call_rpc("DeleteLibraryDocument")
+        return await self._call_rpc("DeleteLibraryDocument")
 
     async def expunge_library_documents(self):
-        return await self.call_rpc("ExpungeLibraryDocuments")
+        return await self._call_rpc("ExpungeLibraryDocuments")
 
     async def get_library_document(self, data='[[], "hdYTCAAAQBAJ"]'):
-        return await self.call_rpc("GetLibraryDocument", data=data)
+        return await self._call_rpc("GetLibraryDocument", data=data)
 
     async def get_volume_overviews(self):
-        return await self.call_rpc("GetVolumeOverviews")
+        return await self._call_rpc("GetVolumeOverviews")
 
     async def hide_library_documents(self):
-        return await self.call_rpc("HideLibraryDocuments")
+        return await self._call_rpc("HideLibraryDocuments")
 
     async def list_tags(self):
-        return await self.call_rpc("ListTags")
+        return await self._call_rpc("ListTags")
 
     async def lookup_copy_limit(self):
-        return await self.call_rpc("LookupCopyLimit")
+        return await self._call_rpc("LookupCopyLimit")
 
     async def remove_tags(self, data='[[["hdYTCAAAQBAJ","Completed",1737103382078]]]'):
-        return await self.call_rpc("RemoveTags", data=data)
+        return await self._call_rpc("RemoveTags", data=data)
 
     async def sync_document_position(
         self,
         data='["84XKNwAAAEAJ",["384DC38E-1A56-4F48-8AE1-1C3F446F41E5",null,"1737093647557",[null,null,[2]],null,[["GBS.PA68.w.0.0.0.2"],null,0.9066666666666666]]]',
     ):
-        return await self.call_rpc("SyncDocumentPosition", data=data)
+        return await self._call_rpc("SyncDocumentPosition", data=data)
 
     async def sync_extended_library(self):
-        return await self.call_rpc("SyncExtendedLibrary")
+        return await self._call_rpc("SyncExtendedLibrary")
 
     async def sync_user_library(self):
-        return await self.call_rpc("SyncUserLibrary")
+        return await self._call_rpc("SyncUserLibrary")
 
     async def unhide_library_documents(self):
-        return await self.call_rpc("UnhideLibraryDocuments")
+        return await self._call_rpc("UnhideLibraryDocuments")
 
     async def update_copy_limit(self):
-        return await self.call_rpc("UpdateCopyLimit")
+        return await self._call_rpc("UpdateCopyLimit")
 
     async def update_custom_tag(
         self, data='["a0c746137-5723-4740-89a8-4ef7311aad16","test 1"]'
     ):
-        return await self.call_rpc("UpdateCustomTag", data=data)
+        return await self._call_rpc("UpdateCustomTag", data=data)
 
 
 class SeriesOnePlatformServiceRpc(RpcService):
@@ -172,10 +172,10 @@ class SeriesOnePlatformServiceRpc(RpcService):
         self,
         data='[[["u4P3GgAAABBNmM"],["PL4pGwAAABAUpM"],["bW8uGwAAABBCdM"],["i1YuGwAAABCkTM"],["crbMGgAAABC_rM"]]]',
     ):
-        return await self.call_rpc("Fetch", data=data)
+        return await self._call_rpc("Fetch", data=data)
 
     async def fetch_members(self, data='[["u4P3GgAAABBNmM"],[100]]'):
-        return await self.call_rpc("FetchMembers", data=data)
+        return await self._call_rpc("FetchMembers", data=data)
 
 
 class SettingsOnePlatformServiceRpc(RpcService):
@@ -183,10 +183,10 @@ class SettingsOnePlatformServiceRpc(RpcService):
     service = "google.internal.play.books.settings.v1.SettingsOnePlatformService"
 
     async def get_user_settings(self):
-        return await self.call_rpc("GetUserSettings")
+        return await self._call_rpc("GetUserSettings")
 
     async def update_user_settings(self):
-        return await self.call_rpc("UpdateUserSettings")
+        return await self._call_rpc("UpdateUserSettings")
 
 
 class UserAnnotationServiceRpc(RpcService):
@@ -194,38 +194,38 @@ class UserAnnotationServiceRpc(RpcService):
     service = "google.internal.play.books.userannotations.v1.UserAnnotationService"
 
     async def create_annotations(self):
-        return await self.call_rpc("CreateAnnotations")
+        return await self._call_rpc("CreateAnnotations")
 
     async def create_collection(self):
-        return await self.call_rpc("CreateCollection")
+        return await self._call_rpc("CreateCollection")
 
     async def delete_annotations(self):
-        return await self.call_rpc("DeleteAnnotations")
+        return await self._call_rpc("DeleteAnnotations")
 
     async def delete_collection(self):
-        return await self.call_rpc("DeleteCollection")
+        return await self._call_rpc("DeleteCollection")
 
     async def list_annotations(
         self, data='[[["84XKNwAAAEAJ",null,"full-1.0.0"]],[1,2],null,1,1]'
     ):
-        return await self.call_rpc("ListAnnotations", data=data)
+        return await self._call_rpc("ListAnnotations", data=data)
 
     async def list_shared_annotations(
         self, data='[["84XKNwAAAEAJ",null,"full-1.0.0"],1,null,null,1]'
     ):
-        return await self.call_rpc("ListSharedAnnotations", data=data)
+        return await self._call_rpc("ListSharedAnnotations", data=data)
 
     async def trigger_export(self):
-        return await self.call_rpc("TriggerExport")
+        return await self._call_rpc("TriggerExport")
 
     async def update_annotations(self):
-        return await self.call_rpc("UpdateAnnotations")
+        return await self._call_rpc("UpdateAnnotations")
 
     async def update_collection(self):
-        return await self.call_rpc("UpdateCollection")
+        return await self._call_rpc("UpdateCollection")
 
     async def update_subscriptions(self):
-        return await self.call_rpc("UpdateSubscriptions")
+        return await self._call_rpc("UpdateSubscriptions")
 
 
 class PlayGatewayBooksServiceRpc(RpcService):
@@ -236,7 +236,7 @@ class PlayGatewayBooksServiceRpc(RpcService):
         self,
         data='[[4,null,["84XKNwAAAEAJ",1]],null,null,null,null,[null,null,null,null,null,null,[3]],null,null,[null,[2],[1]]]',
     ):
-        return await self.call_rpc("GetInAppStream", data=data)
+        return await self._call_rpc("GetInAppStream", data=data)
 
 
 class WaaRpc(RpcService):
@@ -244,4 +244,4 @@ class WaaRpc(RpcService):
     service = "google.internal.waa.v1.Waa"
 
     async def ping(self):
-        return await self.call_rpc("Ping")
+        return await self._call_rpc("Ping")

@@ -54,7 +54,7 @@ class {{classname}}Rpc(RpcService):
 
     {% for hostname, _, method, body in methods %}
     async def {{lower(method)}}(self{% if body %}, data={{repr(body)}}{% endif %}):
-        return await self.call_rpc({{repr(method)}}{% if body %}, data=data{% endif %})
+        return await self._call_rpc({{repr(method)}}{% if body %}, data=data{% endif %})
     {% endfor %}
 
 
