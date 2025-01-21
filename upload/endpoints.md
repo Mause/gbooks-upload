@@ -1,4 +1,5 @@
 "https://waa-pa.clients6.google.com/$rpc/google.internal.waa.v1.Waa/Ping"
+"https://waa-pa.clients6.google.com/$rpc/google.internal.waa.v1.Waa/Create"
 
 "https://people-pa.clients6.google.com/$rpc/google.internal.people.v2.InternalPeopleService/GetPeople" [["me"],[[["person.name","person.email","person.photo"]],null,[5,1,7]]]
 "https://people-pa.clients6.google.com/$rpc/google.internal.people.v2.InternalPeopleService/GetPersonPhotoEncoded"
@@ -63,3 +64,4 @@
 "/google.internal.play.books.userannotations.v1.UserAnnotationService/UpdateSubscriptions"
 
 "https://playgateway-pa.clients6.google.com/$rpc/play.gateway.adapter.books.v1.PlayGatewayBooksService/GetInAppStream" [[4,null,["84XKNwAAAEAJ",1]],null,null,null,null,[null,null,null,null,null,null,[3]],null,null,[null,[2],[1]]]
+"https://playgateway-pa.clients6.google.com/$rpc/play.gateway.adapter.books.v1.PlayGatewayBooksService/UpdateItemWishlistState" [null,[\"ID07FerN_h0C\",9],1]

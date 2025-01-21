@@ -238,10 +238,16 @@ class PlayGatewayBooksServiceRpc(RpcService):
     ):
         return await self._call_rpc("GetInAppStream", data=data)
 
+    async def update_item_wishlist_state(self, data='[null,[\\"ID07FerN_h0C\\",9],1]'):
+        return await self._call_rpc("UpdateItemWishlistState", data=data)
+
 
 class WaaRpc(RpcService):
     hostname = "waa-pa.clients6.google.com"
     service = "google.internal.waa.v1.Waa"
+
+    async def create(self):
+        return await self._call_rpc("Create")
 
     async def ping(self):
         return await self._call_rpc("Ping")
