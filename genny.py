@@ -48,13 +48,13 @@ with open("upload/endpoints.json", "w") as fh:
 
 
 template = """
-class {{classname}}(RpcService):
+class {{classname}}Rpc(RpcService):
     hostname = "{{hostname}}"
     service = "{{service}}"
 
     {% for hostname, _, method, body in methods %}
     async def {{lower(method)}}(self{% if body %}, data={{repr(body)}}{% endif %}):
-        return await self.call_rpc({{repr(method)}}{% if body %}, data=data{% endif %})
+        return await self._call_rpc({{repr(method)}}{% if body %}, data=data{% endif %})
     {% endfor %}
 
 
@@ -67,7 +67,7 @@ def lower(s):
     return re.sub("([a-z])([A-Z])", r"\1_\2", s).lower()
 
 
-OUT = "upload/endpoints.py"
+OUT = "upload/endpoints_rpc.py"
 
 with open(OUT, "w") as f:
     f.write("from .ghunter import RpcService\n\n")

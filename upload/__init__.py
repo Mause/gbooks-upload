@@ -2,7 +2,6 @@
 import json
 import logging
 import time
-from datetime import datetime
 from functools import wraps
 from json import JSONDecodeError
 from mimetypes import add_type
@@ -22,7 +21,7 @@ from oauth2client.file import Storage
 from oauth2client.tools import argparser, run_flow
 from rich.logging import RichHandler
 
-from . import endpoints
+from . import endpoints_rpc
 from .const import COOKIE_TXT, PATH
 from .drive import upload_with_drive
 from .endpoints import LibraryService
@@ -134,22 +133,11 @@ def upload(files: list[str], use_drive: bool, bookshelf: str):
 
 
 async def add_multiple_to_shelf(book_ids: list[str], shelf_name: str):
-    client = httpx.AsyncClient()
-    creds = await auth.load_and_auth(client)
-    service = LibraryService(creds, client)
+    service = await get_client(LibraryService)
 
     tag_id = await get_shelf(service, shelf_name)
 
-    print(
-        await service.add_tags(
-            [
-                [
-                    [book_id, tag_id, str(int(datetime.now().timestamp() * 1000))]
-                    for book_id in book_ids
-                ]
-            ]
-        )
-    )
+    print(await service.add_tags(book_ids, tag_id))
 
 
 def load_json(ctx, param, filename):
@@ -192,7 +180,7 @@ def shelves():
 
 
 async def get_shelf(service: LibraryService, shelf_name: str):
-    tags = await list_tags(service)
+    tags = await service.list_tags()
 
     if shelf_name not in tags["tags"]:
         ctx = get_current_context()
@@ -221,11 +209,7 @@ async def add_to_shelf(book_id: str, bookshelf: str):
 
     tag_id = await get_shelf(service, bookshelf)
 
-    print(
-        await service.add_tags(
-            [[[book_id, tag_id, str(int(datetime.now().timestamp() * 1000))]]]
-        )
-    )
+    print(await service.add_tags([book_id], tag_id))
 
 
 @shelves.command("list", help="list shelves")
@@ -234,7 +218,7 @@ async def add_to_shelf(book_id: str, bookshelf: str):
 async def list_shelves():
     service = await get_client(LibraryService)
 
-    tags = await list_tags(service)
+    tags = await service.list_tags()
 
     for name in tags["tags"]:
         print(name)
@@ -254,11 +238,11 @@ def validate_method(ctx, param, value):
     type=click.Choice(
         [
             k
-            for k, v in vars(endpoints).items()
-            if isinstance(v, type) and issubclass(v, RpcService)
+            for k, v in vars(endpoints_rpc).items()
+            if isinstance(v, type) and issubclass(v, RpcService) and v != RpcService
         ]
     ),
-    callback=lambda ctx, param, value: getattr(endpoints, value),
+    callback=lambda ctx, param, value: getattr(endpoints_rpc, value),
 )
 @click.argument("method", callback=validate_method)
 @verbose_flag
@@ -266,22 +250,6 @@ def validate_method(ctx, param, value):
 async def rpc(service: type[RpcService], method: str):
     service = await get_client(service)
     logging.info("tags: %s", await getattr(service, method)())
-
-
-async def list_tags(service: LibraryService):
-    [tags, tagged] = await service.list_tags()
-
-    return {
-        "tags": {name: tag_id for name, tag_id, *_ in tags},
-        "tagged": [
-            {
-                "book_id": book_id,
-                "tag_id": tag_id,
-                "tagged_at": datetime.fromtimestamp(int(tagged_at) / 1000),
-            }
-            for book_id, tag_id, tagged_at, *_ in tagged
-        ],
-    }
 
 
 def monitor(books: Resource, volume_id: str) -> None:

@@ -49,7 +49,7 @@ class RpcService(GAPI):
 
         self._load_api(creds, headers)
 
-    async def call_rpc(self, method, data=None):
+    async def _call_rpc(self, method, data=None):
         self._load_endpoint(method)
 
         message = Message()
