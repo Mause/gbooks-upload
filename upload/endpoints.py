@@ -122,8 +122,8 @@ class LibraryService(RpcService):
     async def expunge_library_documents(self):
         return await self.call_rpc("ExpungeLibraryDocuments")
 
-    async def get_library_document(self):
-        return await self.call_rpc("GetLibraryDocument")
+    async def get_library_document(self, data='[[], "hdYTCAAAQBAJ"]'):
+        return await self.call_rpc("GetLibraryDocument", data=data)
 
     async def get_volume_overviews(self):
         return await self.call_rpc("GetVolumeOverviews")
@@ -158,8 +158,10 @@ class LibraryService(RpcService):
     async def update_copy_limit(self):
         return await self.call_rpc("UpdateCopyLimit")
 
-    async def update_custom_tag(self):
-        return await self.call_rpc("UpdateCustomTag")
+    async def update_custom_tag(
+        self, data='["a0c746137-5723-4740-89a8-4ef7311aad16","test 1"]'
+    ):
+        return await self.call_rpc("UpdateCustomTag", data=data)
 
 
 class SeriesOnePlatformService(RpcService):
