@@ -38,4 +38,6 @@ jobs:
     - run:
         uv pip install ruff
         uv run python genny.py
+        git --version
+        git diff --quiet
         git diff --exit-code
