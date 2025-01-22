@@ -28,8 +28,8 @@ class {{classname}}Rpc(RpcService):
     service = "{{service}}"
 
     {% for method in methods %}
-    async def {{method.method | lower}}(self, data={{% if method.body %}
-        {method.body | repr}}
+    async def {{method.method | lower}}(self, data={% if method.body %}
+        {{method.body | repr}}
         {% else %}
         None
         {% endif %}):
