@@ -35,9 +35,7 @@ jobs:
         NO_COLOR: 1
         TERM: dumb
     - run: uv run mypy upload/
-    - run:
+    - run: |
         uv pip install ruff
         uv run python genny.py
-        git --version
-        git diff --quiet
         git diff --exit-code
