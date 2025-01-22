@@ -3,8 +3,16 @@ import re
 from itertools import groupby
 from operator import itemgetter
 from subprocess import check_call
+from typing import NamedTuple
 
 from jinja2 import Environment
+
+
+class Method(NamedTuple):
+    hostname: str
+    service: str
+    method: str
+    body: str
 
 
 def get_methods():
@@ -23,7 +31,7 @@ def get_methods():
             hostname, line = line.split("/$rpc")
             hostname = hostname[len(PREFIX) :]
         _, service, method = line.split("/")
-        methods.append((hostname, service, method, body))
+        methods.append(Method(hostname, service, method, body))
     return methods
 
 
