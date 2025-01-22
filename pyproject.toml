@@ -17,6 +17,7 @@ dependencies = [
     "platformdirs>=4.3.6",
     "ghunt>=2.2.0",
     "uvloop>=0.21.0",
+    "pyyaml>=6.0.2",
 ]
 
 [tool.setuptools.packages]

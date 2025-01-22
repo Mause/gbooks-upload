@@ -1,10 +1,10 @@
-import json
 import re
 from itertools import groupby
-from operator import itemgetter
+from operator import attrgetter
 from subprocess import check_call
 from typing import NamedTuple
 
+import yaml
 from jinja2 import Environment
 
 
@@ -35,7 +35,8 @@ def get_methods():
     return methods
 
 
-key = itemgetter(slice(0, 2))
+def key(x):
+    return x.hostname, x.service
 
 
 template = """
@@ -66,23 +67,26 @@ t = env.from_string(template)
 def main():
     methods = get_methods()
 
-    with open("upload/endpoints.json", "w") as fh:
-        json.dump(
-            [
-                {
-                    "hostname": hostname,
-                    "service": service,
+    with open("upload/endpoints.yaml", "w") as fh:
+        result = {
+            hostname: {
+                service: {
                     "methods": [
-                        {"method": method, "body": body}
-                        for (_, _, method, body) in methods
-                    ],
+                        {
+                            "method": method.method,
+                            "body": method.body,
+                        }
+                        for method in sorted(methods, key=attrgetter("method"))
+                    ]
                 }
-                for (hostname, service), methods in groupby(
-                    sorted(methods, key=key), key=key
-                )
-            ],
+                for service, methods in groupby(services, key=attrgetter("service"))
+            }
+            for hostname, services in groupby(methods, key=attrgetter("hostname"))
+        }
+        yaml.dump(
+            result,
             fh,
-            indent=2,
+            sort_keys=False,
         )
 
     OUT = "upload/endpoints_rpc.py"
