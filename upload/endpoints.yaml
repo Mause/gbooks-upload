@@ -1,0 +1,148 @@
+people-pa.clients6.google.com:
+  google.internal.people.v2.InternalPeopleService:
+    methods:
+    - method: GetPeople
+      body: '[["me"],[[["person.name","person.email","person.photo"]],null,[5,1,7]]]'
+    - method: GetPersonPhotoEncoded
+      body: null
+    - method: UpdatePersonPhoto
+      body: null
+playbooks-pa.clients6.google.com:
+  google.internal.play.books.audiobook.v1.AudiobookService:
+    methods:
+    - method: GetAudioEvents
+      body: '["AQAAAEAszz6PAM","8af46ef0d127346baff59518",[8],4976830,6776830]'
+    - method: GetAudiobookResource
+      body: null
+    - method: GetAudiobookSupplement
+      body: null
+  google.internal.play.books.cloudloading.v1.CloudLoadingOnePlatformService:
+    methods:
+    - method: Delete
+      body: null
+    - method: Insert
+      body: null
+  google.internal.play.books.enterprise.v1.EnterpriseService:
+    methods:
+    - method: AddClassroomBooksAttachment
+      body: null
+    - method: AddLicenseOwners
+      body: null
+    - method: AddLicenseRedeemers
+      body: null
+    - method: ClaimLicense
+      body: null
+    - method: GetLicenseHistory
+      body: null
+    - method: GetLicenses
+      body: '[null,null,null,1]'
+    - method: GrantFreeBookLicenses
+      body: null
+    - method: ListFreeBooksForLicense
+      body: null
+    - method: RemoveLicenseOwners
+      body: null
+    - method: RemoveLicenseRedeemers
+      body: null
+  google.internal.play.books.family.v1.FamilyOnePlatformService:
+    methods:
+    - method: Share
+      body: null
+    - method: Unshare
+      body: null
+  google.internal.play.books.layers.v1.VolumeAnnotationService:
+    methods:
+    - method: GetDictionaryDefinition
+      body: '[null," unwrapping",[null,null,"en"]]'
+  google.internal.play.books.library.v1.LibraryService:
+    methods:
+    - method: AddAnnotation
+      body: '[["AQAAAEAszz6PAM","AE67D741-9B6D-4C7D-B170-312AF12BE063",[],null,null,[["40102"]],"0.10.0"]]'
+    - method: AddLibraryDocument
+      body: null
+    - method: AddTags
+      body: '[[["5QuwNwAAAEAJ","a0c746137-5723-4740-89a8-4ef7311aad16"]]]'
+    - method: CreateCustomTag
+      body: null
+    - method: DeleteAnnotation
+      body: null
+    - method: DeleteCustomTag
+      body: null
+    - method: DeleteLibraryDocument
+      body: null
+    - method: ExpungeLibraryDocuments
+      body: null
+    - method: GetLibraryDocument
+      body: '[[], "hdYTCAAAQBAJ"]'
+    - method: GetVolumeOverviews
+      body: null
+    - method: HideLibraryDocuments
+      body: null
+    - method: ListAnnotations
+      body: null
+    - method: ListTags
+      body: null
+    - method: LookupCopyLimit
+      body: null
+    - method: RemoveTags
+      body: '[[["hdYTCAAAQBAJ","Completed",1737103382078]]]'
+    - method: SyncDocumentPosition
+      body: '["84XKNwAAAEAJ",["384DC38E-1A56-4F48-8AE1-1C3F446F41E5",null,"1737093647557",[null,null,[2]],null,[["GBS.PA68.w.0.0.0.2"],null,0.9066666666666666]]]'
+    - method: SyncExtendedLibrary
+      body: null
+    - method: SyncUserLibrary
+      body: null
+    - method: UnhideLibraryDocuments
+      body: null
+    - method: UpdateCopyLimit
+      body: null
+    - method: UpdateCustomTag
+      body: '["a0c746137-5723-4740-89a8-4ef7311aad16","test 1"]'
+  google.internal.play.books.series.v1.SeriesOnePlatformService:
+    methods:
+    - method: Fetch
+      body: '[[["u4P3GgAAABBNmM"],["PL4pGwAAABAUpM"],["bW8uGwAAABBCdM"],["i1YuGwAAABCkTM"],["crbMGgAAABC_rM"]]]'
+    - method: FetchMembers
+      body: '[["u4P3GgAAABBNmM"],[100]]'
+  google.internal.play.books.settings.v1.SettingsOnePlatformService:
+    methods:
+    - method: GetUserSettings
+      body: null
+    - method: UpdateUserSettings
+      body: null
+  google.internal.play.books.userannotations.v1.UserAnnotationService:
+    methods:
+    - method: CreateAnnotations
+      body: null
+    - method: CreateCollection
+      body: null
+    - method: DeleteAnnotations
+      body: null
+    - method: DeleteCollection
+      body: null
+    - method: ListAnnotations
+      body: '[[["84XKNwAAAEAJ",null,"full-1.0.0"]],[1,2],null,1,1]'
+    - method: ListSharedAnnotations
+      body: '[["84XKNwAAAEAJ",null,"full-1.0.0"],1,null,null,1]'
+    - method: TriggerExport
+      body: null
+    - method: UpdateAnnotations
+      body: null
+    - method: UpdateCollection
+      body: null
+    - method: UpdateSubscriptions
+      body: null
+playgateway-pa.clients6.google.com:
+  play.gateway.adapter.books.v1.PlayGatewayBooksService:
+    methods:
+    - method: GetInAppStream
+      body: '[[4,null,["84XKNwAAAEAJ",1]],null,null,null,null,[null,null,null,null,null,null,[3]],null,null,[null,[2],[1]]]'
+    - method: UpdateItemWishlistState
+      body: '[null,[\"ID07FerN_h0C\",9],1]'
+waa-pa.clients6.google.com:
+  google.internal.waa.v1.Waa:
+    methods:
+    - method: Create
+      body: null
+    - method: Ping
+      body: null

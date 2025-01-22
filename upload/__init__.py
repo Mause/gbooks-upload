@@ -245,11 +245,15 @@ def validate_method(ctx, param, value):
     callback=lambda ctx, param, value: getattr(endpoints_rpc, value),
 )
 @click.argument("method", callback=validate_method)
+@click.argument("data", required=False)
 @verbose_flag
 @asyncio
-async def rpc(service: type[RpcService], method: str):
+async def rpc(service: type[RpcService], method: str, data: Optional[str]):
     service = await get_client(service)
-    logging.info("tags: %s", await getattr(service, method)())
+    bound_method = getattr(service, method)
+    logging.info(
+        "tags: %s", await (bound_method() if data is None else bound_method(data))
+    )
 
 
 def monitor(books: Resource, volume_id: str) -> None:

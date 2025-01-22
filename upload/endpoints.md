@@ -1,11 +1,13 @@
 "https://waa-pa.clients6.google.com/$rpc/google.internal.waa.v1.Waa/Ping"
+"https://waa-pa.clients6.google.com/$rpc/google.internal.waa.v1.Waa/Create"
 
 "https://people-pa.clients6.google.com/$rpc/google.internal.people.v2.InternalPeopleService/GetPeople" [["me"],[[["person.name","person.email","person.photo"]],null,[5,1,7]]]
 "https://people-pa.clients6.google.com/$rpc/google.internal.people.v2.InternalPeopleService/GetPersonPhotoEncoded"
 "https://people-pa.clients6.google.com/$rpc/google.internal.people.v2.InternalPeopleService/UpdatePersonPhoto"
 
-"/google.internal.play.books.audiobook.v1.AudiobookService/GetAudiobookResource"
-"/google.internal.play.books.audiobook.v1.AudiobookService/GetAudiobookSupplement"
+"https://playbooks-pa.clients6.google.com/$rpc/google.internal.play.books.audiobook.v1.AudiobookService/GetAudiobookResource"
+"https://playbooks-pa.clients6.google.com/$rpc/google.internal.play.books.audiobook.v1.AudiobookService/GetAudiobookSupplement"
+"https://playbooks-pa.clients6.google.com/$rpc/google.internal.play.books.audiobook.v1.AudiobookService/GetAudioEvents" ["AQAAAEAszz6PAM","8af46ef0d127346baff59518",[8],4976830,6776830]
 
 "/google.internal.play.books.cloudloading.v1.CloudLoadingOnePlatformService/Delete"
 "/google.internal.play.books.cloudloading.v1.CloudLoadingOnePlatformService/Insert"
@@ -26,6 +28,9 @@
 
 "/google.internal.play.books.layers.v1.VolumeAnnotationService/GetDictionaryDefinition" [null," unwrapping",[null,null,"en"]]
 
+"/google.internal.play.books.library.v1.LibraryService/ListAnnotations"
+"/google.internal.play.books.library.v1.LibraryService/DeleteAnnotation"
+"/google.internal.play.books.library.v1.LibraryService/AddAnnotation" [["AQAAAEAszz6PAM","AE67D741-9B6D-4C7D-B170-312AF12BE063",[],null,null,[["40102"]],"0.10.0"]]
 "/google.internal.play.books.library.v1.LibraryService/AddLibraryDocument"
 "/google.internal.play.books.library.v1.LibraryService/AddTags" [[["5QuwNwAAAEAJ","a0c746137-5723-4740-89a8-4ef7311aad16"]]]
 "/google.internal.play.books.library.v1.LibraryService/CreateCustomTag"
@@ -63,3 +68,4 @@
 "/google.internal.play.books.userannotations.v1.UserAnnotationService/UpdateSubscriptions"
 
 "https://playgateway-pa.clients6.google.com/$rpc/play.gateway.adapter.books.v1.PlayGatewayBooksService/GetInAppStream" [[4,null,["84XKNwAAAEAJ",1]],null,null,null,null,[null,null,null,null,null,null,[3]],null,null,[null,[2],[1]]]
+"https://playgateway-pa.clients6.google.com/$rpc/play.gateway.adapter.books.v1.PlayGatewayBooksService/UpdateItemWishlistState" [null,[\"ID07FerN_h0C\",9],1]
