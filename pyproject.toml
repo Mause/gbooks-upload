@@ -18,6 +18,7 @@ dependencies = [
     "ghunt>=2.2.0",
     "uvloop>=0.21.0",
     "pyyaml>=6.0.2",
+    "purerpc>=0.8.0",
 ]
 
 [tool.setuptools.packages]
