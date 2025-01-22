@@ -22,6 +22,11 @@ class AudiobookServiceRpc(RpcService):
     hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.audiobook.v1.AudiobookService"
 
+    async def get_audio_events(
+        self, data='["AQAAAEAszz6PAM","8af46ef0d127346baff59518",[8],4976830,6776830]'
+    ):
+        return await self._call_rpc("GetAudioEvents", data=data)
+
     async def get_audiobook_resource(self):
         return await self._call_rpc("GetAudiobookResource")
 
@@ -102,6 +107,12 @@ class LibraryServiceRpc(RpcService):
     hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.library.v1.LibraryService"
 
+    async def add_annotation(
+        self,
+        data='[["AQAAAEAszz6PAM","AE67D741-9B6D-4C7D-B170-312AF12BE063",[],null,null,[["40102"]],"0.10.0"]]',
+    ):
+        return await self._call_rpc("AddAnnotation", data=data)
+
     async def add_library_document(self):
         return await self._call_rpc("AddLibraryDocument")
 
@@ -112,6 +123,9 @@ class LibraryServiceRpc(RpcService):
 
     async def create_custom_tag(self):
         return await self._call_rpc("CreateCustomTag")
+
+    async def delete_annotation(self):
+        return await self._call_rpc("DeleteAnnotation")
 
     async def delete_custom_tag(self):
         return await self._call_rpc("DeleteCustomTag")
@@ -130,6 +144,9 @@ class LibraryServiceRpc(RpcService):
 
     async def hide_library_documents(self):
         return await self._call_rpc("HideLibraryDocuments")
+
+    async def list_annotations(self):
+        return await self._call_rpc("ListAnnotations")
 
     async def list_tags(self):
         return await self._call_rpc("ListTags")
