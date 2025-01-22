@@ -4,7 +4,7 @@ from itertools import groupby
 from operator import itemgetter
 from subprocess import check_call
 
-from jinja2 import Template
+from jinja2 import Environment
 
 
 def get_methods():
@@ -36,18 +36,23 @@ class {{classname}}Rpc(RpcService):
     service = "{{service}}"
 
     {% for hostname, _, method, body in methods %}
-    async def {{lower(method)}}(self{% if body %}, data={{repr(body)}}{% endif %}):
-        return await self._call_rpc({{repr(method)}}{% if body %}, data=data{% endif %})
+    async def {{method | lower}}(self{% if body %}, data={{body | repr}}{% endif %}):
+        return await self._call_rpc({{method | repr}}{% if body %},
+                                    data=data{% endif %})
     {% endfor %}
 
 
 """
 
-t = Template(template)
-
 
 def lower(s):
     return re.sub("([a-z])([A-Z])", r"\1_\2", s).lower()
+
+
+env = Environment()
+env.filters["lower"] = lower
+env.filters["repr"] = repr
+t = env.from_string(template)
 
 
 def main():
@@ -84,8 +89,6 @@ def main():
                     hostname=hostname,
                     service=service,
                     methods=sorted(methods),
-                    lower=lower,
-                    repr=repr,
                 )
             )
     check_call(["ruff", "format", OUT])
