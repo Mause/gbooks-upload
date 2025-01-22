@@ -1,5 +1,5 @@
 import re
-from itertools import groupby
+from collections import defaultdict
 from operator import attrgetter
 from subprocess import check_call
 from typing import NamedTuple
@@ -64,9 +64,14 @@ env.filters["repr"] = repr
 t = env.from_string(template)
 
 
-def main():
-    methods = get_methods()
+def groupby(iterable, key):
+    result = defaultdict(list)
+    for item in sorted(iterable, key=key):
+        result[key(item)].append(item)
+    return result.items()
 
+
+def dump_methods(orig_methods):
     with open("upload/endpoints.yaml", "w") as fh:
         result = {
             hostname: {
@@ -81,13 +86,19 @@ def main():
                 }
                 for service, methods in groupby(services, key=attrgetter("service"))
             }
-            for hostname, services in groupby(methods, key=attrgetter("hostname"))
+            for hostname, services in groupby(orig_methods, key=attrgetter("hostname"))
         }
         yaml.dump(
             result,
             fh,
             sort_keys=False,
         )
+
+
+def main():
+    methods = get_methods()
+
+    dump_methods(methods)
 
     OUT = "upload/endpoints_rpc.py"
 
