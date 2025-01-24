@@ -2,17 +2,15 @@
 import json
 import logging
 import time
-from functools import wraps
-from inspect import getdoc
 from json import JSONDecodeError
 from mimetypes import add_type
 from pathlib import Path
-from typing import Callable, Optional, TypeVar
+from typing import Callable, Optional
 
 import httplib2
 import rich_click as click
 import uvloop
-from click.exceptions import Abort, BadParameter
+from click.exceptions import BadParameter
 from click.globals import get_current_context
 from googleapiclient.discovery import Resource, build
 from oauth2client.client import flow_from_clientsecrets
@@ -21,9 +19,8 @@ from oauth2client.tools import argparser, run_flow
 from rich import print
 from rich.logging import RichHandler
 
-import google_internal_apis as endpoints_rpc
-from google_internal_apis import get_client
-from google_internal_apis.ghunter import RpcService
+from google_internal_apis import cli, get_client
+from google_internal_apis.cli import asyncio, verbose_flag
 
 from .const import COOKIE_TXT, PATH
 from .drive import upload_with_drive
@@ -86,29 +83,7 @@ def main() -> None:
     pass
 
 
-def asyncio(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        return uvloop.run(func(*args, **kwargs))
-
-    return wrapper
-
-
-def verbose_flag(func):
-    assert getdoc(func), func
-
-    @click.option("--verbose", is_flag=True)
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        verbose = kwargs.pop("verbose")
-        logging.getLogger().setLevel(logging.DEBUG if verbose else logging.INFO)
-        try:
-            return func(*args, **kwargs)
-        except BaseException as e:
-            logging.exception(e)
-            raise Abort(e)
-
-    return wrapper
+main.add_command(cli.rpc)
 
 
 @main.command()
@@ -213,9 +188,6 @@ async def get_shelf(service: LibraryService, shelf_name: str):
     return tags["tags"][shelf_name]
 
 
-T = TypeVar("T", bound=RpcService)
-
-
 @shelves.command("add")
 @click.argument("book_id")
 @click.argument("bookshelf")
@@ -263,41 +235,6 @@ async def get_book(book_id: str):
     service = await get_client(LibraryService)
 
     print(await service.get_library_document(book_id))
-
-
-def validate_method(ctx, param, value):
-    service = ctx.params["service"]
-
-    stype = click.Choice([k for k, v in vars(service).items() if callable(v)])
-
-    return stype(value)
-
-
-@main.command()
-@click.argument(
-    "service",
-    type=click.Choice(
-        [
-            k
-            for k, v in vars(endpoints_rpc).items()
-            if isinstance(v, type) and issubclass(v, RpcService) and v != RpcService
-        ]
-    ),
-    callback=lambda ctx, param, value: getattr(endpoints_rpc, value),
-)
-@click.argument("method", callback=validate_method)
-@click.argument("data", required=False)
-@verbose_flag
-@asyncio
-async def rpc(service: type[RpcService], method: str, data: Optional[str]):
-    """
-    Perform RPC call via underlying google_internal_apis package
-    """
-    service = await get_client(service)
-    bound_method = getattr(service, method)
-    logging.info(
-        "tags: %s", await (bound_method() if data is None else bound_method(data))
-    )
 
 
 def monitor(books: Resource, volume_id: str) -> None:
