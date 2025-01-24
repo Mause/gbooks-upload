@@ -21,11 +21,11 @@ from oauth2client.file import Storage
 from oauth2client.tools import argparser, run_flow
 from rich.logging import RichHandler
 
-from . import endpoints_rpc
+import google_internal_apis as endpoints_rpc
 from .const import COOKIE_TXT, PATH
 from .drive import upload_with_drive
 from .endpoints import LibraryService
-from .ghunter import RpcService
+from google_internal_apis.ghunter import RpcService
 from .scotty import steal_cookie, upload_with_scotty
 
 logging.basicConfig(handlers=[RichHandler(rich_tracebacks=True)])
