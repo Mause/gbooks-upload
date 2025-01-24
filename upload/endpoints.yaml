@@ -70,6 +70,23 @@ playbooks-pa.clients6.google.com:
       body: null
     - method: AddTags
       body: '[[["5QuwNwAAAEAJ","a0c746137-5723-4740-89a8-4ef7311aad16"]]]'
+      error: [
+        3,
+        "Invalid value at 'add_tags[0].update_timestamp_ms' (TYPE_INT64), \"1737106632509.533\"",
+        [
+            [
+                "type.googleapis.com/google.rpc.BadRequest",
+                [
+                    [
+                        [
+                            "add_tags[0].update_timestamp_ms",
+                            "Invalid value at 'add_tags[0].update_timestamp_ms' (TYPE_INT64), \"1737106632509.533\""
+                        ]
+                    ]
+                ]
+            ]
+        ]
+      ]
     - method: CreateCustomTag
       body: null
     - method: DeleteAnnotation
