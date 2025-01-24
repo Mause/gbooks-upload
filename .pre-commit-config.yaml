@@ -17,3 +17,11 @@ repos:
   - id: ruff
     args: [ --fix ]
   - id: ruff-format
+
+- repo: https://github.com/astral-sh/uv-pre-commit
+  rev: 0.5.24
+  hooks:
+    - id: uv-lock
+      files: '.'
+    - id: uv-lock
+      files: google_internal_apis
