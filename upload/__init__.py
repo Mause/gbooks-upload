@@ -9,12 +9,10 @@ from pathlib import Path
 from typing import Callable, Optional, TypeVar
 
 import httplib2
-import httpx
 import rich_click as click
 import uvloop
 from click.exceptions import Abort, BadParameter
 from click.globals import get_current_context
-from ghunt.helpers import auth
 from googleapiclient.discovery import Resource, build
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
@@ -22,10 +20,12 @@ from oauth2client.tools import argparser, run_flow
 from rich.logging import RichHandler
 
 import google_internal_apis as endpoints_rpc
+from google_internal_apis import get_client
+from google_internal_apis.ghunter import RpcService
+
 from .const import COOKIE_TXT, PATH
 from .drive import upload_with_drive
 from .endpoints import LibraryService
-from google_internal_apis.ghunter import RpcService
 from .scotty import steal_cookie, upload_with_scotty
 
 logging.basicConfig(handlers=[RichHandler(rich_tracebacks=True)])
@@ -191,12 +191,6 @@ async def get_shelf(service: LibraryService, shelf_name: str):
 
 
 T = TypeVar("T", bound=RpcService)
-
-
-async def get_client(t: type[T]) -> T:
-    client = httpx.AsyncClient()
-    creds = await auth.load_and_auth(client)
-    return t(creds, client)
 
 
 @shelves.command("add", help="add book to shelf")
