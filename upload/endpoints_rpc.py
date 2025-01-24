@@ -1,6 +1,23 @@
 from .ghunter import RpcService
 
 
+class WhApiServiceRpc(RpcService):
+    hostname = "playatoms-pa.clients6.google.com"
+    service = "google.internal.play.atoms.api.v1.WhApiService"
+
+    async def get_app_splits(self, data=None):
+        return await self._call_rpc("GetAppSplits", data=data)
+
+    async def update_user_prefs(self, data=None):
+        return await self._call_rpc("UpdateUserPrefs", data=data)
+
+    async def get_domain_filter(self, data=None):
+        return await self._call_rpc("GetDomainFilter", data=data)
+
+    async def get_intent_filter(self, data=None):
+        return await self._call_rpc("GetIntentFilter", data=data)
+
+
 class InternalPeopleServiceRpc(RpcService):
     hostname = "people-pa.clients6.google.com"
     service = "google.internal.people.v2.InternalPeopleService"
@@ -16,6 +33,14 @@ class InternalPeopleServiceRpc(RpcService):
 
     async def update_person_photo(self, data=None):
         return await self._call_rpc("UpdatePersonPhoto", data=data)
+
+
+class InternalPeopleMinimalServiceRpc(RpcService):
+    hostname = "people-pa.clients6.google.com"
+    service = "google.internal.people.v2.minimal.InternalPeopleMinimalService"
+
+    async def list_people_by_known_id(self, data=None):
+        return await self._call_rpc("ListPeopleByKnownId", data=data)
 
 
 class AudiobookServiceRpc(RpcService):
@@ -257,6 +282,14 @@ class PlayGatewayBooksServiceRpc(RpcService):
 
     async def update_item_wishlist_state(self, data='[null,[\\"ID07FerN_h0C\\",9],1]'):
         return await self._call_rpc("UpdateItemWishlistState", data=data)
+
+
+class MakerSuiteServiceRpc(RpcService):
+    hostname = "alkalimakersuite-pa.clients6.google.com"
+    service = "google.internal.alkali.applications.makersuite.v1.MakerSuiteService"
+
+    async def generate_content(self, data=None):
+        return await self._call_rpc("GenerateContent", data=data)
 
 
 class WaaRpc(RpcService):

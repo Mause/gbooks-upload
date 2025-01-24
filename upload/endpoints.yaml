@@ -1,3 +1,11 @@
+playatoms-pa.clients6.google.com:
+  "google.internal.play.atoms.api.v1.WhApiService":
+    methods:
+      - method: GetAppSplits
+      - method: UpdateUserPrefs
+      - method: GetDomainFilter
+      - method: GetIntentFilter
+
 people-pa.clients6.google.com:
   google.internal.people.v2.InternalPeopleService:
     methods:
@@ -7,6 +15,39 @@ people-pa.clients6.google.com:
       body: null
     - method: UpdatePersonPhoto
       body: null
+
+  google.internal.people.v2.minimal.InternalPeopleMinimalService:
+    methods:
+      - method: ListPeopleByKnownId
+        data: [
+            [email],
+            2,
+            None,
+            None,
+            [None, None, None, ["DRIVE_SHARE", None, 2]],
+            [
+                [
+                    [
+                        "person.name",
+                        "person.photo",
+                        "person.email",
+                        "person.metadata",
+                        "person.name.metadata.verified",
+                        "person.email.metadata.verified",
+                    ]
+                ],
+                None,
+                [2, 8, 1, 7, 10, 11],
+                None,
+                None,
+                [],
+            ],
+            [],
+            [None, None, [], None, None, [1], [[1]], None, [3]],
+            [[23, 36]],
+            [],
+        ]
+
 playbooks-pa.clients6.google.com:
   google.internal.play.books.audiobook.v1.AudiobookService:
     methods:
@@ -62,6 +103,23 @@ playbooks-pa.clients6.google.com:
       body: null
     - method: AddTags
       body: '[[["5QuwNwAAAEAJ","a0c746137-5723-4740-89a8-4ef7311aad16"]]]'
+      error: [
+        3,
+        "Invalid value at 'add_tags[0].update_timestamp_ms' (TYPE_INT64), \"1737106632509.533\"",
+        [
+            [
+                "type.googleapis.com/google.rpc.BadRequest",
+                [
+                    [
+                        [
+                            "add_tags[0].update_timestamp_ms",
+                            "Invalid value at 'add_tags[0].update_timestamp_ms' (TYPE_INT64), \"1737106632509.533\""
+                        ]
+                    ]
+                ]
+            ]
+        ]
+      ]
     - method: CreateCustomTag
       body: null
     - method: DeleteAnnotation
@@ -139,6 +197,12 @@ playgateway-pa.clients6.google.com:
       body: '[[4,null,["84XKNwAAAEAJ",1]],null,null,null,null,[null,null,null,null,null,null,[3]],null,null,[null,[2],[1]]]'
     - method: UpdateItemWishlistState
       body: '[null,[\"ID07FerN_h0C\",9],1]'
+
+alkalimakersuite-pa.clients6.google.com:
+  google.internal.alkali.applications.makersuite.v1.MakerSuiteService:
+    methods:
+      - method: GenerateContent
+
 waa-pa.clients6.google.com:
   google.internal.waa.v1.Waa:
     methods:
