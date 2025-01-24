@@ -46,7 +46,7 @@ select = ["I", "E", "W", "F", "C", "R"]
 package = true
 
 [tool.uv.sources]
-google-internal-apis = { path = "google_internal_apis" }
+google-internal-apis = { path = "google_internal_apis", editable = true }
 
 [tool.mypy]
 ignore_missing_imports = true
