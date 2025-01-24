@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from .endpoints_rpc import LibraryServiceRpc
+from google_internal_apis import LibraryServiceRpc
 
 
 class LibraryService(LibraryServiceRpc):

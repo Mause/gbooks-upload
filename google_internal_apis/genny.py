@@ -1,9 +1,13 @@
 import re
+from pathlib import Path
 from subprocess import check_call
+from textwrap import dedent
 from typing import NamedTuple
 
 import yaml
 from jinja2 import Environment
+
+HERE = Path(__file__).parent
 
 
 class Method(NamedTuple):
@@ -14,7 +18,7 @@ class Method(NamedTuple):
 
 
 def get_methods():
-    with open("upload/endpoints.yaml") as f:
+    with open(HERE / "endpoints.yaml") as f:
         return yaml.load(f, yaml.SafeLoader)
 
 
@@ -53,10 +57,28 @@ t = env.from_string(template)
 def main():
     methods = get_methods()
 
-    OUT = "upload/endpoints_rpc.py"
+    OUT = HERE / "google_internal_apis/__init__.py"
 
     with open(OUT, "w") as f:
-        f.write("from .ghunter import RpcService\n\n")
+        f.write(
+            dedent("""
+        from typing import TypeVar
+
+        import httpx
+        from ghunt.helpers import auth
+
+        from .ghunter import RpcService
+
+        T = TypeVar("T", bound="RpcService")
+
+
+        async def get_client(t: type[T]) -> T:
+            client = httpx.AsyncClient()
+            creds = await auth.load_and_auth(client)
+            return t(creds, client)
+
+        """)
+        )
 
         for hostname, services in methods.items():
             for service, methods in services.items():
@@ -69,6 +91,7 @@ def main():
                     )
                 )
     check_call(["ruff", "format", OUT])
+    check_call(["ruff", "check", OUT, "--fix"])
 
 
 if __name__ == "__main__":

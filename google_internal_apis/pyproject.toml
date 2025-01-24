@@ -1,6 +1,7 @@
 [project]
-name = "upload"
-version = "0.1.0"
+name = "google_internal_apis"
+version = "0.0.1"
+
 description = ""
 authors = [
     {name = "Elliana May", email = "me@mause.me"},
@@ -9,18 +10,11 @@ license = {text = "MIT"}
 requires-python = "<4.0,>=3.10"
 readme = "README.md"
 dependencies = [
-    "tqdm>=4.67.1",
-    "requests>=2.32.3",
-    "google-api-python-client<3.0.0,>=2.99.0",
-    "oauth2client<5.0.0,>=4.1.3",
-    "rich-click<2.0.0,>=1.8.5",
-    "platformdirs>=4.3.6",
-    "uvloop>=0.21.0",
-    "google-internal-apis",
+    "ghunt>=0.1",
 ]
 
 [tool.setuptools.packages]
-find = { include = ["upload"] }
+find = { include = ["google_internal_apis"] }
 
 [dependency-groups]
 dev = [
@@ -29,15 +23,9 @@ dev = [
     "pdbpp<1.0.0,>=0.10.3",
     "pre-commit<4.0.0,>=3.4.0",
     "pudb>=2024.1.3",
-    "pytest>=8.3.4",
-    "pytest-sugar>=1.0.0",
-    "syrupy>=4.8.1",
     "types-httplib2>=0.22.0.20241221",
     "types-requests>=2.32.0.20241016",
 ]
-
-[project.scripts]
-gbooks-upload = "upload:main"
 
 [tool.ruff.lint]
 select = ["I", "E", "W", "F", "C", "R"]
