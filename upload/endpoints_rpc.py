@@ -1,6 +1,23 @@
 from .ghunter import RpcService
 
 
+class WhApiServiceRpc(RpcService):
+    hostname = "playatoms-pa.clients6.google.com"
+    service = "google.internal.play.atoms.api.v1.WhApiService"
+
+    async def get_app_splits(self, data=None):
+        return await self._call_rpc("GetAppSplits", data=data)
+
+    async def update_user_prefs(self, data=None):
+        return await self._call_rpc("UpdateUserPrefs", data=data)
+
+    async def get_domain_filter(self, data=None):
+        return await self._call_rpc("GetDomainFilter", data=data)
+
+    async def get_intent_filter(self, data=None):
+        return await self._call_rpc("GetIntentFilter", data=data)
+
+
 class InternalPeopleServiceRpc(RpcService):
     hostname = "people-pa.clients6.google.com"
     service = "google.internal.people.v2.InternalPeopleService"

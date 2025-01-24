@@ -1,3 +1,11 @@
+playatoms-pa.clients6.google.com:
+  "google.internal.play.atoms.api.v1.WhApiService":
+    methods:
+      - method: GetAppSplits
+      - method: UpdateUserPrefs
+      - method: GetDomainFilter
+      - method: GetIntentFilter
+
 people-pa.clients6.google.com:
   google.internal.people.v2.InternalPeopleService:
     methods:
