@@ -14,7 +14,7 @@ class Method(NamedTuple):
 
 
 def get_methods():
-    with open("upload/endpoints.yaml") as f:
+    with open("endpoints.yaml") as f:
         return yaml.load(f, yaml.SafeLoader)
 
 
@@ -53,7 +53,7 @@ t = env.from_string(template)
 def main():
     methods = get_methods()
 
-    OUT = "upload/endpoints_rpc.py"
+    OUT = "google_internal_apis/__init__.py"
 
     with open(OUT, "w") as f:
         f.write("from .ghunter import RpcService\n\n")
