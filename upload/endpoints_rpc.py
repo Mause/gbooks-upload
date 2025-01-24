@@ -35,6 +35,14 @@ class InternalPeopleServiceRpc(RpcService):
         return await self._call_rpc("UpdatePersonPhoto", data=data)
 
 
+class InternalPeopleMinimalServiceRpc(RpcService):
+    hostname = "people-pa.clients6.google.com"
+    service = "google.internal.people.v2.minimal.InternalPeopleMinimalService"
+
+    async def list_people_by_known_id(self, data=None):
+        return await self._call_rpc("ListPeopleByKnownId", data=data)
+
+
 class AudiobookServiceRpc(RpcService):
     hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.audiobook.v1.AudiobookService"
@@ -274,6 +282,14 @@ class PlayGatewayBooksServiceRpc(RpcService):
 
     async def update_item_wishlist_state(self, data='[null,[\\"ID07FerN_h0C\\",9],1]'):
         return await self._call_rpc("UpdateItemWishlistState", data=data)
+
+
+class MakerSuiteServiceRpc(RpcService):
+    hostname = "alkalimakersuite-pa.clients6.google.com"
+    service = "google.internal.alkali.applications.makersuite.v1.MakerSuiteService"
+
+    async def generate_content(self, data=None):
+        return await self._call_rpc("GenerateContent", data=data)
 
 
 class WaaRpc(RpcService):
