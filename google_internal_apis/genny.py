@@ -1,10 +1,13 @@
 import re
+from pathlib import Path
 from subprocess import check_call
 from textwrap import dedent
 from typing import NamedTuple
 
 import yaml
 from jinja2 import Environment
+
+HERE = Path(__file__).parent
 
 
 class Method(NamedTuple):
@@ -15,7 +18,7 @@ class Method(NamedTuple):
 
 
 def get_methods():
-    with open("endpoints.yaml") as f:
+    with open(HERE / "endpoints.yaml") as f:
         return yaml.load(f, yaml.SafeLoader)
 
 
@@ -54,7 +57,7 @@ t = env.from_string(template)
 def main():
     methods = get_methods()
 
-    OUT = "google_internal_apis/__init__.py"
+    OUT = HERE / "google_internal_apis/__init__.py"
 
     with open(OUT, "w") as f:
         f.write(
@@ -89,6 +92,7 @@ def main():
                 )
     check_call(["ruff", "format", OUT])
     check_call(["ruff", "check", OUT, "--fix"])
+
 
 if __name__ == "__main__":
     main()

@@ -37,7 +37,5 @@ jobs:
     - run: uv run mypy upload/
     - run: |
         uv pip install ruff
-    - run: |
-        uv run python genny.py
+        uv run python google_internal_apis/genny.py
         git diff --exit-code
-      working-directory: google_internal_apis
