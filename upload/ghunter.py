@@ -65,6 +65,10 @@ class RpcService(GAPI):
             data,
             "data" if isinstance(data, str) else "json",
         )
+        try:
+            data = res.json()
+        except ValueError:
+            data = res.text
         if not res.is_success:
-            raise Exception(res, res.text)
-        return res.json()
+            raise Exception(res, data)
+        return data
