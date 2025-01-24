@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rgreeter.proto\"\x1c\n\x0cHelloRequest\x12\x0c\n\x04name\x18\x01 \x02(\t\"\x1d\n\nHelloReply\x12\x0f\n\x07message\x18\x01 \x02(\t23\n\x07Greeter\x12(\n\x08SayHello\x12\r.HelloRequest\x1a\x0b.HelloReply\"\x00')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rgreeter.proto\"\x1c\n\x0cHelloRequest\x12\x0c\n\x04name\x18\x01 \x02(\t\"\x1d\n\nHelloReply\x12\x0f\n\x07message\x18\x01 \x02(\t\"&\n\x16LibraryResourceRequest\x12\x0c\n\x04name\x18\x01 \x02(\t\"0\n\x0fLibraryResource\x12\x0c\n\x04name\x18\x01 \x02(\t\x12\x0f\n\x07\x63ontent\x18\x02 \x02(\t23\n\x07Greeter\x12(\n\x08SayHello\x12\r.HelloRequest\x1a\x0b.HelloReply\"\x00\x32S\n\x0eLibraryService\x12\x41\n\x12GetLibraryResource\x12\x17.LibraryResourceRequest\x1a\x10.LibraryResource\"\x00')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -25,6 +25,12 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _globals['_HELLOREQUEST']._serialized_end=45
   _globals['_HELLOREPLY']._serialized_start=47
   _globals['_HELLOREPLY']._serialized_end=76
-  _globals['_GREETER']._serialized_start=78
-  _globals['_GREETER']._serialized_end=129
+  _globals['_LIBRARYRESOURCEREQUEST']._serialized_start=78
+  _globals['_LIBRARYRESOURCEREQUEST']._serialized_end=116
+  _globals['_LIBRARYRESOURCE']._serialized_start=118
+  _globals['_LIBRARYRESOURCE']._serialized_end=166
+  _globals['_GREETER']._serialized_start=168
+  _globals['_GREETER']._serialized_end=219
+  _globals['_LIBRARYSERVICE']._serialized_start=221
+  _globals['_LIBRARYSERVICE']._serialized_end=304
 # @@protoc_insertion_point(module_scope)

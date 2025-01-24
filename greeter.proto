@@ -13,3 +13,15 @@ message HelloRequest {
 message HelloReply {
   required string message = 1;
 }
+
+message LibraryResourceRequest {
+  required string name = 1;
+}
+message LibraryResource {
+  required string name = 1;
+  required string content = 2;
+}
+
+service LibraryService {
+  rpc GetLibraryResource(LibraryResourceRequest) returns (LibraryResource) {}
+}
