@@ -29,7 +29,9 @@ jobs:
         with:
           ref: ${{ fromJson(steps.release-please.outputs.pr).headBranchName }}
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
-      - run: |
+      - name: update lock file
+        if: ${{ steps.release-please.outputs.prs_created == 'true' }}
+        run: |
           git config user.name "release-please[bot]"
           git config user.email "release-please[bot]@users.noreply.github.com"
           pipx install uv
