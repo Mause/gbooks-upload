@@ -1,7 +1,7 @@
 [project]
 name = "gbooks-upload"
 version = "0.1.0"
-description = ""
+description = "Simple cli tool and library to manage books in Google Play Books"
 authors = [
     {name = "Elliana May", email = "me@mause.me"},
 ]
