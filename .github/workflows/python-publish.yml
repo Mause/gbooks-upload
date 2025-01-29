@@ -32,6 +32,8 @@ jobs:
           # NOTE: put your own distribution build steps here.
           python -m pip install build
           python -m build
+          python -m build google_internal_apis
+          cp google_internal_apis/dist/* dist/
 
       - name: Upload distributions
         uses: actions/upload-artifact@v4
