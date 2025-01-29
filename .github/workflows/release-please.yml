@@ -25,4 +25,4 @@ jobs:
           release-type: python
 
       - run: git status
-        if: ${{ steps.release-please.outputs.prs_created }}
+        if: ${{ steps.release-please.outputs.prs_created == 'true' }}
