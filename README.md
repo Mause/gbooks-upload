@@ -1,3 +1,3 @@
 # Google Books Upload
 
-Simple CLI & library for uploading books to Google Play Books
+Simple CLI tool and library to manage books in Google Play Books
