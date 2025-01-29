@@ -32,6 +32,7 @@ jobs:
       - run: |
           git config user.name "release-please[bot]"
           git config user.email "release-please[bot]@users.noreply.github.com"
+          pipx install uv
           uv sync
           git checkout -b ${{ fromJson(steps.release-please.outputs.pr).headBranchName }}
           git add .
