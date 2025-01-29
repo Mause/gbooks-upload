@@ -19,6 +19,9 @@ dependencies = [
     "google-internal-apis",
 ]
 
+[project.urls]
+repository = "https://github.com/Mause/gbooks-upload"
+
 [tool.setuptools.packages]
 find = { include = ["upload"] }
 

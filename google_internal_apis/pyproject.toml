@@ -1,8 +1,7 @@
 [project]
 name = "google_internal_apis"
 version = "0.0.1"
-
-description = ""
+description = "A wrapper around various internal (and undocumented) Google APIs that use grpc and json protobufs."
 authors = [
     {name = "Elliana May", email = "me@mause.me"},
 ]
@@ -12,6 +11,9 @@ readme = "README.md"
 dependencies = [
     "ghunt>=0.1",
 ]
+
+[project.urls]
+repository = "https://github.com/Mause/gbooks-upload"
 
 [tool.setuptools.packages]
 find = { include = ["google_internal_apis"] }
