@@ -24,5 +24,16 @@ jobs:
           # for more options
           release-type: python
 
-      - run: git status
+      - uses: actions/checkout@v4
         if: ${{ steps.release-please.outputs.prs_created == 'true' }}
+        with:
+          ref: ${{ steps.release-please.outputs.pr.headBranchName }}
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+      - run: |
+          git config user.name "release-please[bot]"
+          git config user.email "release-please[bot]@users.noreply.github.com"
+          uv sync
+          git checkout -b ${{ steps.release-please.outputs.pr.headBranchName }}
+          git add .
+          git commit -m "chore: release ${{ steps.release-please.outputs.version }}"
+          git push origin ${{ steps.release-please.outputs.pr.headBranchName }}
