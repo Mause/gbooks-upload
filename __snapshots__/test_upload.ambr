@@ -17,3 +17,16 @@
   
   '''
 # ---
+# name: test_non_existing_file
+  '''
+                                                                                  
+   Usage: main upload [OPTIONS] FILES...                                          
+                                                                                  
+   Try 'main upload --help' for help                                              
+  ╭─ Error ──────────────────────────────────────────────────────────────────────╮
+  │ Invalid value for 'FILES...': File 'dummy.epub' does not exist.              │
+  ╰──────────────────────────────────────────────────────────────────────────────╯
+                                                                                  
+  
+  '''
+# ---
