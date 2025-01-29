@@ -1,5 +1,5 @@
 [project]
-name = "upload"
+name = "gbooks-upload"
 version = "0.1.0"
 description = ""
 authors = [
