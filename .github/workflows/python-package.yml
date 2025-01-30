@@ -34,7 +34,7 @@ jobs:
       env:
         NO_COLOR: 1
         TERM: dumb
-    - run: uv run mypy upload/
+    - run: uv run mypy gbooks_upload/
     - run: |
         uv pip install ruff
         uv run python google_internal_apis/genny.py
