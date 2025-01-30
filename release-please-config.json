@@ -1,0 +1,12 @@
+{
+  "packages": {
+    ".": {
+      "name": "gbooks-upload",
+      "type": "python"
+    },
+    "google_internal_apis": {
+      "name": "google_internal_apis",
+      "type": "python"
+    }
+  }
+}
