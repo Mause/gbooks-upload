@@ -1,4 +1,5 @@
 {
+  "$schema": "https://github.com/googleapis/release-please/raw/refs/heads/main/schemas/config.json",
   "packages": {
     ".": {
       "name": "gbooks-upload",
