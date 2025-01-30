@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/Mause/gbooks-upload/compare/v0.1.1...v0.1.2) (2025-01-29)
+
+
+### Bug Fixes
+
+* add missing metadata ([a6a8979](https://github.com/Mause/gbooks-upload/commit/a6a897917479621ac6fc37b64cc390f99588fca9))
+
 ## [0.1.1](https://github.com/Mause/gbooks-upload/compare/0.1.0...v0.1.1) (2025-01-29)
 
 
