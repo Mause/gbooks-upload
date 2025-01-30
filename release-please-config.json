@@ -3,11 +3,11 @@
   "packages": {
     ".": {
       "name": "gbooks-upload",
-      "type": "python"
+      "release-type": "python"
     },
     "google_internal_apis": {
       "name": "google_internal_apis",
-      "type": "python"
+      "release-type": "python"
     }
   }
 }
