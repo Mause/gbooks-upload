@@ -23,7 +23,7 @@ dependencies = [
 repository = "https://github.com/Mause/gbooks-upload"
 
 [tool.setuptools.packages]
-find = { include = ["upload"] }
+find = { include = ["gbooks_upload"] }
 
 [dependency-groups]
 dev = [
@@ -40,7 +40,7 @@ dev = [
 ]
 
 [project.scripts]
-gbooks-upload = "upload:main"
+gbooks-upload = "gbooks_upload:main"
 
 [tool.ruff.lint]
 select = ["I", "E", "W", "F", "C", "R"]
