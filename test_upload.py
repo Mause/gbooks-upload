@@ -1,6 +1,7 @@
 import os
 
 from click.testing import CliRunner
+
 from gbooks_upload import main as upload
 
 os.environ["TERM"] = "dumb"
