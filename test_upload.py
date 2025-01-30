@@ -1,7 +1,6 @@
 import os
 
 from click.testing import CliRunner
-
 from upload import main as upload
 
 os.environ["TERM"] = "dumb"
