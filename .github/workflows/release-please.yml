@@ -23,6 +23,7 @@ jobs:
           # this is a built-in strategy in release-please, see "Action Inputs"
           # for more options
           release-type: python
+          include-component-in-tag: true
 
       - uses: actions/checkout@v4
         if: ${{ steps.release-please.outputs.prs_created == 'true' }}
