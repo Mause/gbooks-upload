@@ -5,6 +5,7 @@ from ghunt.helpers import auth
 
 from .ghunter import RpcService
 
+__version__ = "0.0.0"
 T = TypeVar("T", bound="RpcService")
 
 
