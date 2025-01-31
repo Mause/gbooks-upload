@@ -28,6 +28,8 @@ from .drive import upload_with_drive
 from .endpoints import LibraryService
 from .scotty import steal_cookie, upload_with_scotty
 
+__version__ = "0.0.0"
+
 logging.basicConfig(handlers=[RichHandler(rich_tracebacks=True)])
 
 add_type("application/epub+zip", ".epub")
