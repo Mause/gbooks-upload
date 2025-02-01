@@ -1,12 +1,14 @@
 from datetime import datetime
 
+from google.protobuf.timestamp_pb2 import Timestamp
+
 from google_internal_apis import LibraryServiceRpc
 
 
 def parse(arrays, message):
     fields = message.DESCRIPTOR.fields
-    if not isinstance(arrays, list):
-        setattr(message, fields[0].name, arrays)
+    if isinstance(message, Timestamp):
+        message.FromMilliseconds(int(arrays))
         return message
 
     for field in fields:

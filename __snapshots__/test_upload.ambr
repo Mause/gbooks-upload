@@ -24,28 +24,28 @@
     name: "tag_name_1"
     tag_id: "tag_id_1"
     created_at {
-      seconds: 1
+      nanos: 1000000
     }
   }
   tags {
     name: "tag_name_2"
     tag_id: "tag_id_2"
     created_at {
-      seconds: 2
+      nanos: 2000000
     }
   }
   tagged_items {
     book_id: "book_id_1"
     tag_id: "tag_id_1"
     tagged_at {
-      seconds: 1
+      nanos: 1000000
     }
   }
   tagged_items {
     book_id: "book_id_2"
     tag_id: "tag_id_2"
     tagged_at {
-      seconds: 2
+      nanos: 2000000
     }
   }
   '''
@@ -56,22 +56,22 @@
       dict({
         'bookId': 'book_id_1',
         'tagId': 'tag_id_1',
-        'taggedAt': '1970-01-01T00:00:01Z',
+        'taggedAt': '1970-01-01T00:00:00.001Z',
       }),
       dict({
         'bookId': 'book_id_2',
         'tagId': 'tag_id_2',
-        'taggedAt': '1970-01-01T00:00:02Z',
+        'taggedAt': '1970-01-01T00:00:00.002Z',
       }),
     ]),
     'tags': list([
       dict({
-        'createdAt': '1970-01-01T00:00:01Z',
+        'createdAt': '1970-01-01T00:00:00.001Z',
         'name': 'tag_name_1',
         'tagId': 'tag_id_1',
       }),
       dict({
-        'createdAt': '1970-01-01T00:00:02Z',
+        'createdAt': '1970-01-01T00:00:00.002Z',
         'name': 'tag_name_2',
         'tagId': 'tag_id_2',
       }),
