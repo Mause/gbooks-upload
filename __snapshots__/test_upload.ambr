@@ -18,3 +18,13 @@
   
   '''
 # ---
+# name: test_protoc
+  tags {
+    name: "tag_name"
+    tag_id: "tag_id"
+    created_at {
+      seconds: 1
+    }
+  }
+
+# ---

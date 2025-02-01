@@ -1,3 +1,18 @@
+import "google/protobuf/timestamp.proto";
+
+message Tag {
+  required string name = 1;
+  required string tag_id = 2;
+  optional google.protobuf.Timestamp created_at = 3;
+}
+
+message Tagged {
+  required string book_id = 1;
+  required string tag_id = 2;
+  required google.protobuf.Timestamp tagged_at = 3;
+}
+
 message TagsResponse {
-  repeated string tags = 1;
+  repeated Tag tags = 1;
+  repeated Tagged tagged_items = 2;
 }

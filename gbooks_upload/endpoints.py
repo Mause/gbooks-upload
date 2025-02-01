@@ -3,6 +3,35 @@ from datetime import datetime
 from google_internal_apis import LibraryServiceRpc
 
 
+def parse(arrays, message):
+    fields = message.DESCRIPTOR.fields
+    if not isinstance(arrays, list):
+        setattr(message, fields[0].name, arrays)
+        return message
+
+    for field in fields:
+        value = arrays[field.number - 1]
+        if field.label == field.LABEL_REPEATED:
+            if field.type == field.TYPE_MESSAGE:
+                for array in value:
+                    parse(array, getattr(message, field.name).add())
+            else:
+                getattr(message, field.name).extend(value)
+        elif field.label == field.LABEL_REQUIRED:
+            if field.type == field.TYPE_MESSAGE:
+                parse(value, getattr(message, field.name))
+            else:
+                setattr(message, field.name, value)
+        elif field.label == field.LABEL_OPTIONAL:
+            if field.type == field.TYPE_MESSAGE:
+                parse(value, getattr(message, field.name))
+            else:
+                setattr(message, field.name, value)
+        else:
+            raise ValueError("Unknown label")
+    return message
+
+
 class LibraryService(LibraryServiceRpc):
     async def add_tags(self, book_ids, tag_id):
         return await super().add_tags(
