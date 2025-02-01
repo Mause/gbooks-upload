@@ -31,5 +31,5 @@ def test_protoc(snapshot):
         ],
         TagsResponse(),
     )
-    assert out == snapshot
+    assert str(out).strip() == snapshot
     assert MessageToDict(out) == snapshot

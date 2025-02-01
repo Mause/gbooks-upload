@@ -19,6 +19,7 @@
   '''
 # ---
 # name: test_protoc
+  '''
   tags {
     name: "tag_name_1"
     tag_id: "tag_id_1"
@@ -47,7 +48,7 @@
       seconds: 2
     }
   }
-
+  '''
 # ---
 # name: test_protoc.1
   dict({
