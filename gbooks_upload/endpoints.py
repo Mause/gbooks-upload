@@ -3,6 +3,7 @@ from datetime import datetime
 from google.protobuf.timestamp_pb2 import Timestamp
 
 from google_internal_apis import LibraryServiceRpc
+from input_pb2 import TagsResponse
 
 
 def parse(arrays, message):
@@ -46,17 +47,17 @@ class LibraryService(LibraryServiceRpc):
         )
 
     async def list_tags(self):
-        [tags, tagged] = await super().list_tags()
+        res = parse(await super().list_tags(), TagsResponse())
 
         return {
-            "tags": {name: tag_id for name, tag_id, *_ in tags},
+            "tags": {tag.name: tag.tag_id for tag in res.tags},
             "tagged": [
                 {
-                    "book_id": book_id,
-                    "tag_id": tag_id,
-                    "tagged_at": datetime.fromtimestamp(int(tagged_at) / 1000),
+                    "book_id": tagged.book_id,
+                    "tag_id": tagged.tag_id,
+                    "tagged_at": tagged.tagged_at.ToDatetime(),
                 }
-                for book_id, tag_id, tagged_at, *_ in tagged
+                for tagged in res.tagged_items
             ],
         }
 

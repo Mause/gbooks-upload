@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0binput.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"S\n\x03Tag\x12\x0c\n\x04name\x18\x01 \x02(\t\x12\x0e\n\x06tag_id\x18\x02 \x02(\t\x12.\n\ncreated_at\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"X\n\x06Tagged\x12\x0f\n\x07\x62ook_id\x18\x01 \x02(\t\x12\x0e\n\x06tag_id\x18\x02 \x02(\t\x12-\n\ttagged_at\x18\x03 \x02(\x0b\x32\x1a.google.protobuf.Timestamp\"A\n\x0cTagsResponse\x12\x12\n\x04tags\x18\x01 \x03(\x0b\x32\x04.Tag\x12\x1d\n\x0ctagged_items\x18\x02 \x03(\x0b\x32\x07.Tagged')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0binput.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"S\n\x03Tag\x12\x0c\n\x04name\x18\x01 \x02(\t\x12\x0e\n\x06tag_id\x18\x02 \x02(\t\x12.\n\ncreated_at\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"X\n\x06Tagged\x12\x0f\n\x07\x62ook_id\x18\x01 \x02(\t\x12\x0e\n\x06tag_id\x18\x02 \x02(\t\x12-\n\ttagged_at\x18\x03 \x02(\x0b\x32\x1a.google.protobuf.Timestamp\"A\n\x0cTagsResponse\x12\x12\n\x04tags\x18\x01 \x03(\x0b\x32\x04.Tag\x12\x1d\n\x0ctagged_items\x18\x02 \x03(\x0b\x32\x07.Tagged\"+\n\nTagRequest\x12\x1d\n\x0ctagged_items\x18\x01 \x02(\x0b\x32\x07.Tagged')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -28,4 +28,6 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _globals['_TAGGED']._serialized_end=221
   _globals['_TAGSRESPONSE']._serialized_start=223
   _globals['_TAGSRESPONSE']._serialized_end=288
+  _globals['_TAGREQUEST']._serialized_start=290
+  _globals['_TAGREQUEST']._serialized_end=333
 # @@protoc_insertion_point(module_scope)

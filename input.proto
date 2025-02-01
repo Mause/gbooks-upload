@@ -16,3 +16,6 @@ message TagsResponse {
   repeated Tag tags = 1;
   repeated Tagged tagged_items = 2;
 }
+message TagRequest {
+  required Tagged tagged_items = 1;
+}
