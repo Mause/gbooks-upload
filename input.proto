@@ -1,0 +1,3 @@
+message TagsResponse {
+  repeated string tags = 1;
+}
