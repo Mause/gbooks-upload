@@ -1,6 +1,7 @@
 import os
 
 from click.testing import CliRunner
+from google.protobuf.json_format import MessageToDict
 
 from gbooks_upload import main as upload
 from gbooks_upload.endpoints import parse
@@ -17,19 +18,18 @@ def test_hello_world(snapshot):
 
 
 def test_protoc(snapshot):
-    assert (
-        parse(
+    out = parse(
+        [
             [
-                [
-                    ["tag_name_1", "tag_id_1", 1],
-                    ["tag_name_2", "tag_id_2", 2],
-                ],
-                [
-                    ["book_id_1", "tag_id_1", 1],
-                    ["book_id_2", "tag_id_2", 2],
-                ],
+                ["tag_name_1", "tag_id_1", 1],
+                ["tag_name_2", "tag_id_2", 2],
             ],
-            TagsResponse(),
-        )
-        == snapshot
+            [
+                ["book_id_1", "tag_id_1", 1],
+                ["book_id_2", "tag_id_2", 2],
+            ],
+        ],
+        TagsResponse(),
     )
+    assert out == snapshot
+    assert MessageToDict(out) == snapshot

@@ -49,3 +49,31 @@
   }
 
 # ---
+# name: test_protoc.1
+  dict({
+    'taggedItems': list([
+      dict({
+        'bookId': 'book_id_1',
+        'tagId': 'tag_id_1',
+        'taggedAt': '1970-01-01T00:00:01Z',
+      }),
+      dict({
+        'bookId': 'book_id_2',
+        'tagId': 'tag_id_2',
+        'taggedAt': '1970-01-01T00:00:02Z',
+      }),
+    ]),
+    'tags': list([
+      dict({
+        'createdAt': '1970-01-01T00:00:01Z',
+        'name': 'tag_name_1',
+        'tagId': 'tag_id_1',
+      }),
+      dict({
+        'createdAt': '1970-01-01T00:00:02Z',
+        'name': 'tag_name_2',
+        'tagId': 'tag_id_2',
+      }),
+    ]),
+  })
+# ---
