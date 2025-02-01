@@ -17,4 +17,19 @@ def test_hello_world(snapshot):
 
 
 def test_protoc(snapshot):
-    assert parse([[["tag_name", "tag_id", 1]], []], TagsResponse()) == snapshot
+    assert (
+        parse(
+            [
+                [
+                    ["tag_name_1", "tag_id_1", 1],
+                    ["tag_name_2", "tag_id_2", 2],
+                ],
+                [
+                    ["book_id_1", "tag_id_1", 1],
+                    ["book_id_2", "tag_id_2", 2],
+                ],
+            ],
+            TagsResponse(),
+        )
+        == snapshot
+    )

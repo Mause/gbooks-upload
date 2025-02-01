@@ -20,10 +20,31 @@
 # ---
 # name: test_protoc
   tags {
-    name: "tag_name"
-    tag_id: "tag_id"
+    name: "tag_name_1"
+    tag_id: "tag_id_1"
     created_at {
       seconds: 1
+    }
+  }
+  tags {
+    name: "tag_name_2"
+    tag_id: "tag_id_2"
+    created_at {
+      seconds: 2
+    }
+  }
+  tagged_items {
+    book_id: "book_id_1"
+    tag_id: "tag_id_1"
+    tagged_at {
+      seconds: 1
+    }
+  }
+  tagged_items {
+    book_id: "book_id_2"
+    tag_id: "tag_id_2"
+    tagged_at {
+      seconds: 2
     }
   }
 
