@@ -1,4 +1,5 @@
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
 
 message Tag {
   required string name = 1;
@@ -17,5 +18,103 @@ message TagsResponse {
   repeated Tagged tagged_items = 2;
 }
 message TagRequest {
-  required Tagged tagged_items = 1;
+  repeated Tagged tagged_items = 1;
+}
+
+message LibraryDocumentResponse {
+  required LibraryDocument library_documents = 1;
+}
+
+message LibraryDocument {
+  required string book_id = 1;
+  message Book {
+    required string title = 1;
+    repeated string authors = 2;
+    required string publisher = 3;
+    required string published_date = 4;
+    required string description = 5;
+    required int32 page_count = 6;
+    required string version = 7;
+    repeated CoverImage cover_images = 8;
+    required string language = 9;
+    required string url = 10;
+
+    // [0,
+    // [1, 0],
+    // 1,
+    // 1,
+    // [
+    //	'No Dogs in Philly',
+    //  [['u4P3GgAAABBNmM', 1, 1, None, 2, 'Special Sin']],
+    //  '1'
+    // ],
+    // [0, 0],
+    // None,
+    // [['geo', '7']],
+    // None,
+    // [4.147059, '102'],
+    // [[['Fantasy', 'Dark Fantasy']],
+    // [['Horror']],
+    // [['Science Fiction', 'Alien Contact']],
+    // [['Science Fiction', 'Cyberpunk']],
+    // [['Visionary & Metaphysical']]],
+    // None,
+    // None,
+    // None,
+    // None,
+    // None,
+    // 1,
+    // None,
+    // 1,
+    // 1]
+    required int32 unknown1 = 11;
+    repeated int32 unknown2s = 12;
+    required int32 unknown3 = 13;
+    required int32 unknown4 = 14;
+    required Series series = 15;
+    repeated int32 unknown5s = 16;
+    required google.protobuf. StringValue unknown6 = 17;
+    repeated Geo geos = 18;
+    required Rating rating= 19;
+    repeated Genre genres = 20;
+
+    message Geo {
+      required string geo = 1;
+      required string geo_id = 2;
+    }
+
+    message Genre {
+      required string genre = 1;
+      optional string subgenre = 2;
+    }
+
+    message Rating {
+      required float rating = 1;
+      required string number_of_reviews = 2;
+    }
+
+    message Series {
+      required string this_book_title = 1;
+      repeated SingleSeries series=2;
+      required string book_in_series = 3;
+    }
+    message SingleSeries {
+      required string series_id = 1;
+      required int32 unknown1 = 2;
+      required int32 unknown2 = 3;
+      required google.protobuf.StringValue unknown3 = 4;
+      required int32 unknown4 = 5;
+      required string series_name = 6;
+    }
+
+
+    message CoverImage {
+      required string url = 1;
+      required int32 scale = 2;
+      required string color = 3;
+      required int32 width = 4;
+      required int32 height = 5;
+    }
+  }
+  required Book book = 2;
 }
