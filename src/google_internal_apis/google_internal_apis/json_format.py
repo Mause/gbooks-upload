@@ -1,9 +1,12 @@
 from google.protobuf.timestamp_pb2 import Timestamp
+from google.protobuf.wrappers_pb2 import StringValue
 
 
 def dump(message):
     if isinstance(message, Timestamp):
         return str(message.ToMilliseconds())
+    if isinstance(message, StringValue):
+        return message.value
     fields = message.DESCRIPTOR.fields
     arrays = []
     for field in fields:
