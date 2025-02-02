@@ -11,9 +11,23 @@ from input_pb2 import TagsResponse
 def repeated(message, field, value):
     if field.type == field.TYPE_MESSAGE:
         for array in value:
-            parse(array, getattr(message, field.name))
+            parse(array, getattr(message, field.name).add())
     else:
         getattr(message, field.name).extend(value)
+
+
+def required(message, field, value):
+    if field.type == field.TYPE_MESSAGE:
+        parse(value, getattr(message, field.name))
+    else:
+        setattr(message, field.name, value)
+
+
+def optional(message, field, value):
+    if field.type == field.TYPE_MESSAGE:
+        parse(value, getattr(message, field.name))
+    else:
+        setattr(message, field.name, value)
 
 
 def parse(arrays, message):
@@ -28,20 +42,16 @@ def parse(arrays, message):
 
     for field in fields:
         value = arrays[field.number - 1]
-        if field.label == field.LABEL_REPEATED:
-            repeated(message, field, value)
-        elif field.label == field.LABEL_REQUIRED:
-            if field.type == field.TYPE_MESSAGE:
-                parse(value, getattr(message, field.name))
-            else:
-                setattr(message, field.name, value)
-        elif field.label == field.LABEL_OPTIONAL:
-            if field.type == field.TYPE_MESSAGE:
-                parse(value, getattr(message, field.name))
-            else:
-                setattr(message, field.name, value)
-        else:
-            raise ValueError("Unknown label")
+
+        match field.label:
+            case field.LABEL_REPEATED:
+                repeated(message, field, value)
+            case field.LABEL_REQUIRED:
+                required(message, field, value)
+            case field.LABEL_OPTIONAL:
+                optional(message, field, value)
+            case _:
+                raise ValueError("Unknown label")
     remaining = arrays[fields[-1].number :]
     if remaining:
         raise ValueError("Extra fields: " + pformat(remaining))
