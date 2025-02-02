@@ -37,5 +37,5 @@ jobs:
     - run: uv run mypy gbooks_upload/
     - run: |
         uv pip install ruff
-        uv run python google_internal_apis/genny.py
+        uv run make
         git diff --exit-code
