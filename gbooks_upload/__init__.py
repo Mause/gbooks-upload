@@ -17,6 +17,7 @@ from googleapiclient.discovery import Resource, build
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 from oauth2client.tools import argparser, run_flow
+from rich import print
 from rich.logging import RichHandler
 
 import google_internal_apis as endpoints_rpc
@@ -222,6 +223,26 @@ async def list_shelves():
 
     for name in tags["tags"]:
         print(name)
+
+
+@main.group()
+def books():
+    pass
+
+
+@books.command("list", help="list books")
+def list_books():
+    raise NotImplementedError()
+
+
+@books.command("get", help="get book info")
+@click.argument("book_id")
+@verbose_flag
+@asyncio
+async def get_book(book_id: str):
+    service = await get_client(LibraryService)
+
+    print(await service.get_library_document(book_id))
 
 
 def validate_method(ctx, param, value):

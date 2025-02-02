@@ -28,3 +28,6 @@ class LibraryService(LibraryServiceRpc):
                 for book_id, tag_id, tagged_at, *_ in tagged
             ],
         }
+
+    async def get_library_document(self, book_id):
+        return await super().get_library_document([[], book_id])
