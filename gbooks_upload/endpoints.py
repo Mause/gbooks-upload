@@ -5,7 +5,8 @@ from google.protobuf.timestamp_pb2 import Timestamp
 from google.protobuf.wrappers_pb2 import StringValue
 
 from google_internal_apis import LibraryServiceRpc
-from input_pb2 import TagsResponse
+from google_internal_apis.json_format import dump
+from input_pb2 import TagRequest, TagsResponse
 
 
 def repeated(message, field, value):
@@ -60,14 +61,16 @@ def parse(arrays, message):
 
 class LibraryService(LibraryServiceRpc):
     async def add_tags(self, book_ids, tag_id):
-        return await super().add_tags(
-            [
-                [
-                    [book_id, tag_id, str(int(datetime.now().timestamp() * 1000))]
-                    for book_id in book_ids
-                ]
-            ]
-        )
+        message = TagRequest()
+        tagged_at = Timestamp()
+        tagged_at.FromDatetime(datetime.now())
+        for book_id in book_ids:
+            message.tagged_items.add(
+                book_id=book_id,
+                tag_id=tag_id,
+                tagged_at=tagged_at,
+            )
+        return await super().add_tags(dump(message))
 
     async def list_tags(self):
         res = parse(await super().list_tags(), TagsResponse())
