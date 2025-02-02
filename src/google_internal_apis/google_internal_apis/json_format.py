@@ -65,15 +65,17 @@ def parse(arrays, message):
         return message
 
     for field in fields:
-        value = arrays[field.number - 1]
-
         match field.label:
             case field.LABEL_REPEATED:
+                value = arrays[field.number - 1]
                 repeated(message, field, value)
             case field.LABEL_REQUIRED:
+                value = arrays[field.number - 1]
                 required(message, field, value)
             case field.LABEL_OPTIONAL:
-                optional(message, field, value)
+                if len(arrays) >= field.number:
+                    value = arrays[field.number - 1]
+                    optional(message, field, value)
             case _:
                 raise ValueError("Unknown label")
     remaining = arrays[fields[-1].number :]
