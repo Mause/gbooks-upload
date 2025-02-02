@@ -1,9 +1,18 @@
 from datetime import datetime
+from pprint import pformat
 
 from google.protobuf.timestamp_pb2 import Timestamp
 
 from google_internal_apis import LibraryServiceRpc
 from input_pb2 import TagsResponse
+
+
+def repeated(message, field, value):
+    if field.type == field.TYPE_MESSAGE:
+        for array in value:
+            parse(array, getattr(message, field.name))
+    else:
+        getattr(message, field.name).extend(value)
 
 
 def parse(arrays, message):
@@ -15,11 +24,7 @@ def parse(arrays, message):
     for field in fields:
         value = arrays[field.number - 1]
         if field.label == field.LABEL_REPEATED:
-            if field.type == field.TYPE_MESSAGE:
-                for array in value:
-                    parse(array, getattr(message, field.name).add())
-            else:
-                getattr(message, field.name).extend(value)
+            repeated(message, field, value)
         elif field.label == field.LABEL_REQUIRED:
             if field.type == field.TYPE_MESSAGE:
                 parse(value, getattr(message, field.name))
@@ -32,6 +37,9 @@ def parse(arrays, message):
                 setattr(message, field.name, value)
         else:
             raise ValueError("Unknown label")
+    remaining = arrays[fields[-1].number :]
+    if remaining:
+        raise ValueError("Extra fields: " + pformat(remaining))
     return message
 
 
