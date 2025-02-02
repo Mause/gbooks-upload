@@ -2,6 +2,7 @@ from datetime import datetime
 from pprint import pformat
 
 from google.protobuf.timestamp_pb2 import Timestamp
+from google.protobuf.wrappers_pb2 import StringValue
 
 from google_internal_apis import LibraryServiceRpc
 from input_pb2 import TagsResponse
@@ -19,6 +20,10 @@ def parse(arrays, message):
     fields = message.DESCRIPTOR.fields
     if isinstance(message, Timestamp):
         message.FromMilliseconds(int(arrays))
+        return message
+    if isinstance(message, StringValue):
+        if arrays:
+            message.MergeFromString(arrays)
         return message
 
     for field in fields:
