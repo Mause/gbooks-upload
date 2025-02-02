@@ -75,8 +75,13 @@ message LibraryDocument {
     repeated int32 unknown5s = 16;
     required google.protobuf. StringValue unknown6 = 17;
     repeated Geo geos = 18;
-    required Rating rating= 19;
-    repeated Genre genres = 20;
+    required google.protobuf.StringValue unknown7 = 19;
+    required Rating rating = 20;
+    repeated BookGenre genres = 21;
+
+    message BookGenre {
+      required Genre genre = 1;
+    }
 
     message Geo {
       required string geo = 1;
