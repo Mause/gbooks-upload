@@ -3,8 +3,12 @@ from datetime import datetime
 from google.protobuf.timestamp_pb2 import Timestamp
 
 from google_internal_apis import LibraryServiceRpc
+from google_internal_apis.input_pb2 import (
+    LibraryDocumentResponse,
+    TagRequest,
+    TagsResponse,
+)
 from google_internal_apis.json_format import dump, parse
-from input_pb2 import LibraryDocumentResponse, TagRequest, TagsResponse
 
 
 class LibraryService(LibraryServiceRpc):

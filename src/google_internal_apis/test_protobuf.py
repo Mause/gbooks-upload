@@ -2,8 +2,8 @@ import json
 from pathlib import Path
 
 from google.protobuf.json_format import MessageToDict
-from input_pb2 import LibraryDocumentResponse, TagsResponse
 
+from google_internal_apis.input_pb2 import LibraryDocumentResponse, TagsResponse
 from google_internal_apis.json_format import dump, parse
 
 HERE = Path(__file__).parent
