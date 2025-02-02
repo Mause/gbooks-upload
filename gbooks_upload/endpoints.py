@@ -4,7 +4,7 @@ from google.protobuf.timestamp_pb2 import Timestamp
 
 from google_internal_apis import LibraryServiceRpc
 from google_internal_apis.json_format import dump, parse
-from input_pb2 import TagRequest, TagsResponse
+from input_pb2 import LibraryDocumentResponse, TagRequest, TagsResponse
 
 
 class LibraryService(LibraryServiceRpc):
@@ -36,4 +36,6 @@ class LibraryService(LibraryServiceRpc):
         }
 
     async def get_library_document(self, book_id):
-        return await super().get_library_document([[], book_id])
+        return parse(
+            await super().get_library_document([[], book_id]), LibraryDocumentResponse()
+        )
