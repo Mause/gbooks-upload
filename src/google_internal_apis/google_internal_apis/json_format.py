@@ -69,7 +69,7 @@ def parse(arrays, message):
         return message
     if isinstance(message, StringValue):
         if arrays:
-            message.MergeFromString(arrays)
+            message.value = arrays
         return message
     if isinstance(message, Date):
         dt = date.fromisoformat(arrays)
