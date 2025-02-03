@@ -95,7 +95,7 @@ message LibraryDocument {
     }
 
     message Rating {
-      required float rating = 1;
+      required double rating = 1;
       required string number_of_reviews = 2;
     }
 
