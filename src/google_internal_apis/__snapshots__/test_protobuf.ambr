@@ -1,4 +1,176 @@
 # serializer version: 1
+# name: test_parse_complex
+  '''
+  library_documents {
+    book_id: "hdYTCAAAQBAJ"
+    book {
+      title: "No Dogs in Philly"
+      authors: "Andy Futuro"
+      publisher: "June Day Press"
+      published_date: "2014-06-08"
+      description: "&quot;This is one of the most enjoyable books I have read in some time.  It is in the running for one of the top 5 books for 2015.  I know the year is not even half over, but the book is that good.&quot; -Word Refiner <br><br>An OpenBooks science fiction best seller of monsters, Gods, and aliens, unlike anything you&#39;ve ever read.<br><br>Philadelphia. Elzi on every corner, cops just itching to crack a skull, and the Gaespora lordin&#39; it up in their high towers while the rest of the filth dribbled down the sewer. Saru had a way out. All she had to do was find the girl, one skinny stray with blue, blue eyes--bluer than anyone had ever seen--and ten million fat bucks were hers. Except someone was killing blue-eyed girls, and they were A-list, major-league, cold-sweat effective. And something about the end of all existence if she failed. <br>  <br>No Dogs in Philly is a Lovecraftian Cyberpunk Noir with aliens, monsters, extra-dimensional death Gods and a hardboiled female protagonist. It tackles questions of existence and the role humans play in this particular universe. <br><br>Rated R for strong language, mentions of sex, and graphic violence. Contains intense horror and potentially disturbing imagery. <br><br>No Dogs in Philly may appeal to fans of H.P. Lovecraft, Neal Stephenson, China Mieville, Dan Simmons, Gyo, Tank Girl, Swamp Thing, Spawn, science fiction, horror, cyberpunk, absurdism, urban fantasy, new weird, weird fiction, slipstream, and speculative fiction. <br><br>Keywords: dark books, gritty books, noir books, horror books, weird books, strange books, unique books, different books, controversial books, challenging books, surprising books, unsettling books, disturbing books, bizarre books, unusual books, scary books, absurd books, crazy books, violent books, bloody books, gory books, books like sandman slim, books like snowcrash, books like neal stephenson, books like neil stephenson, books like lovecraft, books like william gibson, books like gibson, books with dark covers, books with female heroines, black humor, quick reads, weird book series, books that make you think, gritty thrillers, dark thrillers, sci fi thrillers, weird thrillers, alien books, monster books, metaphysical books.<br>"
+      page_count: 168
+      version: "2.7.6.0.full.2"
+      cover_images {
+        url: "https://books.google.com/books/publisher/content/images/frontcover/hdYTCAAAQBAJ"
+        scale: 1
+        color: "#0458c6"
+        width: 1600
+        height: 2560
+      }
+      language: "en"
+      url: "https://play.google.com/store/books/details?id=hdYTCAAAQBAJ"
+      unknown1: 0
+      unknown2s: 1
+      unknown2s: 0
+      unknown3: 1
+      unknown4: 1
+      series {
+        this_book_title: "No Dogs in Philly"
+        series {
+          series_id: "u4P3GgAAABBNmM"
+          unknown1: 1
+          unknown2: 1
+          unknown4: 2
+          series_name: "Special Sin"
+        }
+        book_in_series: "1"
+      }
+      unknown5s: 0
+      unknown5s: 0
+      geos {
+        geo: "geo"
+        geo_id: "7"
+      }
+      rating {
+        rating: 4.147059
+        number_of_reviews: "102"
+      }
+      genres {
+        genre {
+          genre: "Fantasy"
+          subgenre: "Dark Fantasy"
+        }
+      }
+      genres {
+        genre {
+          genre: "Horror"
+        }
+      }
+      genres {
+        genre {
+          genre: "Science Fiction"
+          subgenre: "Alien Contact"
+        }
+      }
+      genres {
+        genre {
+          genre: "Science Fiction"
+          subgenre: "Cyberpunk"
+        }
+      }
+      genres {
+        genre {
+          genre: "Visionary & Metaphysical"
+        }
+      }
+    }
+  }
+  '''
+# ---
+# name: test_parse_complex.1
+  dict({
+    'libraryDocuments': dict({
+      'book': dict({
+        'authors': list([
+          'Andy Futuro',
+        ]),
+        'coverImages': list([
+          dict({
+            'color': '#0458c6',
+            'height': 2560,
+            'scale': 1,
+            'url': 'https://books.google.com/books/publisher/content/images/frontcover/hdYTCAAAQBAJ',
+            'width': 1600,
+          }),
+        ]),
+        'description': '&quot;This is one of the most enjoyable books I have read in some time.\xa0 It is in the running for one of the top 5 books for 2015.\xa0 I know the year is not even half over, but the book is that good.&quot; -Word Refiner <br><br>An OpenBooks science fiction best seller of monsters, Gods, and aliens, unlike anything you&#39;ve ever read.<br><br>Philadelphia. Elzi on every corner, cops just itching to crack a skull, and the Gaespora lordin&#39; it up in their high towers while the rest of the filth dribbled down the sewer. Saru had a way out. All she had to do was find the girl, one skinny stray with blue, blue eyes--bluer than anyone had ever seen--and ten million fat bucks were hers. Except someone was killing blue-eyed girls, and they were A-list, major-league, cold-sweat effective. And something about the end of all existence if she failed. <br>\xa0 <br>No Dogs in Philly is a Lovecraftian Cyberpunk Noir with aliens, monsters, extra-dimensional death Gods and a hardboiled female protagonist. It tackles questions of existence and the role humans play in this particular universe. <br><br>Rated R for strong language, mentions of sex, and graphic violence. Contains intense horror and potentially disturbing imagery. <br><br>No Dogs in Philly may appeal to fans of H.P. Lovecraft, Neal Stephenson, China Mieville, Dan Simmons, Gyo, Tank Girl, Swamp Thing, Spawn, science fiction, horror, cyberpunk, absurdism, urban fantasy, new weird, weird fiction, slipstream, and speculative fiction. <br><br>Keywords: dark books, gritty books, noir books, horror books, weird books, strange books, unique books, different books, controversial books, challenging books, surprising books, unsettling books, disturbing books, bizarre books, unusual books, scary books, absurd books, crazy books, violent books, bloody books, gory books, books like sandman slim, books like snowcrash, books like neal stephenson, books like neil stephenson, books like lovecraft, books like william gibson, books like gibson, books with dark covers, books with female heroines, black humor, quick reads, weird book series, books that make you think, gritty thrillers, dark thrillers, sci fi thrillers, weird thrillers, alien books, monster books, metaphysical books.<br>',
+        'genres': list([
+          dict({
+            'genre': dict({
+              'genre': 'Fantasy',
+              'subgenre': 'Dark Fantasy',
+            }),
+          }),
+          dict({
+            'genre': dict({
+              'genre': 'Horror',
+            }),
+          }),
+          dict({
+            'genre': dict({
+              'genre': 'Science Fiction',
+              'subgenre': 'Alien Contact',
+            }),
+          }),
+          dict({
+            'genre': dict({
+              'genre': 'Science Fiction',
+              'subgenre': 'Cyberpunk',
+            }),
+          }),
+          dict({
+            'genre': dict({
+              'genre': 'Visionary & Metaphysical',
+            }),
+          }),
+        ]),
+        'geos': list([
+          dict({
+            'geo': 'geo',
+            'geoId': '7',
+          }),
+        ]),
+        'language': 'en',
+        'pageCount': 168,
+        'publishedDate': '2014-06-08',
+        'publisher': 'June Day Press',
+        'rating': dict({
+          'numberOfReviews': '102',
+          'rating': 4.147059,
+        }),
+        'series': dict({
+          'bookInSeries': '1',
+          'series': list([
+            dict({
+              'seriesId': 'u4P3GgAAABBNmM',
+              'seriesName': 'Special Sin',
+              'unknown1': 1,
+              'unknown2': 1,
+              'unknown4': 2,
+            }),
+          ]),
+          'thisBookTitle': 'No Dogs in Philly',
+        }),
+        'title': 'No Dogs in Philly',
+        'unknown1': 0,
+        'unknown2s': list([
+          1,
+          0,
+        ]),
+        'unknown3': 1,
+        'unknown4': 1,
+        'unknown5s': list([
+          0,
+          0,
+        ]),
+        'url': 'https://play.google.com/store/books/details?id=hdYTCAAAQBAJ',
+        'version': '2.7.6.0.full.2',
+      }),
+      'bookId': 'hdYTCAAAQBAJ',
+    }),
+  })
+# ---
 # name: test_protoc
   '''
   tags {

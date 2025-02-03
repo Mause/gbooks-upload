@@ -36,3 +36,5 @@ def test_parse_complex(snapshot):
     out = parse(payload, LibraryDocumentResponse())
     assert str(out).strip() == snapshot
     assert MessageToDict(out) == snapshot
+
+    # TODO: roundtrip test
