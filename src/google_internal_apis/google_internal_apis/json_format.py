@@ -1,5 +1,5 @@
-from pprint import pformat
 import warnings
+from pprint import pformat
 
 from google.protobuf.timestamp_pb2 import Timestamp
 from google.protobuf.wrappers_pb2 import StringValue
