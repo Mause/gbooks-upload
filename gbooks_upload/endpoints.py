@@ -1,33 +1,45 @@
 from datetime import datetime
 
+from google.protobuf.timestamp_pb2 import Timestamp
+
 from google_internal_apis import LibraryServiceRpc
+from google_internal_apis.input_pb2 import (
+    LibraryDocumentResponse,
+    TagRequest,
+    TagsResponse,
+)
+from google_internal_apis.json_format import dump, parse
 
 
 class LibraryService(LibraryServiceRpc):
     async def add_tags(self, book_ids, tag_id):
-        return await super().add_tags(
-            [
-                [
-                    [book_id, tag_id, str(int(datetime.now().timestamp() * 1000))]
-                    for book_id in book_ids
-                ]
-            ]
-        )
+        message = TagRequest()
+        tagged_at = Timestamp()
+        tagged_at.FromDatetime(datetime.now())
+        for book_id in book_ids:
+            message.tagged_items.add(
+                book_id=book_id,
+                tag_id=tag_id,
+                tagged_at=tagged_at,
+            )
+        return await super().add_tags(dump(message))
 
     async def list_tags(self):
-        [tags, tagged] = await super().list_tags()
+        res = parse(await super().list_tags(), TagsResponse())
 
         return {
-            "tags": {name: tag_id for name, tag_id, *_ in tags},
+            "tags": {tag.name: tag.tag_id for tag in res.tags},
             "tagged": [
                 {
-                    "book_id": book_id,
-                    "tag_id": tag_id,
-                    "tagged_at": datetime.fromtimestamp(int(tagged_at) / 1000),
+                    "book_id": tagged.book_id,
+                    "tag_id": tagged.tag_id,
+                    "tagged_at": tagged.tagged_at.ToDatetime(),
                 }
-                for book_id, tag_id, tagged_at, *_ in tagged
+                for tagged in res.tagged_items
             ],
         }
 
     async def get_library_document(self, book_id):
-        return await super().get_library_document([[], book_id])
+        return parse(
+            await super().get_library_document([[], book_id]), LibraryDocumentResponse()
+        )

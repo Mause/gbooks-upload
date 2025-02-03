@@ -1,0 +1,5 @@
+import "google/protobuf/wrappers.proto";
+
+message DummyMessage {
+  optional google.protobuf.StringValue dummy_field = 1;
+}

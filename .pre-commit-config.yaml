@@ -1,5 +1,6 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
+exclude: '_pb2.pyi?$'
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
@@ -13,16 +14,20 @@ repos:
     -   id: debug-statements
     -   id: check-toml
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.9.3
+  rev: v0.9.4
   hooks:
   - id: ruff
     args: [ --fix ]
   - id: ruff-format
 
 - repo: https://github.com/astral-sh/uv-pre-commit
-  rev: 0.5.24
+  rev: 0.5.26
   hooks:
     - id: uv-lock
       files: '.'
     - id: uv-lock
       files: src/google_internal_apis
+-   repo: https://github.com/yoheimuta/protolint
+    rev: v0.53.0
+    hooks:
+    - id: protolint
