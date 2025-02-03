@@ -1,10 +1,21 @@
 import warnings
-from datetime import date
+from datetime import date, datetime
 from pprint import pformat
 
 from google.protobuf.timestamp_pb2 import Timestamp
 from google.protobuf.wrappers_pb2 import StringValue
 from google.type.date_pb2 import Date
+
+__all__ = ["from_datetime", "dump", "parse"]
+
+
+def from_datetime(dt: datetime) -> Timestamp:
+    """
+    Convert a datetime object to a protobuf Timestamp object
+    """
+    m = Timestamp()
+    m.FromDatetime(dt)
+    return m
 
 
 def dump_repeated(message, field):
@@ -14,6 +25,9 @@ def dump_repeated(message, field):
 
 
 def dump(message):
+    """
+    Convert a protobuf message to a recursive list of values
+    """
     if isinstance(message, Timestamp):
         return str(message.ToMilliseconds())
     if isinstance(message, StringValue):
@@ -64,6 +78,9 @@ def optional(message, field, value):
 
 
 def parse(arrays, message):
+    """
+    Convert a recursive list of values to a protobuf message
+    """
     fields = message.DESCRIPTOR.fields
     if isinstance(message, Timestamp):
         message.FromMilliseconds(int(arrays))
