@@ -1,5 +1,6 @@
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
+import "google/type/date.proto";
 
 message Tag {
   required string name = 1;
@@ -31,7 +32,7 @@ message LibraryDocument {
     required string title = 1;
     repeated string authors = 2;
     required string publisher = 3;
-    required string published_date = 4;
+    required google.type.Date published_date = 4;
     required string description = 5;
     required int32 page_count = 6;
     required string version = 7;

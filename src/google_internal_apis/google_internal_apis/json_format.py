@@ -1,8 +1,10 @@
 import warnings
+from datetime import date
 from pprint import pformat
 
 from google.protobuf.timestamp_pb2 import Timestamp
 from google.protobuf.wrappers_pb2 import StringValue
+from google.type.date_pb2 import Date
 
 
 def dump_repeated(message, field):
@@ -16,6 +18,8 @@ def dump(message):
         return str(message.ToMilliseconds())
     if isinstance(message, StringValue):
         return message.value
+    if isinstance(message, Date):
+        return date(year=message.year, month=message.month, day=message.day).isoformat()
     fields = message.DESCRIPTOR.fields
     arrays = []
     for field in fields:
@@ -66,6 +70,12 @@ def parse(arrays, message):
     if isinstance(message, StringValue):
         if arrays:
             message.MergeFromString(arrays)
+        return message
+    if isinstance(message, Date):
+        dt = date.fromisoformat(arrays)
+        message.year = dt.year
+        message.month = dt.month
+        message.day = dt.day
         return message
 
     for field in fields:
