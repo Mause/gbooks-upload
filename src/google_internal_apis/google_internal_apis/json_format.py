@@ -1,4 +1,5 @@
 from pprint import pformat
+import warnings
 
 from google.protobuf.timestamp_pb2 import Timestamp
 from google.protobuf.wrappers_pb2 import StringValue
@@ -80,5 +81,5 @@ def parse(arrays, message):
                 raise ValueError("Unknown label")
     remaining = arrays[fields[-1].number :]
     if remaining:
-        raise ValueError("Extra fields: " + pformat(remaining))
+        warnings.warn("Extra fields: " + pformat(remaining))
     return message
