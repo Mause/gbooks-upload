@@ -1,27 +1,26 @@
 from datetime import datetime
 
-from google.protobuf.timestamp_pb2 import Timestamp
-
 from google_internal_apis import LibraryServiceRpc
 from google_internal_apis.input_pb2 import (
     LibraryDocumentResponse,
     TagRequest,
     TagsResponse,
 )
-from google_internal_apis.json_format import dump, parse
+from google_internal_apis.json_format import dump, from_datetime, parse
 
 
 class LibraryService(LibraryServiceRpc):
     async def add_tags(self, book_ids, tag_id):
-        message = TagRequest()
-        tagged_at = Timestamp()
-        tagged_at.FromDatetime(datetime.now())
-        for book_id in book_ids:
-            message.tagged_items.add(
-                book_id=book_id,
-                tag_id=tag_id,
-                tagged_at=tagged_at,
-            )
+        message = TagRequest(
+            tagged_items=[
+                {
+                    "book_id": book_id,
+                    "tag_id": tag_id,
+                    "tagged_at": from_datetime(datetime.now()),
+                }
+                for book_id in book_ids
+            ]
+        )
         return await super().add_tags(dump(message))
 
     async def list_tags(self):

@@ -1,10 +1,19 @@
 import warnings
-from datetime import date
+from datetime import date, datetime
 from pprint import pformat
 
 from google.protobuf.timestamp_pb2 import Timestamp
 from google.protobuf.wrappers_pb2 import StringValue
 from google.type.date_pb2 import Date
+
+
+def from_datetime(dt: datetime) -> Timestamp:
+    """
+    Convert a datetime object to a protobuf Timestamp object
+    """
+    m = Timestamp()
+    m.FromDatetime(dt)
+    return m
 
 
 def dump_repeated(message, field):
