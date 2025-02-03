@@ -17,7 +17,7 @@ def dump(message):
     if isinstance(message, Timestamp):
         return str(message.ToMilliseconds())
     if isinstance(message, StringValue):
-        return message.value
+        return message.value if message.value else None
     if isinstance(message, Date):
         return date(year=message.year, month=message.month, day=message.day).isoformat()
     fields = message.DESCRIPTOR.fields

@@ -1,13 +1,13 @@
 .PHONY: all clean
 
-all: google_internal_apis/input_pb2.py google_internal_apis/endpoints.py
+all: google_internal_apis/input_pb2.py google_internal_apis/endpoints.py google_internal_apis/dummy_pb2.py
 
 
 google_internal_apis/endpoints.py: endpoints.yaml genny.py
 	python genny.py
 
 clean:
-	rm -f google_internal_apis/input_pb2.py* google_internal_apis/endpoints.py
+	rm -f google_internal_apis/*_pb2.py* google_internal_apis/endpoints.py
 
 PURELIB=$(shell python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])")
 

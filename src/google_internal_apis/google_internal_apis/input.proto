@@ -74,7 +74,7 @@ message LibraryDocument {
     required int32 unknown4 = 14;
     required Series series = 15;
     repeated int32 unknown5s = 16;
-    required google.protobuf. StringValue unknown6 = 17;
+    optional google.protobuf.StringValue unknown6 = 17;
     repeated Geo geos = 18;
     required google.protobuf.StringValue unknown7 = 19;
     required Rating rating = 20;
