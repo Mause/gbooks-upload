@@ -5,6 +5,12 @@ from google.protobuf.timestamp_pb2 import Timestamp
 from google.protobuf.wrappers_pb2 import StringValue
 
 
+def dump_repeated(message, field):
+    if field.type == field.TYPE_MESSAGE:
+        return [dump(item) for item in getattr(message, field.name)]
+    return getattr(message, field.name)
+
+
 def dump(message):
     if isinstance(message, Timestamp):
         return str(message.ToMilliseconds())
@@ -14,10 +20,7 @@ def dump(message):
     arrays = []
     for field in fields:
         if field.label == field.LABEL_REPEATED:
-            if field.type == field.TYPE_MESSAGE:
-                arrays.append([dump(item) for item in getattr(message, field.name)])
-            else:
-                arrays.append(getattr(message, field.name))
+            arrays.append(dump_repeated(message, field))
         elif field.label == field.LABEL_REQUIRED:
             if field.type == field.TYPE_MESSAGE:
                 arrays.append(dump(getattr(message, field.name)))
@@ -66,20 +69,24 @@ def parse(arrays, message):
         return message
 
     for field in fields:
-        match field.label:
-            case field.LABEL_REPEATED:
-                value = arrays[field.number - 1]
-                repeated(message, field, value)
-            case field.LABEL_REQUIRED:
-                value = arrays[field.number - 1]
-                required(message, field, value)
-            case field.LABEL_OPTIONAL:
-                if len(arrays) >= field.number:
-                    value = arrays[field.number - 1]
-                    optional(message, field, value)
-            case _:
-                raise ValueError("Unknown label")
+        parse_field(message, field, arrays)
     remaining = arrays[fields[-1].number :]
     if remaining:
         warnings.warn("Extra fields: " + pformat(remaining))
     return message
+
+
+def parse_field(message, field, arrays):
+    match field.label:
+        case field.LABEL_REPEATED:
+            value = arrays[field.number - 1]
+            repeated(message, field, value)
+        case field.LABEL_REQUIRED:
+            value = arrays[field.number - 1]
+            required(message, field, value)
+        case field.LABEL_OPTIONAL:
+            if len(arrays) >= field.number:
+                value = arrays[field.number - 1]
+                optional(message, field, value)
+        case _:
+            raise ValueError("Unknown label")
