@@ -5,6 +5,23 @@
 
 ### Features
 
+* add dump function ([fde3ebf](https://github.com/Mause/gbooks-upload/commit/fde3ebfcf7591f1ee78dec238cd649da4345b71c))
+* add gbooks-upload books get ([b873a5b](https://github.com/Mause/gbooks-upload/commit/b873a5b10b5b5f49c41817581cda93479ffae022))
+
+
+### Bug Fixes
+
+* add version variables ([18bd684](https://github.com/Mause/gbooks-upload/commit/18bd684074a337b8247e91a3e00364037427a8d2))
+* correct folder name ([6e565b2](https://github.com/Mause/gbooks-upload/commit/6e565b254a2430f04ae17a5be34633b75c39139e))
+* improve optional support ([02ce14b](https://github.com/Mause/gbooks-upload/commit/02ce14b8dfcc17327e1e96c0b1f5c18e784951cd))
+* move generated code ([7d9fd2d](https://github.com/Mause/gbooks-upload/commit/7d9fd2d1d538546bdf2ae5e3e538c805c034f1bd))
+* return from add_multiple_to_shelf ([0617fb2](https://github.com/Mause/gbooks-upload/commit/0617fb2de51203eee19160ca36d1921a5a12d5d3))
+
+## [0.2.0](https://github.com/Mause/gbooks-upload/compare/v0.1.2...v0.2.0) (2025-02-03)
+
+
+### Features
+
 * add gbooks-upload books get ([b873a5b](https://github.com/Mause/gbooks-upload/commit/b873a5b10b5b5f49c41817581cda93479ffae022))
 
 
