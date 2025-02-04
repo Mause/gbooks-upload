@@ -19,6 +19,10 @@ jobs:
         with:
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
 
+      - uses: actions/checkout@v4
+        if: ${{ steps.release-please.outputs.prs_created == 'true' }}
+        with:
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
       - name: update lock file
         if: ${{ steps.release-please.outputs.prs_created == 'true' }}
         run: |
