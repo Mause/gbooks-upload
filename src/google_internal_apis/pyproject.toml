@@ -1,6 +1,6 @@
 [project]
 name = "google_internal_apis"
-version = "0.3.0"
+version = "0.3.1"
 description = "A wrapper around various internal (and undocumented) Google APIs that use grpc and json protobufs."
 authors = [
     {name = "Elliana May", email = "me@mause.me"},

@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.1](https://github.com/Mause/gbooks-upload/compare/google_internal_apis-v0.3.0...google_internal_apis-v0.3.1) (2025-02-04)
+
+
+### Documentation
+
+* add code sample ([367ca55](https://github.com/Mause/gbooks-upload/commit/367ca55763ed9451c4399e37cdf1b8a70509c8ef))
+* add google_internal_apis README.md ([48b0d3c](https://github.com/Mause/gbooks-upload/commit/48b0d3ca9b8477afaffe329dbe9e521625b48c88))
+
 ## [0.3.0](https://github.com/Mause/gbooks-upload/compare/v0.2.0...v0.3.0) (2025-02-04)
 
 
