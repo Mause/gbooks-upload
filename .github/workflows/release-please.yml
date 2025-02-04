@@ -19,20 +19,11 @@ jobs:
         with:
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
 
-      - uses: actions/checkout@v4
-        if: ${{ steps.release-please.outputs.prs_created == 'true' }}
-        with:
-          ref: ${{ fromJson(steps.release-please.outputs.pr).headBranchName }}
-          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
       - name: update lock file
         if: ${{ steps.release-please.outputs.prs_created == 'true' }}
         run: |
           git config user.name "release-please[bot]"
           git config user.email "release-please[bot]@users.noreply.github.com"
           pipx install uv
-          uv sync
-          cd src/google_internal_apis && uv sync
-          git checkout ${{ fromJson(steps.release-please.outputs.pr).headBranchName }}
-          git add .
-          git commit -m "chore: update uv.lock"
-          git push
+
+          python .github/workflows/relock.py '{{ steps.release-please.outputs.prs }}'
