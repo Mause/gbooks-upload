@@ -4,9 +4,11 @@
   "always-update": true,
   "packages": {
     ".": {
+      "package-name": "gbooks-upload",
       "release-type": "python"
     },
     "src/google_internal_apis": {
+      "package-name": "google_internal_apis",
       "release-type": "python"
     }
   },
