@@ -6,7 +6,7 @@
     ".": {
       "release-type": "python"
     },
-    "google_internal_apis": {
+    "src/google_internal_apis": {
       "release-type": "python"
     }
   },
