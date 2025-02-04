@@ -48,8 +48,11 @@ select = ["I", "E", "W", "F", "C", "R"]
 [tool.uv]
 package = true
 
+[tool.uv.workspace]
+members = ["src/*"]
+
 [tool.uv.sources]
-google-internal-apis = { path = "src/google_internal_apis" }
+google-internal-apis = { workspace = true }
 
 [tool.mypy]
 ignore_missing_imports = true
