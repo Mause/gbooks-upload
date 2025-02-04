@@ -23,6 +23,7 @@ jobs:
         if: ${{ steps.release-please.outputs.prs_created == 'true' }}
         with:
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          fetch-depth: 0
       - name: update lock file
         if: ${{ steps.release-please.outputs.prs_created == 'true' }}
         run: |
