@@ -6,7 +6,7 @@ from ghunt.helpers import auth
 from .endpoints import *  # noqa
 from .ghunter import RpcService
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 T = TypeVar("T", bound="RpcService")
 
 

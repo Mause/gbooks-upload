@@ -31,6 +31,7 @@ jobs:
           git config user.email "release-please[bot]@users.noreply.github.com"
           pipx install uv
           uv sync
+          cd src/google_internal_apis && uv sync
           git checkout ${{ fromJson(steps.release-please.outputs.pr).headBranchName }}
           git add .
           git commit -m "chore: update uv.lock"
