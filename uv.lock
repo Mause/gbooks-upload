@@ -536,7 +536,7 @@ wheels = [
 
 [[package]]
 name = "google-internal-apis"
-version = "0.1.0"
+version = "0.2.0"
 source = { editable = "src/google_internal_apis" }
 dependencies = [
     { name = "ghunt", version = "2.2.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
