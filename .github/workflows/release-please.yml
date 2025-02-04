@@ -30,4 +30,4 @@ jobs:
           git config user.email "release-please[bot]@users.noreply.github.com"
           pipx install uv
 
-          python .github/workflows/relock.py '{{ steps.release-please.outputs.prs }}'
+          python .github/workflows/relock.py '${{ steps.release-please.outputs.prs }}'
