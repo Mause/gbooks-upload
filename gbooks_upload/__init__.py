@@ -3,6 +3,7 @@ import json
 import logging
 import time
 from functools import wraps
+from inspect import getdoc
 from json import JSONDecodeError
 from mimetypes import add_type
 from pathlib import Path
@@ -94,6 +95,8 @@ def asyncio(func):
 
 
 def verbose_flag(func):
+    assert getdoc(func), func
+
     @click.option("--verbose", is_flag=True)
     @wraps(func)
     def wrapper(*args, **kwargs):
@@ -195,6 +198,7 @@ def steal(data: dict):
 
 @main.group()
 def shelves():
+    "Commands to manage shelves"
     pass
 
 
@@ -212,12 +216,13 @@ async def get_shelf(service: LibraryService, shelf_name: str):
 T = TypeVar("T", bound=RpcService)
 
 
-@shelves.command("add", help="add book to shelf")
+@shelves.command("add")
 @click.argument("book_id")
 @click.argument("bookshelf")
 @verbose_flag
 @asyncio
 async def add_to_shelf(book_id: str, bookshelf: str):
+    "add book to shelf"
     service = await get_client(LibraryService)
 
     tag_id = await get_shelf(service, bookshelf)
@@ -225,10 +230,11 @@ async def add_to_shelf(book_id: str, bookshelf: str):
     print(await service.add_tags([book_id], tag_id))
 
 
-@shelves.command("list", help="list shelves")
+@shelves.command("list")
 @verbose_flag
 @asyncio
 async def list_shelves():
+    "list shelves"
     service = await get_client(LibraryService)
 
     tags = await service.list_tags()
@@ -239,6 +245,7 @@ async def list_shelves():
 
 @main.group()
 def books():
+    "Commands to manage books"
     pass
 
 
@@ -247,11 +254,12 @@ def list_books():
     raise NotImplementedError()
 
 
-@books.command("get", help="get book info")
+@books.command("get")
 @click.argument("book_id")
 @verbose_flag
 @asyncio
 async def get_book(book_id: str):
+    "get book info"
     service = await get_client(LibraryService)
 
     print(await service.get_library_document(book_id))
@@ -282,6 +290,9 @@ def validate_method(ctx, param, value):
 @verbose_flag
 @asyncio
 async def rpc(service: type[RpcService], method: str, data: Optional[str]):
+    """
+    Perform RPC call via underlying google_internal_apis package
+    """
     service = await get_client(service)
     bound_method = getattr(service, method)
     logging.info(

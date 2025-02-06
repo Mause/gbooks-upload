@@ -8,12 +8,12 @@
   │ --help      Show this message and exit.                                      │
   ╰──────────────────────────────────────────────────────────────────────────────╯
   ╭─ Commands ───────────────────────────────────────────────────────────────────╮
-  │ books                                                                        │
-  │ login        Login to Google with GHunt                                      │
-  │ rpc                                                                          │
-  │ shelves                                                                      │
-  │ steal        Steal the cookie from a Chrome net-export log                   │
-  │ upload       Upload files to Google Books                                    │
+  │ books     Commands to manage books                                           │
+  │ login     Login to Google with GHunt                                         │
+  │ rpc       Perform RPC call via underlying google_internal_apis package       │
+  │ shelves   Commands to manage shelves                                         │
+  │ steal     Steal the cookie from a Chrome net-export log                      │
+  │ upload    Upload files to Google Books                                       │
   ╰──────────────────────────────────────────────────────────────────────────────╯
   
   
