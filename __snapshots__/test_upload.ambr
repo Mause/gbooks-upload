@@ -1,5 +1,5 @@
 # serializer version: 1
-# name: test_hello_world
+# name: test_hello_world[None]
   '''
                                                                                   
    Usage: main [OPTIONS] COMMAND [ARGS]...                                        
@@ -14,6 +14,42 @@
   │ shelves   Commands to manage shelves                                         │
   │ steal     Steal the cookie from a Chrome net-export log                      │
   │ upload    Upload files to Google Books                                       │
+  ╰──────────────────────────────────────────────────────────────────────────────╯
+  
+  
+  '''
+# ---
+# name: test_hello_world[books]
+  '''
+                                                                                  
+   Usage: main books [OPTIONS] COMMAND [ARGS]...                                  
+                                                                                  
+   Commands to manage books                                                       
+                                                                                  
+  ╭─ Options ────────────────────────────────────────────────────────────────────╮
+  │ --help      Show this message and exit.                                      │
+  ╰──────────────────────────────────────────────────────────────────────────────╯
+  ╭─ Commands ───────────────────────────────────────────────────────────────────╮
+  │ get                  get book info                                           │
+  │ list                 list books                                              │
+  ╰──────────────────────────────────────────────────────────────────────────────╯
+  
+  
+  '''
+# ---
+# name: test_hello_world[shelves]
+  '''
+                                                                                  
+   Usage: main shelves [OPTIONS] COMMAND [ARGS]...                                
+                                                                                  
+   Commands to manage shelves                                                     
+                                                                                  
+  ╭─ Options ────────────────────────────────────────────────────────────────────╮
+  │ --help      Show this message and exit.                                      │
+  ╰──────────────────────────────────────────────────────────────────────────────╯
+  ╭─ Commands ───────────────────────────────────────────────────────────────────╮
+  │ add               add book to shelf                                          │
+  │ list              list shelves                                               │
   ╰──────────────────────────────────────────────────────────────────────────────╯
   
   
