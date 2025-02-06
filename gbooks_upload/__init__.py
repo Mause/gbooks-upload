@@ -85,6 +85,14 @@ def main() -> None:
     pass
 
 
+def asyncio(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        return uvloop.run(func(*args, **kwargs))
+
+    return wrapper
+
+
 def verbose_flag(func):
     @click.option("--verbose", is_flag=True)
     @wraps(func)
@@ -98,6 +106,18 @@ def verbose_flag(func):
             raise Abort(e)
 
     return wrapper
+
+
+@main.command()
+@verbose_flag
+@asyncio
+async def login():
+    """
+    Login to Google with GHunt
+    """
+    from ghunt.modules.login import check_and_login
+
+    await check_and_login(None)
 
 
 @main.command()
@@ -153,14 +173,6 @@ def load_json(ctx, param, filename):
             return json.load(f)
     except JSONDecodeError as e:
         raise BadParameter(e) from e
-
-
-def asyncio(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        return uvloop.run(func(*args, **kwargs))
-
-    return wrapper
 
 
 @main.command()

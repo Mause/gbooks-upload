@@ -9,6 +9,7 @@
   ╰──────────────────────────────────────────────────────────────────────────────╯
   ╭─ Commands ───────────────────────────────────────────────────────────────────╮
   │ books                                                                        │
+  │ login        Login to Google with GHunt                                      │
   │ rpc                                                                          │
   │ shelves                                                                      │
   │ steal        Steal the cookie from a Chrome net-export log                   │
