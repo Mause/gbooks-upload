@@ -29,8 +29,8 @@ jobs:
 
       - name: Build release distributions
         run: |
-          # NOTE: put your own distribution build steps here.
           python -m pip install build
+          uv sync && uv run make
           python -m build
           python -m build src/google_internal_apis
 

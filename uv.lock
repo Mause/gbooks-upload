@@ -263,6 +263,18 @@ wheels = [
 ]
 
 [[package]]
+name = "click-man"
+version = "0.5.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "click" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/bc/88/bdbaf663876d0f095adb01542715cfc9b0d70c60e326816f48adcbe98978/click_man-0.5.0.tar.gz", hash = "sha256:2c2b3016c533dd315fa45ef9ab9bfa5bfd71017ea6d5bbcd454c179aee6b2343", size = 20863 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/4a/5e/ffe841db3188774d3edff1f7f208dc606fe56612bd2c452c27c30af8fde3/click_man-0.5.0-py3-none-any.whl", hash = "sha256:d13e4f62691bb2693afd58a9d29f4748ce01eb93220d3b376ef84011fd72504f", size = 8436 },
+]
+
+[[package]]
 name = "colorama"
 version = "0.4.6"
 source = { registry = "https://pypi.org/simple" }
@@ -337,6 +349,7 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "click-man" },
     { name = "jinja2" },
     { name = "mypy" },
     { name = "pdbpp" },
@@ -363,6 +376,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "click-man", specifier = ">=0.5.0" },
     { name = "jinja2", specifier = ">=3.1.5" },
     { name = "mypy", specifier = ">=1.14.1" },
     { name = "pdbpp", specifier = ">=0.10.3,<1.0.0" },
