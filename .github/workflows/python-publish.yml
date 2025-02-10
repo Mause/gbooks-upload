@@ -33,13 +33,14 @@ jobs:
           python -m pip install build
           python -m build
           python -m build src/google_internal_apis
-          cp src/google_internal_apis/dist/* dist/
 
       - name: Upload distributions
         uses: actions/upload-artifact@v4
         with:
           name: release-dists
-          path: dist/
+          path: |
+            dist/
+            src/google_internal_apis/dist/
 
   pypi-publish:
     runs-on: ubuntu-latest
@@ -60,14 +61,20 @@ jobs:
       # ALTERNATIVE: exactly, uncomment the following line instead:
       # url: https://pypi.org/project/YOURPROJECT/${{ github.event.release.name }}
 
+    strategy:
+      matrix:
+        package:
+          - dist/
+          - src/google_internal_apis/dist/
     steps:
       - name: Retrieve release distributions
         uses: actions/download-artifact@v4
         with:
           name: release-dists
-          path: dist/
+          path: .
 
       - name: Publish release distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+        if: always()
         with:
-          packages-dir: dist/
+          packages-dir: ${{ matrix.package }}
