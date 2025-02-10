@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.4.0](https://github.com/Mause/gbooks-upload/compare/gbooks-upload-v0.3.0...gbooks-upload-v0.4.0) (2025-02-10)
+
+
+### Features
+
+* add login command ([044fffb](https://github.com/Mause/gbooks-upload/commit/044fffbe8e8fe329d9b80cc16ad23e8422d0374a))
+* use ghunt cookies ([2f4b8f8](https://github.com/Mause/gbooks-upload/commit/2f4b8f8df13b810e9cb09e0449b64274bf55080b))
+
+
+### Documentation
+
+* ensure all commands are documented ([5d66c24](https://github.com/Mause/gbooks-upload/commit/5d66c240a6d4e0fee1f935f4688071162f442bfc))
+
 ## [0.3.0](https://github.com/Mause/gbooks-upload/compare/gbooks-upload-v0.2.0...gbooks-upload-v0.3.0) (2025-02-06)
 
 
