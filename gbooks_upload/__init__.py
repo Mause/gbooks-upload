@@ -30,7 +30,7 @@ from .drive import upload_with_drive
 from .endpoints import LibraryService
 from .scotty import steal_cookie, upload_with_scotty
 
-__version__ = "0.4.1"
+__version__ = "0.5.0"
 
 logging.basicConfig(handlers=[RichHandler(rich_tracebacks=True)])
 
