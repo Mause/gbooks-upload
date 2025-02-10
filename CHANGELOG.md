@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/Mause/gbooks-upload/compare/gbooks-upload-v0.4.0...gbooks-upload-v0.4.1) (2025-02-10)
+
+
+### Bug Fixes
+
+* bump google-internal-apis ([2be3ec1](https://github.com/Mause/gbooks-upload/commit/2be3ec11fb06ae2fa79c4da4327666225e6b4c41))
+
 ## [0.4.0](https://github.com/Mause/gbooks-upload/compare/gbooks-upload-v0.3.0...gbooks-upload-v0.4.0) (2025-02-10)
 
 
