@@ -62,6 +62,7 @@ jobs:
       # url: https://pypi.org/project/YOURPROJECT/${{ github.event.release.name }}
 
     strategy:
+      fail-fast: true
       matrix:
         package:
           - dist/
