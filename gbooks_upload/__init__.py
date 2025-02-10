@@ -3,6 +3,7 @@ import json
 import logging
 import time
 from functools import wraps
+from inspect import getdoc
 from json import JSONDecodeError
 from mimetypes import add_type
 from pathlib import Path
@@ -85,7 +86,17 @@ def main() -> None:
     pass
 
 
+def asyncio(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        return uvloop.run(func(*args, **kwargs))
+
+    return wrapper
+
+
 def verbose_flag(func):
+    assert getdoc(func), func
+
     @click.option("--verbose", is_flag=True)
     @wraps(func)
     def wrapper(*args, **kwargs):
@@ -98,6 +109,18 @@ def verbose_flag(func):
             raise Abort(e)
 
     return wrapper
+
+
+@main.command()
+@verbose_flag
+@asyncio
+async def login():
+    """
+    Login to Google with GHunt
+    """
+    from ghunt.modules.login import check_and_login
+
+    await check_and_login(None)
 
 
 @main.command()
@@ -155,14 +178,6 @@ def load_json(ctx, param, filename):
         raise BadParameter(e) from e
 
 
-def asyncio(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        return uvloop.run(func(*args, **kwargs))
-
-    return wrapper
-
-
 @main.command()
 @click.argument(
     "filename",
@@ -183,6 +198,7 @@ def steal(data: dict):
 
 @main.group()
 def shelves():
+    "Commands to manage shelves"
     pass
 
 
@@ -200,12 +216,13 @@ async def get_shelf(service: LibraryService, shelf_name: str):
 T = TypeVar("T", bound=RpcService)
 
 
-@shelves.command("add", help="add book to shelf")
+@shelves.command("add")
 @click.argument("book_id")
 @click.argument("bookshelf")
 @verbose_flag
 @asyncio
 async def add_to_shelf(book_id: str, bookshelf: str):
+    "add book to shelf"
     service = await get_client(LibraryService)
 
     tag_id = await get_shelf(service, bookshelf)
@@ -213,10 +230,11 @@ async def add_to_shelf(book_id: str, bookshelf: str):
     print(await service.add_tags([book_id], tag_id))
 
 
-@shelves.command("list", help="list shelves")
+@shelves.command("list")
 @verbose_flag
 @asyncio
 async def list_shelves():
+    "list shelves"
     service = await get_client(LibraryService)
 
     tags = await service.list_tags()
@@ -227,6 +245,7 @@ async def list_shelves():
 
 @main.group()
 def books():
+    "Commands to manage books"
     pass
 
 
@@ -235,11 +254,12 @@ def list_books():
     raise NotImplementedError()
 
 
-@books.command("get", help="get book info")
+@books.command("get")
 @click.argument("book_id")
 @verbose_flag
 @asyncio
 async def get_book(book_id: str):
+    "get book info"
     service = await get_client(LibraryService)
 
     print(await service.get_library_document(book_id))
@@ -270,6 +290,9 @@ def validate_method(ctx, param, value):
 @verbose_flag
 @asyncio
 async def rpc(service: type[RpcService], method: str, data: Optional[str]):
+    """
+    Perform RPC call via underlying google_internal_apis package
+    """
     service = await get_client(service)
     bound_method = getattr(service, method)
     logging.info(
