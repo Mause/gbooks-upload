@@ -1,4 +1,5 @@
 from datetime import datetime
+from uuid import uuid4
 
 from google_internal_apis import LibraryServiceRpc
 from google_internal_apis.input_pb2 import (
@@ -42,3 +43,7 @@ class LibraryService(LibraryServiceRpc):
         return parse(
             await super().get_library_document([[], book_id]), LibraryDocumentResponse()
         )
+
+    async def create_custom_tag(self, tag_name):
+        ident = str(uuid4())
+        return await super().create_custom_tag([ident, tag_name])
