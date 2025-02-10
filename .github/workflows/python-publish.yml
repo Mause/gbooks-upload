@@ -79,3 +79,4 @@ jobs:
         if: always()
         with:
           packages-dir: ${{ matrix.package }}
+          skip-existing: true
