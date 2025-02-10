@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/Mause/gbooks-upload/compare/gbooks-upload-v0.4.1...gbooks-upload-v0.5.0) (2025-02-10)
+
+
+### Features
+
+* add LibraryService#create_custom_tag ([9287167](https://github.com/Mause/gbooks-upload/commit/92871672646f35a8356884f713ec353248a0255d))
+
 ## [0.4.1](https://github.com/Mause/gbooks-upload/compare/gbooks-upload-v0.4.0...gbooks-upload-v0.4.1) (2025-02-10)
 
 
