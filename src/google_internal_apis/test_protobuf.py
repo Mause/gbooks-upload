@@ -1,14 +1,51 @@
 import json
 from pathlib import Path
+from unittest.mock import Mock
+from urllib.parse import urlparse, urlunparse
 
+from ghunt.helpers.auth import GHuntCreds
 from google.protobuf.json_format import MessageToDict
 from google.protobuf.wrappers_pb2 import StringValue
+from httpx import AsyncClient
+from pytest import mark, raises
+from vcr import VCR
 
 from google_internal_apis.dummy_pb2 import DummyMessage
+from google_internal_apis.endpoints import WaaRpc
 from google_internal_apis.input_pb2 import LibraryDocumentResponse, TagsResponse
 from google_internal_apis.json_format import dump, parse
 
 HERE = Path(__file__).parent
+
+
+@mark.asyncio
+async def test_case():
+    def filt(r):
+        r.headers.pop("Cookie", None)
+        r.headers.pop("Authorization", None)
+
+        url = urlparse(r.uri)
+        r.uri = urlunparse(
+            (
+                url.scheme,
+                url.netloc,
+                url.path,
+                url.params,
+                "",  # url.query,
+                url.fragment,
+            )
+        )
+
+        return r
+
+    with VCR(before_record_request=filt).use_cassette("test_case.yaml"):
+        creds = Mock(spec=GHuntCreds)
+        creds.are_creds_loaded.return_value = True
+        creds.cookies = {"SAPISID": "test"}
+        client = WaaRpc(creds, AsyncClient())
+
+        with raises(Exception):
+            await client.ping()
 
 
 def test_protoc(snapshot):

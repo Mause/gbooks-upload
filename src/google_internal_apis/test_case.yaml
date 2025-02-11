@@ -1,0 +1,68 @@
+interactions:
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - Keep-Alive
+      content-length:
+      - '0'
+      content-type:
+      - application/json+protobuf
+      host:
+      - waa-pa.clients6.google.com
+      origin:
+      - https://play.google.com
+      referer:
+      - https://play.google.com
+      user-agent:
+      - Mozilla/5.0 (Windows NT 10.0; rv:68.0) Gecko/20100101 Firefox/68.0
+      x-goog-api-key:
+      - AIzaSyCWq1--9JnN9QM7k57Rc_qmt9c0OVy0rME
+      x-user-agent:
+      - grpc-web-javascript/0.1
+    method: POST
+    uri: https://waa-pa.clients6.google.com/$rpc/google.internal.waa.v1.Waa/Ping
+  response:
+    content: '[16,"Request is missing required authentication credential. Expected
+      OAuth 2 access token, login cookie or other valid authentication credential.
+      See https://developers.google.com/identity/sign-in/web/devconsole-project.",[["type.googleapis.com/google.rpc.ErrorInfo",["CREDENTIALS_MISSING","googleapis.com",[["method","google.internal.waa.v1.Waa.Ping"],["service","waa-pa.googleapis.com"]]]]]]'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Origin:
+      - https://play.google.com
+      Access-Control-Expose-Headers:
+      - www-authenticate,vary,vary,vary,content-encoding,date,server,content-length
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json+protobuf; charset=UTF-8
+      Date:
+      - Tue, 11 Feb 2025 16:00:20 GMT
+      Server:
+      - ESF
+      Strict-Transport-Security:
+      - max-age=10886400; includeSubdomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      WWW-Authenticate:
+      - Bearer realm="https://accounts.google.com/"
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+    http_version: HTTP/1.1
+    status_code: 401
+version: 1
