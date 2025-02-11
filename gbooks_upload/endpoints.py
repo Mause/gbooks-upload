@@ -46,4 +46,5 @@ class LibraryService(LibraryServiceRpc):
 
     async def create_custom_tag(self, tag_name):
         ident = str(uuid4())
-        return await super().create_custom_tag([ident, tag_name])
+        await super().create_custom_tag([ident, tag_name])
+        return ident
