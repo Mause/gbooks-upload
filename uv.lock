@@ -541,6 +541,7 @@ source = { editable = "src/google_internal_apis" }
 dependencies = [
     { name = "ghunt", version = "2.2.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "ghunt", version = "2.2.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "googleapis-common-protos" },
 ]
 
 [package.dev-dependencies]
@@ -555,7 +556,10 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "ghunt", specifier = ">=0.1" }]
+requires-dist = [
+    { name = "ghunt", specifier = ">=0.1" },
+    { name = "googleapis-common-protos", specifier = ">=1.66.0" },
+]
 
 [package.metadata.requires-dev]
 dev = [
