@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/Mause/gbooks-upload/compare/google_internal_apis-v0.3.1...google_internal_apis-v0.3.2) (2025-02-11)
+
+
+### Bug Fixes
+
+* add missing googleapis-common-protos dependency ([56e5eaa](https://github.com/Mause/gbooks-upload/commit/56e5eaa51e007eb74b67d1fc08d1de2ca5ce5021))
+
 ## [0.3.1](https://github.com/Mause/gbooks-upload/compare/google_internal_apis-v0.3.0...google_internal_apis-v0.3.1) (2025-02-04)
 
 
