@@ -1,15 +1,14 @@
-from ghunt.objects.base import GHuntCreds
-from ghunt.errors import *
-import ghunt.globals as gb
-from ghunt.objects.apis import GAPI, EndpointConfig
-from ghunt.parsers.calendar import Calendar, CalendarEvents
-
-import httpx
-
-from typing import *
 import inspect
 import json
 from datetime import datetime, timezone
+from typing import *
+
+import ghunt.globals as gb
+import httpx
+from ghunt.errors import *
+from ghunt.objects.apis import GAPI, EndpointConfig
+from ghunt.objects.base import GHuntCreds
+from ghunt.parsers.calendar import Calendar, CalendarEvents
 
 
 class CalendarHttp(GAPI):

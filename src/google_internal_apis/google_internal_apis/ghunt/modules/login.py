@@ -1,13 +1,12 @@
+from pathlib import Path
 from typing import *
 
 import httpx
-from pathlib import Path
-
 from ghunt import globals as gb
-from ghunt.helpers.utils import *
-from ghunt.helpers import auth
-from ghunt.objects.base import GHuntCreds
 from ghunt.errors import GHuntInvalidSession
+from ghunt.helpers import auth
+from ghunt.helpers.utils import *
+from ghunt.objects.base import GHuntCreds
 
 
 async def check_and_login(as_client: httpx.AsyncClient, clean: bool = False) -> None:

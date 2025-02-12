@@ -1,9 +1,9 @@
 from typing import TypeVar
 
 import httpx
-from .ghunt.helpers import auth
 
 from .endpoints import *  # noqa
+from .ghunt.helpers import auth
 from .ghunter import RpcService
 
 __version__ = "0.6.1"

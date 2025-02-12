@@ -1,11 +1,8 @@
-from typing import *
-from pathlib import Path
-import json
-from dateutil.relativedelta import relativedelta
-from datetime import datetime
 import base64
-
-import httpx
+import json
+from datetime import datetime
+from pathlib import Path
+from typing import *
 
 from ..errors import GHuntInvalidSession
 

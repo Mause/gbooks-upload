@@ -1,10 +1,5 @@
 from typing import *
 
-import httpx
-from ghunt.helpers.utils import get_httpx_client
-from ghunt.helpers import auth
-from ghunt.objects.base import GHuntCreds, SmartObj
-
 
 # class Session(SmartObj):
 #     def __init__(self, client: httpx.AsyncClient = None) -> None:
