@@ -6830,5 +6830,5 @@ permissions = [
     "workstations.workstations.start",
     "workstations.workstations.stop",
     "workstations.workstations.update",
-    "workstations.workstations.use"
+    "workstations.workstations.use",
 ]

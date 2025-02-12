@@ -1,4 +1,1 @@
-metadata = {
-    "version": "2.3.3",
-    "name": "🕷️  Spider Edition"
-}
+metadata = {"version": "2.3.3", "name": "🕷️  Spider Edition"}

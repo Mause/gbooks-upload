@@ -5,6 +5,7 @@ import httpx
 from .ghunt.knowledge.keys import keys
 from .ghunt.objects.apis import GAPI
 from .ghunt.objects.base import GHuntCreds
+
 gb.init_globals()
 
 keys.update(
