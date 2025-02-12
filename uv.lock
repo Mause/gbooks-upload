@@ -339,7 +339,7 @@ wheels = [
 
 [[package]]
 name = "gbooks-upload"
-version = "0.5.1"
+version = "0.6.0"
 source = { editable = "." }
 dependencies = [
     { name = "google-api-python-client" },
