@@ -1,7 +1,7 @@
 from typing import TypeVar
 
 import httpx
-from . ghunt.helpers import auth
+from .ghunt.helpers import auth
 
 from .endpoints import *  # noqa
 from .ghunter import RpcService

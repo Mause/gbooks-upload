@@ -8,11 +8,12 @@ class DataBridge(SmartObj):
     def __init__(self):
         self.data = None
 
-class Server(BaseHTTPRequestHandler):    
+
+class Server(BaseHTTPRequestHandler):
     def _set_response(self):
         self.send_response(200)
-        self.send_header('Content-type', 'text/html')
-        self.send_header('Access-Control-Allow-Origin','*')
+        self.send_header("Content-type", "text/html")
+        self.send_header("Access-Control-Allow-Origin", "*")
         self.end_headers()
 
     def do_GET(self):
@@ -22,9 +23,11 @@ class Server(BaseHTTPRequestHandler):
 
     def do_POST(self):
         if self.path == "/ghunt_feed":
-            content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
-            post_data = self.rfile.read(content_length) # <--- Gets the data itself
-            self.data_bridge.data = post_data.decode('utf-8')
+            content_length = int(
+                self.headers["Content-Length"]
+            )  # <--- Gets the size of data
+            post_data = self.rfile.read(content_length)  # <--- Gets the data itself
+            self.data_bridge.data = post_data.decode("utf-8")
 
             self._set_response()
             self.wfile.write(b"ghunt_received_ok")
@@ -32,8 +35,9 @@ class Server(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         return
 
+
 def run(server_class=HTTPServer, handler_class=Server, port=60067):
-    server_address = ('127.0.0.1', port)
+    server_address = ("127.0.0.1", port)
     handler_class.data_bridge = DataBridge()
     server = server_class(server_address, handler_class)
     try:
