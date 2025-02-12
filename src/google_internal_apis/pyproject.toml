@@ -9,8 +9,12 @@ license = {text = "MIT"}
 requires-python = "<4.0,>=3.11"
 readme = "README.md"
 dependencies = [
-    "ghunt>=2.2.3",
+    "autoslot>=2024.12.1",
+    "bs4>=0.0.2",
     "googleapis-common-protos>=1.66.0",
+    "httpx>=0.28.1",
+    "jsonpickle>=4.0.1",
+    "python-dateutil>=2.9.0.post0",
 ]
 
 [project.urls]
