@@ -566,6 +566,10 @@ dependencies = [
 ]
 
 [package.dev-dependencies]
+cli = [
+    { name = "rich-click" },
+    { name = "uvloop" },
+]
 dev = [
     { name = "jinja2" },
     { name = "mypy" },
@@ -583,11 +587,15 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "ghunt", specifier = ">=0.1.0" },
+    { name = "ghunt", specifier = ">=0.1" },
     { name = "googleapis-common-protos", specifier = ">=1.66.0" },
 ]
 
 [package.metadata.requires-dev]
+cli = [
+    { name = "rich-click", specifier = ">=1.8.5" },
+    { name = "uvloop", specifier = ">=0.21.0" },
+]
 dev = [
     { name = "jinja2", specifier = ">=3.1.5" },
     { name = "mypy", specifier = ">=1.14.1" },

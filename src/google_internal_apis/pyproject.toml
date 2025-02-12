@@ -19,6 +19,9 @@ repository = "https://github.com/Mause/gbooks-upload"
 [tool.setuptools.packages]
 find = { include = ["google_internal_apis"] }
 
+[project.scripts]
+google-internal-apis = "google_internal_apis.cli:rpc"
+
 [dependency-groups]
 dev = [
     "jinja2>=3.1.5",
@@ -32,6 +35,10 @@ dev = [
     "types-requests>=2.32.0.20241016",
     "pytest>=8.3.4",
     "syrupy>=4.8.1",
+]
+cli = [
+    "rich-click>=1.8.5",
+    "uvloop>=0.21.0",
 ]
 
 [tool.ruff.lint]
