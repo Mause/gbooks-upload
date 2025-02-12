@@ -5,14 +5,10 @@ from dateutil.relativedelta import relativedelta
 from datetime import datetime
 import base64
 
-from autoslot import Slots
 import httpx
 
 from ..errors import GHuntInvalidSession
 
-
-# class SmartObj(Slots): # Not Python 3.13 compatible so FUCK it fr fr
-#     pass
 
 class SmartObj():
     pass
