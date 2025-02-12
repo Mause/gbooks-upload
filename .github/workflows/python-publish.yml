@@ -30,7 +30,12 @@ jobs:
       - name: Build release distributions
         run: |
           python -m pip install build
-          uv sync && uv run make
+
+          # build man pages, etc
+          python -m pip install --upgrade pip uv
+          uv sync
+          uv run make
+
           python -m build
           python -m build src/google_internal_apis
 
