@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.5.1](https://github.com/Mause/gbooks-upload/compare/gbooks-upload-v0.5.0...gbooks-upload-v0.5.1) (2025-02-12)
+
+
+### Bug Fixes
+
+* add missing googleapis-common-protos dependency ([56e5eaa](https://github.com/Mause/gbooks-upload/commit/56e5eaa51e007eb74b67d1fc08d1de2ca5ce5021))
+* return generated tag id ([dd194f1](https://github.com/Mause/gbooks-upload/commit/dd194f16265b4ee4529e28f291002a94bacefefb))
+
+
+### Documentation
+
+* add manfile ([a9c8c63](https://github.com/Mause/gbooks-upload/commit/a9c8c63a02141f2d85459b025a0bac2637850239))
+
 ## [0.5.0](https://github.com/Mause/gbooks-upload/compare/gbooks-upload-v0.4.1...gbooks-upload-v0.5.0) (2025-02-10)
 
 
