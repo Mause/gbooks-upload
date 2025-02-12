@@ -3,9 +3,12 @@ from functools import wraps
 from inspect import getdoc
 from typing import Optional
 
-import rich_click as click
-import uvloop
-from click.exceptions import Abort
+try:
+    import rich_click as click
+    import uvloop
+    from click.exceptions import Abort
+except ImportError:
+    raise ImportError("Please install with cli extra")
 
 import google_internal_apis as endpoints_rpc
 
