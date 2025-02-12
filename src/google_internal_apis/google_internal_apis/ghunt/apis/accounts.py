@@ -1,12 +1,11 @@
-from ghunt.objects.base import GHuntCreds
-from ghunt.errors import *
-import ghunt.globals as gb
-from ghunt.objects.apis import GAPI, EndpointConfig
-
-import httpx
-
-from typing import *
 import inspect
+from typing import *
+
+import ghunt.globals as gb
+import httpx
+from ghunt.errors import *
+from ghunt.objects.apis import GAPI, EndpointConfig
+from ghunt.objects.base import GHuntCreds
 
 
 class Accounts(GAPI):
@@ -44,7 +43,7 @@ class Accounts(GAPI):
         )
         self._load_endpoint(endpoint)
 
-        base_url = f"/OAuthLogin"
+        base_url = "/OAuthLogin"
         params = {"source": "ChromiumBrowser", "issueuberauth": 1}
 
         req = await self._query(endpoint.name, as_client, base_url, params)

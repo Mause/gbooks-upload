@@ -1,10 +1,9 @@
-from ghunt import globals as gb
-from ghunt.apis.vision import VisionHttp
+import asyncio
+from base64 import b64encode
 
 import httpx
-
-from base64 import b64encode
-import asyncio
+from ghunt import globals as gb
+from ghunt.apis.vision import VisionHttp
 
 
 async def detect_face(
@@ -33,8 +32,8 @@ async def detect_face(
                 style="italic",
             )
         else:
-            gb.rc.print(f"🎭 [+] Face detected !", style="italic bold")
+            gb.rc.print("🎭 [+] Face detected !", style="italic bold")
     else:
-        gb.rc.print(f"🎭 No face detected.", style="italic bright_black")
+        gb.rc.print("🎭 No face detected.", style="italic bright_black")
 
     return faces_results

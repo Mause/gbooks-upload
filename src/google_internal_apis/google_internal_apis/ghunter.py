@@ -1,7 +1,8 @@
 from email.message import Message
 
-from .ghunt import globals as gb
 import httpx
+
+from .ghunt import globals as gb
 from .ghunt.knowledge.keys import keys
 from .ghunt.objects.apis import GAPI, EndpointConfig
 from .ghunt.objects.base import GHuntCreds

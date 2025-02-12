@@ -1,23 +1,14 @@
-from pathlib import Path
-
 # from PIL import Image
 import hashlib
-from typing import *
-from time import time
-from datetime import datetime, timezone
-from dateutil.parser import isoparse
 from copy import deepcopy
-import jsonpickle
-import json
-from packaging.version import parse as parse_version
+from time import time
+from typing import *
 
 import httpx
 
 # import imagehash
-from io import BytesIO
 
 # from ghunt import globals as gb
-from .. import version as current_version
 
 
 def gen_sapisidhash(
@@ -40,4 +31,3 @@ def is_headers_syntax_good(headers: Dict[str, str]) -> bool:
         return True
     except:
         return False
-

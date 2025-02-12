@@ -1,14 +1,13 @@
-from ghunt.objects.base import GHuntCreds
-from ghunt.errors import *
-import ghunt.globals as gb
-from ghunt.objects.apis import GAPI, EndpointConfig
-from ghunt.parsers.digitalassetslinks import DalStatements
-
-import httpx
-
-from typing import *
 import inspect
 import json
+from typing import *
+
+import ghunt.globals as gb
+import httpx
+from ghunt.errors import *
+from ghunt.objects.apis import GAPI, EndpointConfig
+from ghunt.objects.base import GHuntCreds
+from ghunt.parsers.digitalassetslinks import DalStatements
 
 
 class DigitalAssetsLinksHttp(GAPI):
@@ -50,11 +49,11 @@ class DigitalAssetsLinksHttp(GAPI):
             raise GHuntParamsInputError(
                 f"[DigitalAssetsLinks API list statements] website and {android_package_name if android_package_name else android_cert_fingerprint} can't be both put at the same time."
             )
-        elif not website and not (android_package_name and android_cert_fingerprint):
+        if not website and not (android_package_name and android_cert_fingerprint):
             raise GHuntParamsInputError(
                 "[DigitalAssetsLinks API list statements] Please , android_package_name and android_cert_ingerprint."
             )
-        elif not (website or android_package_name or android_cert_fingerprint):
+        if not (website or android_package_name or android_cert_fingerprint):
             raise GHuntParamsInputError(
                 "[DigitalAssetsLinks API list statements] Please choose at least one parameter between website, android_package_name and android_cert_ingerprint."
             )

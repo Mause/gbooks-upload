@@ -1,14 +1,12 @@
-from ghunt.objects.base import GHuntCreds
-from ghunt.errors import *
-import ghunt.globals as gb
-from ghunt.objects.apis import GAPI, EndpointConfig
-from ghunt.parsers.clientauthconfig import CacBrand
-
-import httpx
-
-from typing import *
 import inspect
-import json
+from typing import *
+
+import ghunt.globals as gb
+import httpx
+from ghunt.errors import *
+from ghunt.objects.apis import GAPI, EndpointConfig
+from ghunt.objects.base import GHuntCreds
+from ghunt.parsers.clientauthconfig import CacBrand
 
 
 class FireconsolePaHttp(GAPI):

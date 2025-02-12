@@ -2,8 +2,9 @@
 
 
 def init_globals():
-    from .objects.utils import TMPrinter
     from rich.console import Console
+
+    from .objects.utils import TMPrinter
 
     global config, tmprinter, rc
 

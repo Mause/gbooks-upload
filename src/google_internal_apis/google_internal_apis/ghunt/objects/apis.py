@@ -1,17 +1,16 @@
-from ..errors import GHuntCorruptedHeadersError
-from ..helpers.knowledge import get_origin_of_key, get_api_key
-from ..objects.base import GHuntCreds, SmartObj
-from ..helpers.utils import *
-from ..errors import *
-from ..helpers.auth import *
-
-import httpx
 import asyncio
-
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import *
-from dataclasses import dataclass
 
+import httpx
+
+from ..errors import *
+from ..errors import GHuntCorruptedHeadersError
+from ..helpers.auth import *
+from ..helpers.knowledge import get_api_key, get_origin_of_key
+from ..helpers.utils import *
+from ..objects.base import GHuntCreds, SmartObj
 
 # APIs objects
 
@@ -62,7 +61,7 @@ class GAPI(SmartObj):
     def _load_api(self, creds: GHuntCreds, headers: Dict[str, str]):
         if not creds.are_creds_loaded():
             raise GHuntInsufficientCreds(
-                f"This API requires a loaded GHuntCreds object, but it is not."
+                "This API requires a loaded GHuntCreds object, but it is not."
             )
 
         if not is_headers_syntax_good(headers):
@@ -86,7 +85,7 @@ class GAPI(SmartObj):
         if endpoint.authentication_mode in ["sapisidhash", "cookies_only"]:
             if not (cookies := self.creds.cookies):
                 raise GHuntInsufficientCreds(
-                    f"This endpoint requires the cookies in the GHuntCreds object, but they aren't loaded."
+                    "This endpoint requires the cookies in the GHuntCreds object, but they aren't loaded."
                 )
 
         if key_name := endpoint.require_key:
@@ -107,7 +106,7 @@ class GAPI(SmartObj):
         if endpoint.authentication_mode == "sapisidhash":
             if not (sapisidhash := cookies.get("SAPISID")):
                 raise GHuntInsufficientCreds(
-                    f"This endpoint requires the SAPISID cookie in the GHuntCreds object, but it isn't loaded."
+                    "This endpoint requires the SAPISID cookie in the GHuntCreds object, but it isn't loaded."
                 )
 
             headers = {
@@ -144,7 +143,7 @@ class GAPI(SmartObj):
                 ).replace(tzinfo=timezone.utc)
 
             # If there are no registered authorization token for the current API, or if the token has expired
-            if (not self.api_name in creds.android.authorization_tokens) or (
+            if (self.api_name not in creds.android.authorization_tokens) or (
                 present and datetime.now(timezone.utc) > expiry_date
             ):
                 token, _, expiry_timestamp = await android_oauth_app(

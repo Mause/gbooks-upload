@@ -1,15 +1,14 @@
-from xmlrpc.client import Boolean
-from dateutil.relativedelta import relativedelta
-from beautifultable import BeautifulTable
-import httpx
-
-from typing import *
 from copy import deepcopy
+from typing import *
+from xmlrpc.client import Boolean
 
-from ghunt.parsers.calendar import Calendar, CalendarEvents
+import httpx
+from beautifultable import BeautifulTable
+from dateutil.relativedelta import relativedelta
+from ghunt.apis.calendar import CalendarHttp
 from ghunt.objects.base import GHuntCreds
 from ghunt.objects.utils import TMPrinter
-from ghunt.apis.calendar import CalendarHttp
+from ghunt.parsers.calendar import Calendar, CalendarEvents
 
 
 async def fetch_all(

@@ -1,14 +1,13 @@
-from ghunt.objects.base import GHuntCreds
-from ghunt.errors import *
-import ghunt.globals as gb
-from ghunt.objects.apis import GAPI, EndpointConfig
-from ghunt.parsers.playgames import PlayedGames, PlayerAchievements, PlayerProfile
-
-import httpx
-
-from typing import *
 import inspect
 import json
+from typing import *
+
+import ghunt.globals as gb
+import httpx
+from ghunt.errors import *
+from ghunt.objects.apis import GAPI, EndpointConfig
+from ghunt.objects.base import GHuntCreds
+from ghunt.parsers.playgames import PlayedGames, PlayerAchievements, PlayerProfile
 
 
 class PlayGames(GAPI):
@@ -54,7 +53,7 @@ class PlayGames(GAPI):
         # Parsing
         data = json.loads(req.text)
         player_profile = PlayerProfile()
-        if not "displayPlayer" in data:
+        if "displayPlayer" not in data:
             return False, player_profile
 
         player_profile._scrape(data["displayPlayer"])
@@ -85,7 +84,7 @@ class PlayGames(GAPI):
         # Parsing
         data = json.loads(req.text)
         played_games = PlayedGames()
-        if not "items" in data:
+        if "items" not in data:
             return False, "", played_games
 
         next_page_token = data.get("nextPageToken", "")
@@ -122,7 +121,7 @@ class PlayGames(GAPI):
         # Parsing
         data = json.loads(req.text)
         achievements = PlayerAchievements()
-        if not "items" in data:
+        if "items" not in data:
             return False, "", achievements
 
         next_page_token = ""

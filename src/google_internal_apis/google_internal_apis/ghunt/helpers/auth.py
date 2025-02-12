@@ -1,18 +1,19 @@
 import asyncio
-import json
 import base64
+import json
 from typing import *
 
 import httpx
 from bs4 import BeautifulSoup as bs
 
+from ..errors import *
+from ..knowledge.services import services_baseurls
+
 # from ghunt import globals as gb
 from ..objects.base import GHuntCreds
-from ..errors import *
-from .utils import *
 from . import listener
 from .knowledge import get_domain_of_service, get_package_sig
-from ..knowledge.services import services_baseurls
+from .utils import *
 
 
 async def android_master_auth(
@@ -96,7 +97,7 @@ async def gen_osid(
     }
 
     req = await as_client.get(
-        f"https://accounts.google.com/ServiceLogin",
+        "https://accounts.google.com/ServiceLogin",
         params=params,
         cookies=cookies,
         headers=gb.config.headers,
@@ -120,7 +121,7 @@ async def gen_osid(
         headers=headers,
     )
 
-    if not "OSID" in req.cookies:
+    if "OSID" not in req.cookies:
         raise GHuntOSIDAuthError("[-] No OSID header detected, exiting...")
 
     generated_osids[service] = req.cookies["OSID"]
@@ -263,10 +264,10 @@ def auth_dialog() -> Tuple[Dict[str, str], str]:
         oauth_token = data["oauth_token"]
 
     elif choice == "3":
-        oauth_token = input(f"OAuth token => ").strip('" ')
+        oauth_token = input("OAuth token => ").strip('" ')
 
     elif choice == "4":
-        master_token = input(f"Master token => ").strip('" ')
+        master_token = input("Master token => ").strip('" ')
 
     else:
         exit("Please choose a valid choice. Exiting...")
@@ -282,10 +283,9 @@ async def load_and_auth(as_client: httpx.AsyncClient, help=True) -> GHuntCreds:
     except GHuntInvalidSession as e:
         if help:
             raise GHuntInvalidSession(
-                f"Please generate a new session by doing => ghunt login"
+                "Please generate a new session by doing => ghunt login"
             ) from e
-        else:
-            raise e
+        raise e
 
     await check_and_gen(as_client, creds)
 

@@ -1,18 +1,17 @@
-from dateutil.relativedelta import relativedelta
-from datetime import datetime
 import json
-from geopy import distance
-from geopy.geocoders import Nominatim
+from datetime import datetime
 from typing import *
 
 import httpx
 from alive_progress import alive_bar
-
+from dateutil.relativedelta import relativedelta
+from geopy import distance
+from geopy.geocoders import Nominatim
 from ghunt import globals as gb
-from ghunt.objects.base import *
-from ghunt.helpers.utils import *
-from ghunt.objects.utils import *
 from ghunt.helpers.knowledge import get_gmaps_type_translation
+from ghunt.helpers.utils import *
+from ghunt.objects.base import *
+from ghunt.objects.utils import *
 
 
 def get_datetime(datepublished: str):
@@ -195,18 +194,17 @@ def translate_confidence(percents: int):
     """Translates the percents number to a more human-friendly text"""
     if percents >= 100:
         return "Extremely high"
-    elif percents >= 80:
+    if percents >= 80:
         return "Very high"
-    elif percents >= 60:
+    if percents >= 60:
         return "Little high"
-    elif percents >= 40:
+    if percents >= 40:
         return "Okay"
-    elif percents >= 20:
+    if percents >= 20:
         return "Low"
-    elif percents >= 10:
+    if percents >= 10:
         return "Very low"
-    else:
-        return "Extremely low"
+    return "Extremely low"
 
 
 def sanitize_location(location: Dict[str, str]):
@@ -225,7 +223,7 @@ def sanitize_location(location: Dict[str, str]):
         town = location["municipality"]
     else:
         not_town = True
-    if not "country" in location:
+    if "country" not in location:
         not_country = True
         location["country"] = country
     if not_country and not_town:
@@ -244,7 +242,7 @@ def calculate_probable_location(
     radius = gmaps_radius
 
     locations = {}
-    tmprinter.out(f"Calculation of the distance of each review...")
+    tmprinter.out("Calculation of the distance of each review...")
     for nb, review in enumerate(reviews_and_photos):
         if (
             not review.location.position.latitude
@@ -467,14 +465,14 @@ def output(
             for tag, tag_count in list(tags_counts.items()):
                 if nb >= 7:
                     break
-                elif tag.lower() == type:
+                if tag.lower() == type:
                     continue
                 print(f"- {tag} ({tag_count})")
                 nb += 1
 
         if unknown_trads:
             print(
-                f"\n⚠️ The following gmaps types haven't been found in GHunt's knowledge."
+                "\n⚠️ The following gmaps types haven't been found in GHunt's knowledge."
             )
             for type in unknown_trads:
                 print(f"- {type}")
