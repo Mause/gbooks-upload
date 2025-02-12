@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/Mause/gbooks-upload/compare/gbooks-upload-v0.6.0...gbooks-upload-v0.6.1) (2025-02-12)
+
+
+### Bug Fixes
+
+* add --version flags ([4655361](https://github.com/Mause/gbooks-upload/commit/46553619e781de89b5e784bc2fb8758cdbd69a81))
+
 ## [0.6.0](https://github.com/Mause/gbooks-upload/compare/gbooks-upload-v0.5.1...gbooks-upload-v0.6.0) (2025-02-12)
 
 
