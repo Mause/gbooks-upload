@@ -3,7 +3,7 @@ from pathlib import Path
 from unittest.mock import Mock
 from urllib.parse import urlparse, urlunparse
 
-from ghunt.helpers.auth import GHuntCreds
+from google_internal_apis.ghunt.helpers.auth import GHuntCreds
 from google.protobuf.json_format import MessageToDict
 from google.protobuf.wrappers_pb2 import StringValue
 from httpx import AsyncClient
