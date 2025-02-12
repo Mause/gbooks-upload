@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.0](https://github.com/Mause/gbooks-upload/compare/gbooks-upload-v0.5.1...gbooks-upload-v0.6.0) (2025-02-12)
+
+
+### Features
+
+* move rpc command ([5725c23](https://github.com/Mause/gbooks-upload/commit/5725c23466e156bc2ff29108cc6ea74358b26659))
+
+
+### Bug Fixes
+
+* expose cli as an entrypoint ([82e1d64](https://github.com/Mause/gbooks-upload/commit/82e1d64dbdbb3249c3b49ce875cf9e1e25030809))
+* set minimum google-internal-apis version ([5e18ac1](https://github.com/Mause/gbooks-upload/commit/5e18ac1bb49bf23317578799ad0ac2d35e364024))
+
 ## [0.5.1](https://github.com/Mause/gbooks-upload/compare/gbooks-upload-v0.5.0...gbooks-upload-v0.5.1) (2025-02-12)
 
 
