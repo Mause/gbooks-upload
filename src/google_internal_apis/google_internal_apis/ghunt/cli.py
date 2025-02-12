@@ -1,9 +1,9 @@
-from rich_argparse import RichHelpFormatter
-
 import argparse
-from typing import *
 import sys
 from pathlib import Path
+from typing import *
+
+from rich_argparse import RichHelpFormatter
 
 
 def parse_and_run():

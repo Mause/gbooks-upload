@@ -1,20 +1,18 @@
+import inspect
+from struct import pack
+from typing import *
+
+import httpx
+from ghunt import globals as gb
 from ghunt.objects.apis import GAPI, EndpointConfig
 from ghunt.objects.base import GHuntCreds
-from ghunt import globals as gb
+from ghunt.parsers.playgateway import PlayerProfile, PlayerSearchResults
+from ghunt.protos.playgatewaypa.get_player_pb2 import GetPlayerProto
+from ghunt.protos.playgatewaypa.get_player_response_pb2 import GetPlayerResponseProto
 from ghunt.protos.playgatewaypa.search_player_pb2 import PlayerSearchProto
 from ghunt.protos.playgatewaypa.search_player_results_pb2 import (
     PlayerSearchResultsProto,
 )
-from ghunt.protos.playgatewaypa.get_player_pb2 import GetPlayerProto
-from ghunt.protos.playgatewaypa.get_player_response_pb2 import GetPlayerResponseProto
-from ghunt.parsers.playgateway import PlayerSearchResults
-from ghunt.parsers.playgateway import PlayerProfile
-
-import httpx
-
-from typing import *
-from struct import pack
-import inspect
 
 
 class PlayGatewayPaGrpc(GAPI):

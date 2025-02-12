@@ -1,11 +1,9 @@
-from .utils import *
-from ..errors import *
-from ..objects.base import SmartObj
-
 from typing import *
 
-
 from rich.console import Console
+
+from ..errors import *
+from .utils import *
 
 
 class TMPrinter:

@@ -1,14 +1,13 @@
-from ghunt.objects.base import GHuntCreds
-from ghunt.errors import *
-import ghunt.globals as gb
-from ghunt.objects.apis import GAPI, EndpointConfig
-from ghunt.parsers.geolocate import GeolocationResponse
-
-import httpx
-
-from typing import *
 import inspect
 import json
+from typing import *
+
+import ghunt.globals as gb
+import httpx
+from ghunt.errors import *
+from ghunt.objects.apis import GAPI, EndpointConfig
+from ghunt.objects.base import GHuntCreds
+from ghunt.parsers.geolocate import GeolocationResponse
 
 
 class GeolocationHttp(GAPI):
@@ -42,7 +41,7 @@ class GeolocationHttp(GAPI):
         )
         self._load_endpoint(endpoint)
 
-        base_url = f"/geolocation/v1/geolocate"
+        base_url = "/geolocation/v1/geolocate"
 
         if bssid:
             payload = {

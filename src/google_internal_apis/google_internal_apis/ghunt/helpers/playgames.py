@@ -1,14 +1,13 @@
-from ghunt.objects.base import GHuntCreds
-from ghunt.apis.playgames import PlayGames
-from ghunt.apis.playgateway import PlayGatewayPaGrpc
-from ghunt.parsers.playgames import Player, PlayerProfile
-from ghunt.parsers.playgateway import PlayerSearchResult
-from ghunt.objects.utils import TMPrinter
+from typing import *
 
 import httpx
 from alive_progress import alive_bar
-
-from typing import *
+from ghunt.apis.playgames import PlayGames
+from ghunt.apis.playgateway import PlayGatewayPaGrpc
+from ghunt.objects.base import GHuntCreds
+from ghunt.objects.utils import TMPrinter
+from ghunt.parsers.playgames import Player
+from ghunt.parsers.playgateway import PlayerSearchResult
 
 
 async def get_player(

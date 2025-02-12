@@ -1,15 +1,14 @@
-from ghunt.objects.base import GHuntCreds
-from ghunt.errors import *
-import ghunt.globals as gb
-from ghunt.objects.apis import GAPI, EndpointConfig
-from ghunt.parsers.drive import DriveCommentList, DriveFile, DriveChildList
-from ghunt.knowledge import drive as drive_knowledge
-
-import httpx
-
-from typing import *
 import inspect
 import json
+from typing import *
+
+import ghunt.globals as gb
+import httpx
+from ghunt.errors import *
+from ghunt.knowledge import drive as drive_knowledge
+from ghunt.objects.apis import GAPI, EndpointConfig
+from ghunt.objects.base import GHuntCreds
+from ghunt.parsers.drive import DriveChildList, DriveCommentList, DriveFile
 
 
 class DriveHttp(GAPI):

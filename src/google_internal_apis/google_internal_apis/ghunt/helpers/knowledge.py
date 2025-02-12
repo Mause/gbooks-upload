@@ -1,11 +1,11 @@
-from ..knowledge.services import services_baseurls
+from typing import *
+
+from ..errors import GHuntKnowledgeError
 from ..knowledge.keys import keys
 from ..knowledge.maps import types_translations
 from ..knowledge.people import user_types
+from ..knowledge.services import services_baseurls
 from ..knowledge.sig import sigs
-from ..errors import GHuntKnowledgeError
-
-from typing import *
 
 
 def get_domain_of_service(service: str) -> str:
