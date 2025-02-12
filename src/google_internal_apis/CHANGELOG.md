@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.0](https://github.com/Mause/gbooks-upload/compare/google_internal_apis-v0.3.2...google_internal_apis-v0.4.0) (2025-02-12)
+
+
+### Features
+
+* move rpc command ([5725c23](https://github.com/Mause/gbooks-upload/commit/5725c23466e156bc2ff29108cc6ea74358b26659))
+
+
+### Bug Fixes
+
+* expose cli as an entrypoint ([82e1d64](https://github.com/Mause/gbooks-upload/commit/82e1d64dbdbb3249c3b49ce875cf9e1e25030809))
+
 ## [0.3.2](https://github.com/Mause/gbooks-upload/compare/google_internal_apis-v0.3.1...google_internal_apis-v0.3.2) (2025-02-11)
 
 
