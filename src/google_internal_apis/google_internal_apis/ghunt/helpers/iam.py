@@ -1,12 +1,11 @@
-import httpx
 import asyncio
-
-from ghunt.objects.base import GHuntCreds
-from ghunt.apis.mobilesdk import MobileSDKPaHttp
-from ghunt.knowledge import iam
-from ghunt.helpers.utils import chunkify
-
 from typing import *
+
+import httpx
+from ghunt.apis.mobilesdk import MobileSDKPaHttp
+from ghunt.helpers.utils import chunkify
+from ghunt.knowledge import iam
+from ghunt.objects.base import GHuntCreds
 
 
 async def test_all_permissions(
