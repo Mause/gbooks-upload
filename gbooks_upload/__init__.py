@@ -79,6 +79,7 @@ def paginate(method: Callable, *args, **kwargs):
 
 
 @click.group()
+@click.version_option(__version__)
 def main() -> None:
     pass
 

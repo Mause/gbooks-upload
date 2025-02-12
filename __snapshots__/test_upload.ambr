@@ -5,7 +5,8 @@
    Usage: main [OPTIONS] COMMAND [ARGS]...                                        
                                                                                   
   ╭─ Options ────────────────────────────────────────────────────────────────────╮
-  │ --help      Show this message and exit.                                      │
+  │ --version      Show the version and exit.                                    │
+  │ --help         Show this message and exit.                                   │
   ╰──────────────────────────────────────────────────────────────────────────────╯
   ╭─ Commands ───────────────────────────────────────────────────────────────────╮
   │ books     Commands to manage books                                           │
