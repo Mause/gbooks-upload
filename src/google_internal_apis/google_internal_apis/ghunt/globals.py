@@ -6,7 +6,8 @@ def init_globals():
     from rich.console import Console
 
     global config, tmprinter, rc
-    
-    from .import config
+
+    from . import config
+
     tmprinter = TMPrinter()
-    rc = Console(highlight=False) # Rich Console
+    rc = Console(highlight=False)  # Rich Console

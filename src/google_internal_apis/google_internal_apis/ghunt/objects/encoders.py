@@ -4,8 +4,9 @@ from datetime import datetime
 
 class GHuntEncoder(json.JSONEncoder):
     """
-        Converts non-default types when exporting to JSON.
+    Converts non-default types when exporting to JSON.
     """
+
     def default(self, o: object) -> dict:
         if isinstance(o, set):
             return list(o)
@@ -15,4 +16,4 @@ class GHuntEncoder(json.JSONEncoder):
             if hasattr(o, "__dict__"):
                 return o.__dict__
             else:
-                return {x:getattr(o, x) for x in o.__slots__}
+                return {x: getattr(o, x) for x in o.__slots__}

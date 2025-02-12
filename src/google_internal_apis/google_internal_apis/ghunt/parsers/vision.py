@@ -8,11 +8,12 @@ class VisionPosition(Parser):
         self.x: int = None
         self.y: int = None
         self.z: int = None
-    
+
     def _scrape(self, position_data: Dict[str, int]):
         self.x = position_data.get("x")
         self.y = position_data.get("y")
         self.z = position_data.get("z")
+
 
 class VisionLandmark(Parser):
     def __init__(self):
@@ -23,6 +24,7 @@ class VisionLandmark(Parser):
         self.type = landmark_data["type"]
         self.position._scrape(landmark_data["position"])
 
+
 class VisionVertice(Parser):
     def __init__(self):
         self.x: int = None
@@ -31,6 +33,7 @@ class VisionVertice(Parser):
     def _scrape(self, vertice_data: Dict[str, int]):
         self.x = vertice_data.get("x")
         self.y = vertice_data.get("y")
+
 
 class VisionVertices(Parser):
     def __init__(self):
@@ -42,30 +45,31 @@ class VisionVertices(Parser):
             vertice._scrape(vertice_data)
             self.vertices.append(vertice)
 
+
 class VisionFaceAnnotation(Parser):
     def __init__(self):
         self.bounding_poly: VisionVertices = VisionVertices()
         self.fd_bounding_poly: VisionVertices = VisionVertices()
         self.landmarks: List[VisionLandmark] = []
-        self.roll_angle: int = 0,
-        self.pan_angle: int = 0,
-        self.tilt_angle: int = 0,
-        self.detection_confidence: int = 0,
-        self.landmarking_confidence: int = 0,
-        self.joy_likelihood: str = "",
-        self.sorrow_likelihood: str = "",
-        self.anger_likelihood: str = "",
-        self.surprise_likelihood: str = "",
-        self.under_exposed_likelihood: str = "",
-        self.blurred_likelihood: str = "",
+        self.roll_angle: int = (0,)
+        self.pan_angle: int = (0,)
+        self.tilt_angle: int = (0,)
+        self.detection_confidence: int = (0,)
+        self.landmarking_confidence: int = (0,)
+        self.joy_likelihood: str = ("",)
+        self.sorrow_likelihood: str = ("",)
+        self.anger_likelihood: str = ("",)
+        self.surprise_likelihood: str = ("",)
+        self.under_exposed_likelihood: str = ("",)
+        self.blurred_likelihood: str = ("",)
         self.headwear_likelihood: str = ""
 
     def _scrape(self, face_data: Dict[str, any]):
-        if (vertices_data := face_data.get("boundingPoly", {}).get("vertices")):
+        if vertices_data := face_data.get("boundingPoly", {}).get("vertices"):
             self.bounding_poly._scrape(vertices_data)
-        if (vertices_data := face_data.get("fdBoundingPoly", {}).get("vertices")):
+        if vertices_data := face_data.get("fdBoundingPoly", {}).get("vertices"):
             self.fd_bounding_poly._scrape(vertices_data)
-        if (landmarks_data := face_data.get("landmarks")):
+        if landmarks_data := face_data.get("landmarks"):
             for landmark_data in landmarks_data:
                 landmark = VisionLandmark()
                 landmark._scrape(landmark_data)
@@ -82,6 +86,7 @@ class VisionFaceAnnotation(Parser):
         self.under_exposed_likelihood = face_data.get("underExposedLikelihood")
         self.blurred_likelihood = face_data.get("blurredLikelihood")
         self.headwear_likelihood = face_data.get("headwearLikelihood")
+
 
 class VisionFaceDetection(Parser):
     def __init__(self):

@@ -17,8 +17,8 @@ from ghunt.helpers.knowledge import get_gmaps_type_translation
 
 def get_datetime(datepublished: str):
     """
-        Get an approximative date from the maps review date
-        Examples : 'last 2 days', 'an hour ago', '3 years ago'
+    Get an approximative date from the maps review date
+    Examples : 'last 2 days', 'an hour ago', '3 years ago'
     """
     if datepublished.split()[0] in ["a", "an"]:
         nb = 1
@@ -45,21 +45,28 @@ def get_datetime(datepublished: str):
 
     return (datetime.today() - delta).replace(microsecond=0, second=0)
 
-async def get_reviews(as_client: httpx.AsyncClient, gaia_id: str) -> Tuple[str, Dict[str, int], List[MapsReview], List[MapsPhoto]]:
+
+async def get_reviews(
+    as_client: httpx.AsyncClient, gaia_id: str
+) -> Tuple[str, Dict[str, int], List[MapsReview], List[MapsPhoto]]:
     """Extracts the target's statistics, reviews and photos."""
     next_page_token = ""
     agg_reviews = []
     agg_photos = []
     stats = {}
 
-    req = await as_client.get(f"https://www.google.com/locationhistory/preview/mas?authuser=0&hl=en&gl=us&pb={gb.config.templates['gmaps_pb']['stats'].format(gaia_id)}")
-    if req.status_code == 302 and req.headers["Location"].startswith("https://www.google.com/sorry/index"):
+    req = await as_client.get(
+        f"https://www.google.com/locationhistory/preview/mas?authuser=0&hl=en&gl=us&pb={gb.config.templates['gmaps_pb']['stats'].format(gaia_id)}"
+    )
+    if req.status_code == 302 and req.headers["Location"].startswith(
+        "https://www.google.com/sorry/index"
+    ):
         return "failed", stats, [], []
 
     data = json.loads(req.text[5:])
     if not data[16][8]:
         return "empty", stats, [], []
-    stats = {sec[6]:sec[7] for sec in data[16][8][0]}
+    stats = {sec[6]: sec[7] for sec in data[16][8][0]}
     total_reviews = stats["Reviews"] + stats["Ratings"] + stats["Photos"]
     if not total_reviews:
         return "empty", stats, [], []
@@ -69,10 +76,14 @@ async def get_reviews(as_client: httpx.AsyncClient, gaia_id: str) -> Tuple[str, 
             first = True
             while True:
                 if first:
-                    req = await as_client.get(f"https://www.google.com/locationhistory/preview/mas?authuser=0&hl=en&gl=us&pb={gb.config.templates['gmaps_pb'][category]['first'].format(gaia_id)}")
+                    req = await as_client.get(
+                        f"https://www.google.com/locationhistory/preview/mas?authuser=0&hl=en&gl=us&pb={gb.config.templates['gmaps_pb'][category]['first'].format(gaia_id)}"
+                    )
                     first = False
                 else:
-                    req = await as_client.get(f"https://www.google.com/locationhistory/preview/mas?authuser=0&hl=en&gl=us&pb={gb.config.templates['gmaps_pb'][category]['page'].format(gaia_id, next_page_token)}")
+                    req = await as_client.get(
+                        f"https://www.google.com/locationhistory/preview/mas?authuser=0&hl=en&gl=us&pb={gb.config.templates['gmaps_pb'][category]['page'].format(gaia_id, next_page_token)}"
+                    )
                 data = json.loads(req.text[5:])
 
                 new_reviews = []
@@ -89,7 +100,9 @@ async def get_reviews(as_client: httpx.AsyncClient, gaia_id: str) -> Tuple[str, 
                     for review_data in reviews_data:
                         review = MapsReview()
                         review.id = review_data[6][0]
-                        review.date = datetime.utcfromtimestamp(review_data[6][1][3] / 1000000)
+                        review.date = datetime.utcfromtimestamp(
+                            review_data[6][1][3] / 1000000
+                        )
                         if len(review_data[6][2]) > 15 and review_data[6][2][15]:
                             review.comment = review_data[6][2][15][0][0]
                         review.rating = review_data[6][2][0][0]
@@ -97,14 +110,16 @@ async def get_reviews(as_client: httpx.AsyncClient, gaia_id: str) -> Tuple[str, 
                         review.location.id = review_data[1][14][0]
                         review.location.name = review_data[1][2]
                         review.location.address = review_data[1][3]
-                        review.location.tags = review_data[1][4] if review_data[1][4] else []
+                        review.location.tags = (
+                            review_data[1][4] if review_data[1][4] else []
+                        )
                         review.location.types = [x for x in review_data[1][8] if x]
                         if review_data[1][0]:
                             review.location.position.latitude = review_data[1][0][2]
                             review.location.position.longitude = review_data[1][0][3]
                         # if len(review_data[1]) > 31 and review_data[1][31]:
-                            # print(f"Cost level : {review_data[1][31]}")
-                            # review.location.cost_level = len(review_data[1][31])
+                        # print(f"Cost level : {review_data[1][31]}")
+                        # review.location.cost_level = len(review_data[1][31])
                         new_reviews.append(review)
                         bar()
 
@@ -115,7 +130,7 @@ async def get_reviews(as_client: httpx.AsyncClient, gaia_id: str) -> Tuple[str, 
                     next_page_token = data[24][3].strip("=")
 
                 # Photos
-                elif category == "photos" :
+                elif category == "photos":
                     if not data[22]:
                         return "private", stats, [], []
                     photos_data = data[22][1]
@@ -126,15 +141,23 @@ async def get_reviews(as_client: httpx.AsyncClient, gaia_id: str) -> Tuple[str, 
                         photos.id = photo_data[0][10]
                         photos.url = photo_data[0][6][0].split("=")[0]
                         date = photo_data[0][21][6][8]
-                        photos.date = datetime(date[0], date[1], date[2], date[3]) # UTC
+                        photos.date = datetime(
+                            date[0], date[1], date[2], date[3]
+                        )  # UTC
                         # photos.approximative_date = get_datetime(date[8][0]) # UTC
 
                         if len(photo_data) > 1:
                             photos.location.id = photo_data[1][14][0]
                             photos.location.name = photo_data[1][2]
                             photos.location.address = photo_data[1][3]
-                            photos.location.tags = photo_data[1][4] if photo_data[1][4] else []
-                            photos.location.types = [x for x in photo_data[1][8] if x] if photo_data[1][8] else []
+                            photos.location.tags = (
+                                photo_data[1][4] if photo_data[1][4] else []
+                            )
+                            photos.location.types = (
+                                [x for x in photo_data[1][8] if x]
+                                if photo_data[1][8]
+                                else []
+                            )
                             if photo_data[1][0]:
                                 photos.location.position.latitude = photo_data[1][0][2]
                                 photos.location.position.longitude = photo_data[1][0][3]
@@ -151,10 +174,11 @@ async def get_reviews(as_client: httpx.AsyncClient, gaia_id: str) -> Tuple[str, 
 
     return "", stats, agg_reviews, agg_photos
 
+
 def avg_location(locs: Tuple[float, float]):
     """
-        Calculates the average location
-        from a list of (latitude, longitude) tuples.
+    Calculates the average location
+    from a list of (latitude, longitude) tuples.
     """
     latitude = []
     longitude = []
@@ -165,6 +189,7 @@ def avg_location(locs: Tuple[float, float]):
     latitude = sum(latitude) / len(latitude)
     longitude = sum(longitude) / len(longitude)
     return latitude, longitude
+
 
 def translate_confidence(percents: int):
     """Translates the percents number to a more human-friendly text"""
@@ -182,6 +207,7 @@ def translate_confidence(percents: int):
         return "Very low"
     else:
         return "Extremely low"
+
 
 def sanitize_location(location: Dict[str, str]):
     """Returns the nearest place from a Nomatim location response."""
@@ -207,7 +233,12 @@ def sanitize_location(location: Dict[str, str]):
     location["town"] = town
     return location
 
-def calculate_probable_location(geolocator: Nominatim, reviews_and_photos: List[MapsReview|MapsPhoto], gmaps_radius: int):
+
+def calculate_probable_location(
+    geolocator: Nominatim,
+    reviews_and_photos: List[MapsReview | MapsPhoto],
+    gmaps_radius: int,
+):
     """Calculates the probable location from a list of reviews and the max radius."""
     tmprinter = TMPrinter()
     radius = gmaps_radius
@@ -215,13 +246,27 @@ def calculate_probable_location(geolocator: Nominatim, reviews_and_photos: List[
     locations = {}
     tmprinter.out(f"Calculation of the distance of each review...")
     for nb, review in enumerate(reviews_and_photos):
-        if not review.location.position.latitude or not review.location.position.longitude:
+        if (
+            not review.location.position.latitude
+            or not review.location.position.longitude
+        ):
             continue
         if review.location.id not in locations:
-            locations[review.location.id] = {"dates": [], "locations": [], "range": None, "score": 0}
-        location = (review.location.position.latitude, review.location.position.longitude)
+            locations[review.location.id] = {
+                "dates": [],
+                "locations": [],
+                "range": None,
+                "score": 0,
+            }
+        location = (
+            review.location.position.latitude,
+            review.location.position.longitude,
+        )
         for review2 in reviews_and_photos:
-            location2 = (review2.location.position.latitude, review2.location.position.longitude)
+            location2 = (
+                review2.location.position.latitude,
+                review2.location.position.longitude,
+            )
             dis = distance.distance(location, location2).km
 
             if dis <= radius:
@@ -231,12 +276,18 @@ def calculate_probable_location(geolocator: Nominatim, reviews_and_photos: List[
         maxdate = max(locations[review.location.id]["dates"])
         mindate = min(locations[review.location.id]["dates"])
         locations[review.location.id]["range"] = maxdate - mindate
-        tmprinter.out(f"Calculation of the distance of each review ({nb}/{len(reviews_and_photos)})...")
+        tmprinter.out(
+            f"Calculation of the distance of each review ({nb}/{len(reviews_and_photos)})..."
+        )
 
     tmprinter.clear()
 
-    locations = {k: v for k, v in
-                 sorted(locations.items(), key=lambda k: len(k[1]["locations"]), reverse=True)}  # We sort it
+    locations = {
+        k: v
+        for k, v in sorted(
+            locations.items(), key=lambda k: len(k[1]["locations"]), reverse=True
+        )
+    }  # We sort it
 
     tmprinter.out("Identification of redundant areas...")
     to_del = []
@@ -246,7 +297,12 @@ def calculate_probable_location(geolocator: Nominatim, reviews_and_photos: List[
         for id2 in locations:
             if id2 in to_del or id == id2:
                 continue
-            if all([loc in locations[id]["locations"] for loc in locations[id2]["locations"]]):
+            if all(
+                [
+                    loc in locations[id]["locations"]
+                    for loc in locations[id2]["locations"]
+                ]
+            ):
                 to_del.append(id2)
     for hash in to_del:
         del locations[hash]
@@ -265,7 +321,9 @@ def calculate_probable_location(geolocator: Nominatim, reviews_and_photos: List[
         if loc["range"] == maxrange:
             locations[hash]["score"] += score_steps * 3
         if len(locations) >= mingroups:
-            others = sum([len(locations[h]["locations"]) for h in locations if h != hash])
+            others = sum(
+                [len(locations[h]["locations"]) for h in locations if h != hash]
+            )
             if len(loc["locations"]) > others:
                 locations[hash]["score"] += score_steps * 2
         if len(loc["locations"]) >= minreq:
@@ -285,7 +343,9 @@ def calculate_probable_location(geolocator: Nominatim, reviews_and_photos: List[
             avg = avg_location(loc["locations"])
             while True:
                 try:
-                    location = geolocator.reverse(f"{avg[0]}, {avg[1]}", timeout=10).raw["address"]
+                    location = geolocator.reverse(
+                        f"{avg[0]}, {avg[1]}", timeout=10
+                    ).raw["address"]
                     break
                 except:
                     pass
@@ -300,7 +360,14 @@ def calculate_probable_location(geolocator: Nominatim, reviews_and_photos: List[
 
         return confidence, locs
 
-def output(err: str, stats: Dict[str, int], reviews: List[MapsReview], photos: List[MapsPhoto], gaia_id: str):
+
+def output(
+    err: str,
+    stats: Dict[str, int],
+    reviews: List[MapsReview],
+    photos: List[MapsPhoto],
+    gaia_id: str,
+):
     """Pretty print the Maps results, and do some guesses."""
 
     print(f"\nProfile page : https://www.google.com/maps/contrib/{gaia_id}/reviews")
@@ -308,7 +375,7 @@ def output(err: str, stats: Dict[str, int], reviews: List[MapsReview], photos: L
     if err == "failed":
         print("\n[-] Your IP has been blocked by Google. Try again later.")
 
-    reviews_and_photos: List[MapsReview|MapsPhoto] = reviews + photos
+    reviews_and_photos: List[MapsReview | MapsPhoto] = reviews + photos
     if err != "private" and (err == "empty" or not reviews_and_photos):
         print("\n[-] No review.")
         return
@@ -353,7 +420,7 @@ def output(err: str, stats: Dict[str, int], reviews: List[MapsReview], photos: L
     #         elif costs_stats[cost] == list(costs_stats.values())[0]:
     #             style = "spring_green1"
     #         gb.rc.print(line, style=style)
-            
+
     #     avg_costs = round(sum([x*y for x,y in costs_stats.items()]) / total_costs)
     #     print(f"\n[+] Average costs : {costs_table[avg_costs]}")
     # else:
@@ -376,7 +443,11 @@ def output(err: str, stats: Dict[str, int], reviews: List[MapsReview], photos: L
                 if tag not in types_and_tags[type]:
                     types_and_tags[type][tag] = 0
                 types_and_tags[type][tag] += 1
-            types_and_tags[type] = dict(sorted(types_and_tags[type].items(), key=lambda item: item[1], reverse=True))
+            types_and_tags[type] = dict(
+                sorted(
+                    types_and_tags[type].items(), key=lambda item: item[1], reverse=True
+                )
+            )
     types_and_tags = dict(sorted(types_and_tags.items()))
 
     if types_and_tags:
@@ -388,7 +459,10 @@ def output(err: str, stats: Dict[str, int], reviews: List[MapsReview], photos: L
             translation = get_gmaps_type_translation(type)
             if not translation:
                 unknown_trads.append(type)
-            gb.rc.print(f"\n🏨 [underline]{translation if translation else type.title()} [{type_count}]", style="bold")
+            gb.rc.print(
+                f"\n🏨 [underline]{translation if translation else type.title()} [{type_count}]",
+                style="bold",
+            )
             nb = 0
             for tag, tag_count in list(tags_counts.items()):
                 if nb >= 7:
@@ -399,21 +473,23 @@ def output(err: str, stats: Dict[str, int], reviews: List[MapsReview], photos: L
                 nb += 1
 
         if unknown_trads:
-            print(f"\n⚠️ The following gmaps types haven't been found in GHunt\'s knowledge.")
+            print(
+                f"\n⚠️ The following gmaps types haven't been found in GHunt's knowledge."
+            )
             for type in unknown_trads:
                 print(f"- {type}")
             print("Please open an issue on the GHunt Github or submit a PR to add it !")
 
     geolocator = Nominatim(user_agent="nominatim")
 
-    confidence, locations = calculate_probable_location(geolocator, reviews_and_photos, gb.config.gmaps_radius)
+    confidence, locations = calculate_probable_location(
+        geolocator, reviews_and_photos, gb.config.gmaps_radius
+    )
     print(f"\n[+] Probable location (confidence => {confidence}) :")
 
     loc_names = []
     for loc in locations:
-        loc_names.append(
-            f"- {loc['avg']['town']}, {loc['avg']['country']}"
-        )
+        loc_names.append(f"- {loc['avg']['town']}, {loc['avg']['country']}")
 
     loc_names = set(loc_names)  # delete duplicates
     for loc in loc_names:

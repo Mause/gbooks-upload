@@ -2,7 +2,9 @@ from ghunt.objects.apis import GAPI, EndpointConfig
 from ghunt.objects.base import GHuntCreds
 from ghunt import globals as gb
 from ghunt.protos.playgatewaypa.search_player_pb2 import PlayerSearchProto
-from ghunt.protos.playgatewaypa.search_player_results_pb2 import PlayerSearchResultsProto
+from ghunt.protos.playgatewaypa.search_player_results_pb2 import (
+    PlayerSearchResultsProto,
+)
 from ghunt.protos.playgatewaypa.get_player_pb2 import GetPlayerProto
 from ghunt.protos.playgatewaypa.get_player_response_pb2 import GetPlayerResponseProto
 from ghunt.parsers.playgateway import PlayerSearchResults
@@ -24,16 +26,13 @@ class PlayGatewayPaGrpc(GAPI):
         self.package_name = "com.google.android.play.games"
         self.scopes = [
             "https://www.googleapis.com/auth/games.firstparty",
-            "https://www.googleapis.com/auth/googleplay"
+            "https://www.googleapis.com/auth/googleplay",
         ]
 
         if not headers:
             headers = gb.config.android_headers
 
-        headers = {**headers, **{
-            "Content-Type": "application/grpc",
-            "Te": "trailers"
-        }}
+        headers = {**headers, **{"Content-Type": "application/grpc", "Te": "trailers"}}
 
         # Normal fields
 
@@ -42,23 +41,27 @@ class PlayGatewayPaGrpc(GAPI):
 
         self._load_api(creds, headers)
 
-    async def search_player(self, as_client: httpx.AsyncClient, query: str) -> PlayerSearchResults:
+    async def search_player(
+        self, as_client: httpx.AsyncClient, query: str
+    ) -> PlayerSearchResults:
         endpoint = EndpointConfig(
-            name = inspect.currentframe().f_code.co_name,
-            verb = "POST",
-            data_type = "data", # json, data or None
-            authentication_mode = "oauth", # sapisidhash, cookies_only, oauth or None
-            require_key = None, # key name, or None
-            ext_metadata = {
-                                "bin": {
-                                    "158709649": "CggaBgj22K2aARo4EgoI+aKnlZf996E/GhcQHhoPUkQyQS4yMTEwMDEuMDAyIgIxMToICgZJZ0pHVWdCB1BpeGVsIDU",
-                                    "173715354": "CgEx"
-                                }
-                            }
+            name=inspect.currentframe().f_code.co_name,
+            verb="POST",
+            data_type="data",  # json, data or None
+            authentication_mode="oauth",  # sapisidhash, cookies_only, oauth or None
+            require_key=None,  # key name, or None
+            ext_metadata={
+                "bin": {
+                    "158709649": "CggaBgj22K2aARo4EgoI+aKnlZf996E/GhcQHhoPUkQyQS4yMTEwMDEuMDAyIgIxMToICgZJZ0pHVWdCB1BpeGVsIDU",
+                    "173715354": "CgEx",
+                }
+            },
         )
         self._load_endpoint(endpoint)
 
-        base_url = "/play.gateway.adapter.interplay.v1.PlayGatewayInterplayService/GetPage"
+        base_url = (
+            "/play.gateway.adapter.interplay.v1.PlayGatewayInterplayService/GetPage"
+        )
 
         player_search = PlayerSearchProto()
         player_search.search_form.query.text = query
@@ -78,28 +81,32 @@ class PlayGatewayPaGrpc(GAPI):
 
         return parser
 
-    async def get_player_stats(self, as_client: httpx.AsyncClient, player_id: str) -> PlayerProfile:
+    async def get_player_stats(
+        self, as_client: httpx.AsyncClient, player_id: str
+    ) -> PlayerProfile:
         """
-            This endpoint client isn't finished, it is only used to get total played applications & achievements count.
-            To get all the details about a player, please use get_player method of PlayGames (HTTP API).
+        This endpoint client isn't finished, it is only used to get total played applications & achievements count.
+        To get all the details about a player, please use get_player method of PlayGames (HTTP API).
         """
 
         endpoint = EndpointConfig(
-            name = inspect.currentframe().f_code.co_name,
-            verb = "POST",
-            data_type = "data", # json, data or None
-            authentication_mode = "oauth", # sapisidhash, cookies_only, oauth or None
-            require_key = None, # key name, or None
-            ext_metadata = {
-                                "bin": {
-                                    "158709649": "CggaBgj22K2aARo4EgoI+aKnlZf996E/GhcQHhoPUkQyQS4yMTEwMDEuMDAyIgIxMToICgZJZ0pHVWdCB1BpeGVsIDU",
-                                    "173715354": "CgEx"
-                                }
-                            }
+            name=inspect.currentframe().f_code.co_name,
+            verb="POST",
+            data_type="data",  # json, data or None
+            authentication_mode="oauth",  # sapisidhash, cookies_only, oauth or None
+            require_key=None,  # key name, or None
+            ext_metadata={
+                "bin": {
+                    "158709649": "CggaBgj22K2aARo4EgoI+aKnlZf996E/GhcQHhoPUkQyQS4yMTEwMDEuMDAyIgIxMToICgZJZ0pHVWdCB1BpeGVsIDU",
+                    "173715354": "CgEx",
+                }
+            },
         )
         self._load_endpoint(endpoint)
 
-        base_url = "/play.gateway.adapter.interplay.v1.PlayGatewayInterplayService/GetPage"
+        base_url = (
+            "/play.gateway.adapter.interplay.v1.PlayGatewayInterplayService/GetPage"
+        )
 
         player_profile = GetPlayerProto()
         player_profile.form.query.id = player_id

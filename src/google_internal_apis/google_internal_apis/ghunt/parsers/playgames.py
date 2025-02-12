@@ -6,6 +6,7 @@ from ghunt.objects.apis import Parser
 
 ### Profile
 
+
 class PlayerProfile(Parser):
     def __init__(self):
         self.display_name: str = ""
@@ -26,13 +27,14 @@ class PlayerProfile(Parser):
         self.banner_url_portrait = player_data.get("bannerUrlPortrait")
         self.banner_url_landscape = player_data.get("bannerUrlLandscape")
         self.gamertag = player_data.get("gamerTag")
-        if (last_played_app_data := player_data.get("lastPlayedApp")):
+        if last_played_app_data := player_data.get("lastPlayedApp"):
             self.last_played_app._scrape(last_played_app_data)
-        if (profile_settings_data := player_data.get("profileSettings")):
+        if profile_settings_data := player_data.get("profileSettings"):
             self.profile_settings._scrape(profile_settings_data)
-        if (experience_data := player_data.get("experienceInfo")):
+        if experience_data := player_data.get("experienceInfo"):
             self.experience_info._scrape(experience_data)
         self.title = player_data.get("title")
+
 
 class PlayerPlayedApp(Parser):
     def __init__(self):
@@ -47,8 +49,9 @@ class PlayerPlayedApp(Parser):
         self.icon_url = played_app_data.get("applicationIconUrl")
         self.featured_image_url = played_app_data.get("featuredImageUrl")
         self.app_name = played_app_data.get("applicationName")
-        if (timestamp := played_app_data.get("timeMillis")):
+        if timestamp := played_app_data.get("timeMillis"):
             self.timestamp_millis = datetime.utcfromtimestamp(float(timestamp[:10]))
+
 
 class PlayerExperienceInfo(Parser):
     def __init__(self):
@@ -60,13 +63,18 @@ class PlayerExperienceInfo(Parser):
 
     def _scrape(self, experience_data: Dict[str, any]):
         self.current_xp = experience_data.get("currentExperiencePoints")
-        if (timestamp := experience_data.get("lastLevelUpTimestampMillis")):
-            self.last_level_up_timestamp_millis = datetime.utcfromtimestamp(float(timestamp[:10]))
-        if (current_level_data := experience_data.get("currentLevel")):
+        if timestamp := experience_data.get("lastLevelUpTimestampMillis"):
+            self.last_level_up_timestamp_millis = datetime.utcfromtimestamp(
+                float(timestamp[:10])
+            )
+        if current_level_data := experience_data.get("currentLevel"):
             self.current_level._scrape(current_level_data)
-        if (next_level_data := experience_data.get("nextLevel")):
+        if next_level_data := experience_data.get("nextLevel"):
             self.next_level._scrape(next_level_data)
-        self.total_unlocked_achievements = experience_data.get("totalUnlockedAchievements")
+        self.total_unlocked_achievements = experience_data.get(
+            "totalUnlockedAchievements"
+        )
+
 
 class PlayerLevel(Parser):
     def __init__(self):
@@ -79,6 +87,7 @@ class PlayerLevel(Parser):
         self.min_xp = level_data.get("minExperiencePoints")
         self.max_xp = level_data.get("maxExperiencePoints")
 
+
 class PlayerProfileSettings(Parser):
     def __init__(self):
         self.profile_visible: bool = False
@@ -86,7 +95,9 @@ class PlayerProfileSettings(Parser):
     def _scrape(self, profile_settings_data: Dict[str, any]):
         self.profile_visible = profile_settings_data.get("profileVisible")
 
+
 ### Played Applications
+
 
 class PlayedGames(Parser):
     def __init__(self):
@@ -98,6 +109,7 @@ class PlayedGames(Parser):
             play_game._scrape(game_data)
             self.games.append(play_game)
 
+
 class PlayGame(Parser):
     def __init__(self):
         self.game_data: PlayGameData = PlayGameData()
@@ -107,25 +119,29 @@ class PlayGame(Parser):
         self.unlocked_achievement_count: int = 0
 
     def _scrape(self, game_data: Dict[str, any]):
-        if (games_data := game_data.get("gamesData")):
+        if games_data := game_data.get("gamesData"):
             self.game_data._scrape(games_data)
-        if (market_data := game_data.get("marketData")):
+        if market_data := game_data.get("marketData"):
             self.market_data._scrape(market_data)
         self.formatted_last_played_time = game_data.get("formattedLastPlayedTime")
-        if (timestamp := game_data.get("lastPlayedTimeMillis")):
-            self.last_played_time_millis = datetime.utcfromtimestamp(float(timestamp[:10]))
+        if timestamp := game_data.get("lastPlayedTimeMillis"):
+            self.last_played_time_millis = datetime.utcfromtimestamp(
+                float(timestamp[:10])
+            )
         self.unlocked_achievement_count = game_data.get("unlockedAchievementCount")
+
 
 class PlayGameMarketData(Parser):
     def __init__(self):
         self.instances: List[PlayGameMarketInstance] = []
 
     def _scrape(self, market_data: Dict[str, any]):
-        if (instances_data := market_data.get("instances")):
+        if instances_data := market_data.get("instances"):
             for instance_data in instances_data:
                 instance = PlayGameMarketInstance()
                 instance._scrape(instance_data)
                 self.instances.append(instance)
+
 
 class PlayGameMarketInstance(Parser):
     def __init__(self):
@@ -149,7 +165,7 @@ class PlayGameMarketInstance(Parser):
         self.id = instance_data.get("id")
         self.title = instance_data.get("title")
         self.description = instance_data.get("description")
-        if (images_data := instance_data.get("images")):
+        if images_data := instance_data.get("images"):
             for image_data in images_data:
                 image = PlayGameImageAsset()
                 image._scrape(image_data)
@@ -158,7 +174,7 @@ class PlayGameMarketInstance(Parser):
         self.categories = instance_data.get("categories", [])
         self.formatted_price = instance_data.get("formattedPrice")
         self.price_micros = instance_data.get("priceMicros")
-        if (badges_data := instance_data.get("badges")):
+        if badges_data := instance_data.get("badges"):
             for badge_data in badges_data:
                 badge = PlayGameMarketBadge()
                 badge._scrape(badge_data)
@@ -166,11 +182,14 @@ class PlayGameMarketInstance(Parser):
         self.is_owned = instance_data.get("isOwned")
         self.enabled_features = instance_data.get("enabledFeatures", [])
         self.description_snippet = instance_data.get("descriptionSnippet")
-        if (rating_data := instance_data.get("rating")):
+        if rating_data := instance_data.get("rating"):
             self.rating._scrape(rating_data)
-        if (timestamp := instance_data.get("lastUpdatedTimestampMillis")):
-            self.last_updated_timestamp_millis = datetime.utcfromtimestamp(float(timestamp[:10]))
+        if timestamp := instance_data.get("lastUpdatedTimestampMillis"):
+            self.last_updated_timestamp_millis = datetime.utcfromtimestamp(
+                float(timestamp[:10])
+            )
         self.availability = instance_data.get("availability")
+
 
 class PlayGameMarketRating(Parser):
     def __init__(self):
@@ -180,6 +199,7 @@ class PlayGameMarketRating(Parser):
     def _scrape(self, rating_data: Dict[str, any]):
         self.star_rating = rating_data.get("starRating")
         self.ratings_count = rating_data.get("ratingsCount")
+
 
 class PlayGameMarketBadge(Parser):
     def __init__(self):
@@ -192,11 +212,12 @@ class PlayGameMarketBadge(Parser):
         self.badge_type = badge_data.get("badgeType")
         self.title = badge_data.get("title")
         self.description = badge_data.get("description")
-        if (images_data := badge_data.get("images")):
+        if images_data := badge_data.get("images"):
             for image_data in images_data:
                 image = PlayGameImageAsset()
                 image._scrape(image_data)
                 self.images.append(image)
+
 
 class PlayGameData(Parser):
     def __init__(self):
@@ -208,8 +229,8 @@ class PlayGameData(Parser):
         self.assets: List[PlayGameImageAsset] = []
         self.instances: List[PlayGameInstance] = []
         self.last_updated_timestamp: str = ""
-        self.achievement_count: int = 0,
-        self.leaderboard_count: int = 0,
+        self.achievement_count: int = (0,)
+        self.leaderboard_count: int = (0,)
         self.enabled_features: List[str] = []
         self.theme_color: str = ""
 
@@ -218,24 +239,27 @@ class PlayGameData(Parser):
         self.name = game_data.get("name")
         self.author = game_data.get("author")
         self.description = game_data.get("description")
-        if (category_data := game_data.get("category")):
+        if category_data := game_data.get("category"):
             self.category._scrape(category_data)
-        if (assets_data := game_data.get("assets")):
+        if assets_data := game_data.get("assets"):
             for asset_data in assets_data:
                 asset = PlayGameImageAsset()
                 asset._scrape(asset_data)
                 self.assets.append(asset)
-        if (instances_data := game_data.get("instances")):
+        if instances_data := game_data.get("instances"):
             for instance_data in instances_data:
                 instance = PlayGameInstance()
                 instance._scrape(instance_data)
                 self.instances.append(instance)
-        if (timestamp := game_data.get("lastUpdatedTimestamp")):
-            self.last_updated_timestamp = datetime.utcfromtimestamp(float(timestamp[:10]))
+        if timestamp := game_data.get("lastUpdatedTimestamp"):
+            self.last_updated_timestamp = datetime.utcfromtimestamp(
+                float(timestamp[:10])
+            )
         self.achievement_count = game_data.get("achievement_count")
         self.leaderboard_count = game_data.get("leaderboard_count")
         self.enabled_features = game_data.get("enabledFeatures", [])
         self.theme_color = game_data.get("themeColor")
+
 
 class PlayGameInstance(Parser):
     def __init__(self):
@@ -251,10 +275,11 @@ class PlayGameInstance(Parser):
         self.name = instance_data.get("name")
         self.turn_based_play = instance_data.get("turnBasedPlay")
         self.realtime_play = instance_data.get("realtimePlay")
-        if (android_instance_data := instance_data.get("androidInstance")):
+        if android_instance_data := instance_data.get("androidInstance"):
             android_instance = PlayGameAndroidInstance()
             android_instance._scrape(android_instance_data)
             self.android_instance.append(android_instance_data)
+
 
 class PlayGameAndroidInstance(Parser):
     def __init__(self):
@@ -266,6 +291,7 @@ class PlayGameAndroidInstance(Parser):
         self.package_name = android_instance_data.get("packageName")
         self.enable_piracy_check = android_instance_data.get("enablePiracyCheck")
         self.preferred = android_instance_data.get("preferred")
+
 
 class PlayGameImageAsset(Parser):
     def __init__(self):
@@ -280,6 +306,7 @@ class PlayGameImageAsset(Parser):
         self.height = image_data.get("height")
         self.url = image_data.get("url")
 
+
 class PlayGameCategory(Parser):
     def __init__(self):
         self.primary: str = ""
@@ -287,20 +314,22 @@ class PlayGameCategory(Parser):
     def _scrape(self, category_data: Dict[str, any]):
         self.primary = category_data.get("primary")
 
+
 ### Achievements
+
 
 class PlayerAchievements(Parser):
     def __init__(self):
         self.achievements: List[PlayerAchievement] = []
 
     def _scrape(self, achievements_data: Dict[str, any]):
-        achievements_defs : List[PlayerAchievementDefinition] = []
-        if (achievement_defs_data := achievements_data.get("definitions")):
+        achievements_defs: List[PlayerAchievementDefinition] = []
+        if achievement_defs_data := achievements_data.get("definitions"):
             for achievement_def_data in achievement_defs_data:
                 achievement_def = PlayerAchievementDefinition()
                 achievement_def._scrape(achievement_def_data)
                 achievements_defs.append(achievement_def)
-        if (achievements_items_data := achievements_data.get("items")):
+        if achievements_items_data := achievements_data.get("items"):
             for achievement_item_data in achievements_items_data:
                 achievement = PlayerAchievement()
                 achievement._scrape(achievement_item_data)
@@ -308,6 +337,7 @@ class PlayerAchievements(Parser):
                     if achievement_def.id == achievement.id:
                         achievement.definition = achievement_def
                 self.achievements.append(achievement)
+
 
 class PlayerAchievement(Parser):
     def __init__(self):
@@ -321,10 +351,13 @@ class PlayerAchievement(Parser):
     def _scrape(self, achievement_item_data: Dict[str, any]):
         self.id = achievement_item_data.get("id")
         self.achievement_state = achievement_item_data.get("achievementState")
-        if (timestamp := achievement_item_data.get("lastUpdatedTimestamp")):
-            self.last_updated_timestamp = datetime.utcfromtimestamp(float(timestamp[:10]))
+        if timestamp := achievement_item_data.get("lastUpdatedTimestamp"):
+            self.last_updated_timestamp = datetime.utcfromtimestamp(
+                float(timestamp[:10])
+            )
         self.app_id = achievement_item_data.get("application_id")
         self.xp = achievement_item_data.get("experiencePoints")
+
 
 class PlayerAchievementDefinition(Parser):
     def __init__(self):
@@ -349,16 +382,25 @@ class PlayerAchievementDefinition(Parser):
         self.revealed_icon_url = achievement_def_data.get("revealedIconUrl")
         self.unlocked_icon_url = achievement_def_data.get("unlockedIconUrl")
         self.initial_state = achievement_def_data.get("initialState")
-        self.is_revealed_icon_url_default = achievement_def_data.get("isRevealedIconUrlDefault")
-        self.is_unlocked_icon_url_default = achievement_def_data.get("isUnlockedIconUrlDefault")
+        self.is_revealed_icon_url_default = achievement_def_data.get(
+            "isRevealedIconUrlDefault"
+        )
+        self.is_unlocked_icon_url_default = achievement_def_data.get(
+            "isUnlockedIconUrlDefault"
+        )
         self.rarity_percent = achievement_def_data.get("rarityParcent")
+
 
 ### Global
 
+
 class Player(Parser):
-    def __init__(self, profile: PlayerProfile = PlayerProfile(),
-                played_games: List[PlayGame] = [],
-                achievements: List[PlayerAchievement] = []):
+    def __init__(
+        self,
+        profile: PlayerProfile = PlayerProfile(),
+        played_games: List[PlayGame] = [],
+        achievements: List[PlayerAchievement] = [],
+    ):
         self.profile: PlayerProfile = profile
         self.played_games: List[PlayGame] = played_games
         self.achievements: List[PlayerAchievement] = achievements

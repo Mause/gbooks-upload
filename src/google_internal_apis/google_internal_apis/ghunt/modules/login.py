@@ -10,7 +10,7 @@ from ghunt.objects.base import GHuntCreds
 from ghunt.errors import GHuntInvalidSession
 
 
-async def check_and_login(as_client: httpx.AsyncClient, clean: bool=False) -> None:
+async def check_and_login(as_client: httpx.AsyncClient, clean: bool = False) -> None:
     """Check the users credentials validity, and generate new ones."""
 
     ghunt_creds = GHuntCreds()
@@ -21,7 +21,9 @@ async def check_and_login(as_client: httpx.AsyncClient, clean: bool=False) -> No
             creds_path.unlink()
             print(f"[+] Credentials file at {creds_path} deleted !")
         else:
-            print(f"Credentials file at {creds_path} doesn't exists, no need to delete.")
+            print(
+                f"Credentials file at {creds_path} doesn't exists, no need to delete."
+            )
         exit()
 
     if not as_client:
@@ -38,7 +40,9 @@ async def check_and_login(as_client: httpx.AsyncClient, clean: bool=False) -> No
         oauth_token, master_token = auth.auth_dialog()
     else:
         # in case user wants to enter new creds (example: for new account)
-        is_master_token_valid = await auth.check_master_token(as_client, ghunt_creds.android.master_token)
+        is_master_token_valid = await auth.check_master_token(
+            as_client, ghunt_creds.android.master_token
+        )
         if is_master_token_valid:
             print("[+] The master token seems valid !")
         else:
@@ -50,7 +54,9 @@ async def check_and_login(as_client: httpx.AsyncClient, clean: bool=False) -> No
         else:
             print("[-] Seems like the cookies are invalid.")
 
-        osids_valid = await auth.check_osids(as_client, ghunt_creds.cookies, ghunt_creds.osids)
+        osids_valid = await auth.check_osids(
+            as_client, ghunt_creds.cookies, ghunt_creds.osids
+        )
         if osids_valid:
             print("[+] OSIDs seem valid !")
         else:
@@ -61,23 +67,31 @@ async def check_and_login(as_client: httpx.AsyncClient, clean: bool=False) -> No
         else:
             exit()
 
-    ghunt_creds.android.authorization_tokens = {} # Reset the authorization tokens
+    ghunt_creds.android.authorization_tokens = {}  # Reset the authorization tokens
 
     if oauth_token:
         print(f"\n[+] Got OAuth2 token => {oauth_token}")
-        master_token, services, owner_email, owner_name = await auth.android_master_auth(as_client, oauth_token)
+        (
+            master_token,
+            services,
+            owner_email,
+            owner_name,
+        ) = await auth.android_master_auth(as_client, oauth_token)
 
         print("\n[Connected account]")
         print(f"Name : {owner_name}")
         print(f"Email : {owner_email}")
-        gb.rc.print("\n🔑 [underline]A master token has been generated for your account and saved in the credentials file[/underline], please keep it safe as if it were your password, because it gives access to a lot of Google services, and with that, your personal information.", style="bold")
+        gb.rc.print(
+            "\n🔑 [underline]A master token has been generated for your account and saved in the credentials file[/underline], please keep it safe as if it were your password, because it gives access to a lot of Google services, and with that, your personal information.",
+            style="bold",
+        )
         print(f"Master token services access : {', '.join(services)}")
 
     # Feed the GHuntCreds object
     ghunt_creds.android.master_token = master_token
 
-    ghunt_creds.cookies = {"a": "a"} # Dummy ata
-    ghunt_creds.osids = {"a": "a"} # Dummy data
+    ghunt_creds.cookies = {"a": "a"}  # Dummy ata
+    ghunt_creds.osids = {"a": "a"}  # Dummy data
 
     print("Generating cookies and osids...")
     await auth.gen_cookies_and_osids(as_client, ghunt_creds)

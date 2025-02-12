@@ -14,7 +14,7 @@ import json
 class PlayGames(GAPI):
     def __init__(self, creds: GHuntCreds, headers: Dict[str, str] = {}):
         super().__init__()
-        
+
         if not headers:
             headers = gb.config.headers
 
@@ -27,21 +27,23 @@ class PlayGames(GAPI):
         self.package_name = "com.google.android.play.games"
         self.scopes = [
             "https://www.googleapis.com/auth/games.firstparty",
-            "https://www.googleapis.com/auth/googleplay"
+            "https://www.googleapis.com/auth/googleplay",
         ]
-        
+
         self.hostname = "www.googleapis.com"
         self.scheme = "https"
 
         self._load_api(creds, headers)
 
-    async def get_profile(self, as_client: httpx.AsyncClient, player_id: str) -> Tuple[bool, PlayerProfile]:
+    async def get_profile(
+        self, as_client: httpx.AsyncClient, player_id: str
+    ) -> Tuple[bool, PlayerProfile]:
         endpoint = EndpointConfig(
-            name = inspect.currentframe().f_code.co_name,
-            verb = "GET",
-            data_type = None, # json, data or None
-            authentication_mode = "oauth", # sapisidhash, cookies_only, oauth or None
-            require_key = None, # key name, or None
+            name=inspect.currentframe().f_code.co_name,
+            verb="GET",
+            data_type=None,  # json, data or None
+            authentication_mode="oauth",  # sapisidhash, cookies_only, oauth or None
+            require_key=None,  # key name, or None
         )
         self._load_endpoint(endpoint)
 
@@ -60,13 +62,15 @@ class PlayGames(GAPI):
 
         return True, player_profile
 
-    async def get_played_games(self, as_client: httpx.AsyncClient, player_id: str, page_token: str="") -> Tuple[bool, str, PlayedGames]:
+    async def get_played_games(
+        self, as_client: httpx.AsyncClient, player_id: str, page_token: str = ""
+    ) -> Tuple[bool, str, PlayedGames]:
         endpoint = EndpointConfig(
-            name = inspect.currentframe().f_code.co_name,
-            verb = "GET",
-            data_type = None, # json, data or None
-            authentication_mode = "oauth", # sapisidhash, cookies_only, oauth or None
-            require_key = None, # key name, or None
+            name=inspect.currentframe().f_code.co_name,
+            verb="GET",
+            data_type=None,  # json, data or None
+            authentication_mode="oauth",  # sapisidhash, cookies_only, oauth or None
+            require_key=None,  # key name, or None
         )
         self._load_endpoint(endpoint)
 
@@ -90,13 +94,15 @@ class PlayGames(GAPI):
 
         return True, next_page_token, played_games
 
-    async def get_achievements(self, as_client: httpx.AsyncClient, player_id: str, page_token: str="") -> Tuple[bool, str, PlayerAchievements]:
+    async def get_achievements(
+        self, as_client: httpx.AsyncClient, player_id: str, page_token: str = ""
+    ) -> Tuple[bool, str, PlayerAchievements]:
         endpoint = EndpointConfig(
-            name = inspect.currentframe().f_code.co_name,
-            verb = "POST",
-            data_type = "json", # json, data or None
-            authentication_mode = "oauth", # sapisidhash, cookies_only, oauth or None
-            require_key = None, # key name, or None
+            name=inspect.currentframe().f_code.co_name,
+            verb="POST",
+            data_type="json",  # json, data or None
+            authentication_mode="oauth",  # sapisidhash, cookies_only, oauth or None
+            require_key=None,  # key name, or None
         )
         self._load_endpoint(endpoint)
 
@@ -105,7 +111,7 @@ class PlayGames(GAPI):
         params = {
             "state": "UNLOCKED",
             "returnDefinitions": True,
-            "sortOrder": "RECENT_FIRST"
+            "sortOrder": "RECENT_FIRST",
         }
 
         if page_token:
@@ -118,7 +124,7 @@ class PlayGames(GAPI):
         achievements = PlayerAchievements()
         if not "items" in data:
             return False, "", achievements
-        
+
         next_page_token = ""
         if "nextPageToken" in data:
             next_page_token = data["nextPageToken"]

@@ -1,6 +1,8 @@
 from typing import *
 
-from ghunt.protos.playgatewaypa.search_player_results_pb2 import PlayerSearchResultsProto
+from ghunt.protos.playgatewaypa.search_player_results_pb2 import (
+    PlayerSearchResultsProto,
+)
 from ghunt.protos.playgatewaypa.get_player_response_pb2 import GetPlayerResponseProto
 from ghunt.objects.apis import Parser
 
@@ -16,6 +18,7 @@ class PlayerSearchResult(Parser):
         self.id = player_result_data.account.id
         self.avatar_url = player_result_data.avatar.url
 
+
 class PlayerSearchResults(Parser):
     def __init__(self):
         self.results: List[PlayerSearchResult] = []
@@ -26,11 +29,13 @@ class PlayerSearchResults(Parser):
             player_search_result._scrape(player_result_data)
             self.results.append(player_search_result)
 
+
 class PlayerProfile(Parser):
     """
-        This parsing is not complete at all, we only use it
-        in GHunt to dump total played games & achievements.
+    This parsing is not complete at all, we only use it
+    in GHunt to dump total played games & achievements.
     """
+
     def __init__(self):
         self.achievements_count: int = 0
         self.played_games_count: int = 0

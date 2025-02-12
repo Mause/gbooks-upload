@@ -7,15 +7,19 @@ from base64 import b64encode
 import asyncio
 
 
-async def detect_face(vision_api: VisionHttp, as_client: httpx.AsyncClient, image_url: str) -> None:
+async def detect_face(
+    vision_api: VisionHttp, as_client: httpx.AsyncClient, image_url: str
+) -> None:
     req = await as_client.get(image_url)
     encoded_image = b64encode(req.content).decode()
-    
+
     are_faces_found = False
     faces_results = None
 
     for retry in range(5):
-        rate_limited, are_faces_found, faces_results = await vision_api.detect_faces(as_client, image_content=encoded_image)
+        rate_limited, are_faces_found, faces_results = await vision_api.detect_faces(
+            as_client, image_content=encoded_image
+        )
         if not rate_limited:
             break
         await asyncio.sleep(0.5)
@@ -24,7 +28,10 @@ async def detect_face(vision_api: VisionHttp, as_client: httpx.AsyncClient, imag
 
     if are_faces_found:
         if len(faces_results.face_annotations) > 1:
-            gb.rc.print(f"🎭 {len(faces_results.face_annotations)} faces detected !", style="italic")
+            gb.rc.print(
+                f"🎭 {len(faces_results.face_annotations)} faces detected !",
+                style="italic",
+            )
         else:
             gb.rc.print(f"🎭 [+] Face detected !", style="italic bold")
     else:

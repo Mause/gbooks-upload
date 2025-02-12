@@ -29,7 +29,8 @@ def show_user(user: DriveExtractedUser):
     if user.is_last_modifying_user:
         print("[+] Last user to have modified the document !")
 
-async def hunt(as_client: httpx.AsyncClient, file_id: str, json_file: bool=Path):
+
+async def hunt(as_client: httpx.AsyncClient, file_id: str, json_file: bool = Path):
     if not as_client:
         as_client = get_httpx_client()
 
@@ -43,16 +44,18 @@ async def hunt(as_client: httpx.AsyncClient, file_id: str, json_file: bool=Path)
     is_folder = file.mime_type == "application/vnd.google-apps.folder"
     file_type = drive_knownledge.mime_types.get(file.mime_type)
 
-    #gb.rc.print(f"[+] {'Folder' if is_folder else 'File'} found !", style="sea_green3")
+    # gb.rc.print(f"[+] {'Folder' if is_folder else 'File'} found !", style="sea_green3")
 
     gb.rc.print("🗃️ Drive properties\n", style="deep_pink4")
-        
+
     print(f"Title : {file.title}")
     print(f"{'Folder' if is_folder else 'File'} ID : {file.id}")
     if file.md5_checksum:
         print(f"MD5 Checksum : {file.md5_checksum}")
     if file.file_size:
-        print(f"{'Folder' if is_folder else 'File'} size : {humanize.naturalsize(file.file_size)}")
+        print(
+            f"{'Folder' if is_folder else 'File'} size : {humanize.naturalsize(file.file_size)}"
+        )
 
     if file_type:
         gb.rc.print(f"\nType : {file_type} [italic]\[{file.mime_type}][/italic]")
@@ -63,15 +66,23 @@ async def hunt(as_client: httpx.AsyncClient, file_id: str, json_file: bool=Path)
     else:
         print(f"Download link :\n=> {file.alternate_link}")
 
-    print(f"\n[+] Created date : {file.created_date.strftime('%Y/%m/%d %H:%M:%S (UTC)')}")
-    print(f"[+] Modified date : {file.modified_date.strftime('%Y/%m/%d %H:%M:%S (UTC)')}")
+    print(
+        f"\n[+] Created date : {file.created_date.strftime('%Y/%m/%d %H:%M:%S (UTC)')}"
+    )
+    print(
+        f"[+] Modified date : {file.modified_date.strftime('%Y/%m/%d %H:%M:%S (UTC)')}"
+    )
 
     for perm in file.permissions:
         if perm.id == "anyoneWithLink":
-            giving_roles = [perm.role.upper()] + [x.upper() for x in perm.additional_roles if x != perm.role]
-            print(f"\n[+] Sharing with link enabled ! Giving the role{'s' if len(giving_roles) > 1 else ''} {humanize_list(giving_roles)}.")
+            giving_roles = [perm.role.upper()] + [
+                x.upper() for x in perm.additional_roles if x != perm.role
+            ]
+            print(
+                f"\n[+] Sharing with link enabled ! Giving the role{'s' if len(giving_roles) > 1 else ''} {humanize_list(giving_roles)}."
+            )
 
-    #print("\n[Source application]")
+    # print("\n[Source application]")
     gb.rc.print("\n📱 Source application\n", style="deep_pink2")
     brand_found = False
     brand = None
@@ -84,14 +95,16 @@ async def hunt(as_client: httpx.AsyncClient, file_id: str, json_file: bool=Path)
             if brand.home_page_url:
                 print(f"Home page : {brand.home_page_url}")
             else:
-                gb.rc.print(f"Home page : [italic][bright_black]Not found.[/italic][/bright_black]")
+                gb.rc.print(
+                    f"Home page : [italic][bright_black]Not found.[/italic][/bright_black]"
+                )
         else:
             gb.rc.print("Not found.", style="italic")
     else:
         gb.rc.print("No source application.", style="italic")
 
     if file.image_media_metadata.height and file.image_media_metadata.width:
-        #print("\n[Image metadata]")
+        # print("\n[Image metadata]")
         gb.rc.print("\n📸 Image metadata\n", style="light_coral")
         print(f"Height : {file.image_media_metadata.height}")
         print(f"Width : {file.image_media_metadata.width}")
@@ -99,15 +112,17 @@ async def hunt(as_client: httpx.AsyncClient, file_id: str, json_file: bool=Path)
             print(f"Rotation : {data}")
 
     if file.video_media_metadata.height and file.video_media_metadata.width:
-        #print("\n[Video metadata]")
+        # print("\n[Video metadata]")
         gb.rc.print("\n📸 Video metadata\n", style="light_coral")
         print(f"Height : {file.video_media_metadata.height}")
         print(f"Width : {file.video_media_metadata.width}")
-        if (data := file.video_media_metadata.duration_millis):
-            duration = timedelta(milliseconds=int(file.video_media_metadata.duration_millis))
+        if data := file.video_media_metadata.duration_millis:
+            duration = timedelta(
+                milliseconds=int(file.video_media_metadata.duration_millis)
+            )
             print(f"Duration : {humanize.precisedelta(duration)}")
 
-    #print("\n[Parents]")
+    # print("\n[Parents]")
     gb.rc.print("\n📂 Parents\n", style="gold3")
     if file.parents:
         print(f"[+] Parents folders :")
@@ -117,7 +132,7 @@ async def hunt(as_client: httpx.AsyncClient, file_id: str, json_file: bool=Path)
         gb.rc.print("No parent folder found.", style="italic")
 
     if is_folder:
-        #print("\n[Items]")
+        # print("\n[Items]")
         gb.rc.print("\n🗃️ Items\n", style="gold3")
         found, _, drive_childs = await drive.get_childs(as_client, file_id)
         if found and drive_childs.items:
@@ -126,35 +141,35 @@ async def hunt(as_client: httpx.AsyncClient, file_id: str, json_file: bool=Path)
         else:
             gb.rc.print("No items found.", style="italic")
 
-    #print("\n[Users]")
+    # print("\n[Users]")
     gb.rc.print("\n👪 Users\n", style="dark_orange")
     users = get_users_from_file(file)
-    if (owners := [x for x in users if x.role == "owner"]):
+    if owners := [x for x in users if x.role == "owner"]:
         print(f"-> 👤 Owner{'s' if len(owners) > 1 else ''}")
         for user in owners:
             show_user(user)
 
-    if (writers := [x for x in users if x.role == "writer"]):
+    if writers := [x for x in users if x.role == "writer"]:
         print(f"\n-> 👤 Writer{'s' if len(writers) > 1 else ''}")
         for user in writers:
             show_user(user)
 
-    if (commenters := [x for x in users if x.role == "commenter"]):
+    if commenters := [x for x in users if x.role == "commenter"]:
         print(f"\n-> 👤 Commenter{'s' if len(commenters) > 1 else ''}")
         for user in commenters:
             show_user(user)
 
-    if (readers := [x for x in users if x.role == "reader"]):
+    if readers := [x for x in users if x.role == "reader"]:
         print(f"\n-> 👤 Reader{'s' if len(readers) > 1 else ''}")
         for user in readers:
             show_user(user)
 
-    if (nones := [x for x in users if x.role == "none"]):
+    if nones := [x for x in users if x.role == "none"]:
         print(f"\n-> 👤 User{'s' if len(nones) > 1 else ''} with no right")
         for user in nones:
             show_user(user)
 
-    #print("[Comments]")
+    # print("[Comments]")
     gb.rc.print("\n🗣️ Comments\n", style="plum2")
     comments_found, _, drive_comments = await drive.get_comments(as_client, file_id)
     if comments_found and drive_comments.items:
@@ -164,13 +179,21 @@ async def hunt(as_client: httpx.AsyncClient, file_id: str, json_file: bool=Path)
         else:
             print("[+] Authors :")
         for _, author in authors[:20]:
-            print(f"- 🙋 {author['name']} ({author['count']} comment{'s' if author['count'] > 1 else ''})")
+            print(
+                f"- 🙋 {author['name']} ({author['count']} comment{'s' if author['count'] > 1 else ''})"
+            )
     else:
         gb.rc.print("No comments.", style="italic")
 
-    #print("\n[Capabilities]")
+    # print("\n[Capabilities]")
     gb.rc.print("\n🧙 Capabilities\n", style="dodger_blue1")
-    capabilities = sorted([k for k,v in inspect.getmembers(file.capabilities) if v and not k.startswith("_")])
+    capabilities = sorted(
+        [
+            k
+            for k, v in inspect.getmembers(file.capabilities)
+            if v and not k.startswith("_")
+        ]
+    )
     if is_folder:
         if capabilities == drive_knownledge.default_folder_capabilities:
             print("[-] You don't have special permissions against this folder.")
@@ -191,11 +214,12 @@ async def hunt(as_client: httpx.AsyncClient, file_id: str, json_file: bool=Path)
             "file": file if file_found else None,
             "source_app": brand if brand_found else None,
             "users": users,
-            "comments": drive_comments if comments_found else None
+            "comments": drive_comments if comments_found else None,
         }
 
         import json
-        from ghunt.objects.encoders import GHuntEncoder;
+        from ghunt.objects.encoders import GHuntEncoder
+
         with open(json_file, "w", encoding="utf-8") as f:
             f.write(json.dumps(json_results, cls=GHuntEncoder, indent=4))
         gb.rc.print(f"\n[+] JSON output wrote to {json_file} !", style="italic")

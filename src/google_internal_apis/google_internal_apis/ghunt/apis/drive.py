@@ -15,7 +15,7 @@ import json
 class DriveHttp(GAPI):
     def __init__(self, creds: GHuntCreds, headers: Dict[str, str] = {}):
         super().__init__()
-        
+
         if not headers:
             headers = gb.config.headers
 
@@ -28,7 +28,7 @@ class DriveHttp(GAPI):
         self.package_name = "com.google.android.apps.docs"
         self.scopes = [
             "https://www.googleapis.com/auth/drive",
-            "https://www.googleapis.com/auth/drive.file"
+            "https://www.googleapis.com/auth/drive.file",
         ]
 
         self.hostname = "www.googleapis.com"
@@ -36,21 +36,23 @@ class DriveHttp(GAPI):
 
         self._load_api(creds, headers)
 
-    async def get_file(self, as_client: httpx.AsyncClient, file_id: str) -> Tuple[bool, DriveFile]:
+    async def get_file(
+        self, as_client: httpx.AsyncClient, file_id: str
+    ) -> Tuple[bool, DriveFile]:
         endpoint = EndpointConfig(
-            name = inspect.currentframe().f_code.co_name,
-            verb = "GET",
-            data_type = None, # json, data or None
-            authentication_mode = "oauth", # sapisidhash, cookies_only, oauth or None
-            require_key = None, # key name, or None
+            name=inspect.currentframe().f_code.co_name,
+            verb="GET",
+            data_type=None,  # json, data or None
+            authentication_mode="oauth",  # sapisidhash, cookies_only, oauth or None
+            require_key=None,  # key name, or None
         )
         self._load_endpoint(endpoint)
 
         base_url = f"/drive/v2internal/files/{file_id}"
 
         params = {
-            "fields": ','.join(drive_knowledge.request_fields),
-            "supportsAllDrives": True
+            "fields": ",".join(drive_knowledge.request_fields),
+            "supportsAllDrives": True,
         }
 
         req = await self._query(endpoint.name, as_client, base_url, params=params)
@@ -65,22 +67,21 @@ class DriveHttp(GAPI):
 
         return True, drive_file
 
-    async def get_comments(self, as_client: httpx.AsyncClient, file_id: str, page_token: str="") -> Tuple[bool, str, DriveCommentList]:
+    async def get_comments(
+        self, as_client: httpx.AsyncClient, file_id: str, page_token: str = ""
+    ) -> Tuple[bool, str, DriveCommentList]:
         endpoint = EndpointConfig(
-            name = inspect.currentframe().f_code.co_name,
-            verb = "GET",
-            data_type = None, # json, data or None
-            authentication_mode = "oauth", # sapisidhash, cookies_only, oauth or None
-            require_key = None, # key name, or None
+            name=inspect.currentframe().f_code.co_name,
+            verb="GET",
+            data_type=None,  # json, data or None
+            authentication_mode="oauth",  # sapisidhash, cookies_only, oauth or None
+            require_key=None,  # key name, or None
         )
         self._load_endpoint(endpoint)
 
         base_url = f"/drive/v2internal/files/{file_id}/comments"
 
-        params = {
-            "supportsAllDrives": True,
-            "maxResults": 100
-        }
+        params = {"supportsAllDrives": True, "maxResults": 100}
 
         if page_token:
             params["pageToken"] = page_token
@@ -99,22 +100,21 @@ class DriveHttp(GAPI):
 
         return True, next_page_token, drive_comments
 
-    async def get_childs(self, as_client: httpx.AsyncClient, file_id: str, page_token: str="") -> Tuple[bool, str, DriveChildList]:
+    async def get_childs(
+        self, as_client: httpx.AsyncClient, file_id: str, page_token: str = ""
+    ) -> Tuple[bool, str, DriveChildList]:
         endpoint = EndpointConfig(
-            name = inspect.currentframe().f_code.co_name,
-            verb = "GET",
-            data_type = None, # json, data or None
-            authentication_mode = "oauth", # sapisidhash, cookies_only, oauth or None
-            require_key = None, # key name, or None
+            name=inspect.currentframe().f_code.co_name,
+            verb="GET",
+            data_type=None,  # json, data or None
+            authentication_mode="oauth",  # sapisidhash, cookies_only, oauth or None
+            require_key=None,  # key name, or None
         )
         self._load_endpoint(endpoint)
 
         base_url = f"/drive/v2internal/files/{file_id}/children"
 
-        params = {
-            "supportsAllDrives": True,
-            "maxResults": 1000
-        }
+        params = {"supportsAllDrives": True, "maxResults": 1000}
 
         if page_token:
             params["pageToken"] = page_token
