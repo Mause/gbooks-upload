@@ -1,6 +1,6 @@
-from ghunt.helpers.utils import *
-from ghunt.errors import *
-from ghunt.objects.base import SmartObj
+from .utils import *
+from ..errors import *
+from ..objects.base import SmartObj
 
 from typing import *
 

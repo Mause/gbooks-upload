@@ -336,6 +336,7 @@ dependencies = [
     { name = "httpx" },
     { name = "jsonpickle" },
     { name = "python-dateutil" },
+    { name = "rich" },
 ]
 
 [package.optional-dependencies]
@@ -368,6 +369,7 @@ requires-dist = [
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "jsonpickle", specifier = ">=4.0.1" },
     { name = "python-dateutil", specifier = ">=2.9.0.post0" },
+    { name = "rich", specifier = ">=13.9.4" },
     { name = "rich-click", marker = "extra == 'cli'", specifier = ">=1.8.5" },
     { name = "uvloop", marker = "extra == 'cli'", specifier = ">=0.21.0" },
 ]

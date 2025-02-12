@@ -14,6 +14,7 @@ dependencies = [
     "httpx>=0.28.1",
     "jsonpickle>=4.0.1",
     "python-dateutil>=2.9.0.post0",
+    "rich>=13.9.4",
 ]
 
 [project.urls]
