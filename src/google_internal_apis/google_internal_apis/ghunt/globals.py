@@ -2,11 +2,11 @@
 
 
 def init_globals():
-    from ghunt.objects.utils import TMPrinter
+    from .objects.utils import TMPrinter
     from rich.console import Console
 
     global config, tmprinter, rc
     
-    from ghunt import config
+    from .import config
     tmprinter = TMPrinter()
     rc = Console(highlight=False) # Rich Console
