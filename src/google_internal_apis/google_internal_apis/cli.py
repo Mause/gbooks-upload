@@ -63,6 +63,7 @@ def validate_method(ctx, param, value):
 @click.argument("method", callback=validate_method)
 @click.argument("data", required=False)
 @verbose_flag
+@click.version_option()
 @asyncio
 async def rpc(service: type[RpcService], method: str, data: Optional[str]):
     """
