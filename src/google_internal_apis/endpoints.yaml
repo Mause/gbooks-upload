@@ -6,6 +6,40 @@ playatoms-pa.clients6.google.com:
       - method: GetDomainFilter
       - method: GetIntentFilter
 
+calendar-pa.clients6.google.com:
+  google.internal.calendar.v1.AppointmentBookingService:
+    methods:
+      - method: ListAvailableSlots
+        data: [null,null,"cal_id",null,[['from_timestamp'],['end_timestamp']]]
+
+instantmessaging-pa.googleapis.com:
+  google.internal.communications.instantmessaging.v1.Pairing:
+    methods:
+      - method: RegisterPhoneRelay
+      - method: RefreshPhoneRelay
+      - method: GetWebEncryptionKey
+      - method: RevokeRelayPairing
+
+  google.internal.communications.instantmessaging.v1.Messaging:
+    methods:
+      - method: ReceiveMessages
+      - method: SendMessage
+      - method: AckMessages
+
+  google.internal.communications.instantmessaging.v1.Registration:
+    methods:
+      - method: SignInGaia
+      - method: RegisterRefresh
+
+meet.google.com:
+  google.rtc.meetings.v1.MeetingDeviceService:
+    methods:
+      - method: CreateMeetingDevice
+
+  google.rtc.meetings.v1.MeetingSpaceService:
+    methods:
+      - method: SyncMeetingSpaceCollections
+
 people-pa.clients6.google.com:
   google.internal.people.v2.InternalPeopleService:
     methods:
@@ -18,6 +52,7 @@ people-pa.clients6.google.com:
 
   google.internal.people.v2.minimal.InternalPeopleMinimalService:
     methods:
+      - method: ListRankedTargets
       - method: ListPeopleByKnownId
         data: [
             [email],
@@ -202,6 +237,22 @@ alkalimakersuite-pa.clients6.google.com:
   google.internal.alkali.applications.makersuite.v1.MakerSuiteService:
     methods:
       - method: GenerateContent
+      - method: CreateTunedModel
+
+alkalimetricsink-pa.clients6.google.com:
+  google.internal.alkali.applications.metricsink.v1.MetricService:
+    methods:
+      - method: RecordMetrics
+
+content-autofill.googleapis.com: {}
+content-developerprofiles-pa.googleapis.com: {}
+alkalicore-pa.clients6.google.com: {}
+generativelanguage.googleapis.com: {}
+
+addons-pa.clients6.google.com:
+  google.internal.apps.addons.v1.AddOnService:
+    methods:
+      - method: ListInstallations
 
 waa-pa.clients6.google.com:
   google.internal.waa.v1.Waa:
