@@ -26,6 +26,48 @@ class AppointmentBookingServiceRpc(RpcService):
         return await self._call_rpc("ListAvailableSlots", data=data)
 
 
+class PairingRpc(RpcService):
+    hostname = "instantmessaging-pa.googleapis.com"
+    service = "google.internal.communications.instantmessaging.v1.Pairing"
+
+    async def register_phone_relay(self, data=None):
+        return await self._call_rpc("RegisterPhoneRelay", data=data)
+
+    async def refresh_phone_relay(self, data=None):
+        return await self._call_rpc("RefreshPhoneRelay", data=data)
+
+    async def get_web_encryption_key(self, data=None):
+        return await self._call_rpc("GetWebEncryptionKey", data=data)
+
+    async def revoke_relay_pairing(self, data=None):
+        return await self._call_rpc("RevokeRelayPairing", data=data)
+
+
+class MessagingRpc(RpcService):
+    hostname = "instantmessaging-pa.googleapis.com"
+    service = "google.internal.communications.instantmessaging.v1.Messaging"
+
+    async def receive_messages(self, data=None):
+        return await self._call_rpc("ReceiveMessages", data=data)
+
+    async def send_message(self, data=None):
+        return await self._call_rpc("SendMessage", data=data)
+
+    async def ack_messages(self, data=None):
+        return await self._call_rpc("AckMessages", data=data)
+
+
+class RegistrationRpc(RpcService):
+    hostname = "instantmessaging-pa.googleapis.com"
+    service = "google.internal.communications.instantmessaging.v1.Registration"
+
+    async def sign_in_gaia(self, data=None):
+        return await self._call_rpc("SignInGaia", data=data)
+
+    async def register_refresh(self, data=None):
+        return await self._call_rpc("RegisterRefresh", data=data)
+
+
 class MeetingDeviceServiceRpc(RpcService):
     hostname = "meet.google.com"
     service = "google.rtc.meetings.v1.MeetingDeviceService"
