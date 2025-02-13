@@ -18,6 +18,22 @@ class WhApiServiceRpc(RpcService):
         return await self._call_rpc("GetIntentFilter", data=data)
 
 
+class MeetingDeviceServiceRpc(RpcService):
+    hostname = "meet.google.com"
+    service = "google.rtc.meetings.v1.MeetingDeviceService"
+
+    async def create_meeting_device(self, data=None):
+        return await self._call_rpc("CreateMeetingDevice", data=data)
+
+
+class MeetingSpaceServiceRpc(RpcService):
+    hostname = "meet.google.com"
+    service = "google.rtc.meetings.v1.MeetingSpaceService"
+
+    async def sync_meeting_space_collections(self, data=None):
+        return await self._call_rpc("SyncMeetingSpaceCollections", data=data)
+
+
 class InternalPeopleServiceRpc(RpcService):
     hostname = "people-pa.clients6.google.com"
     service = "google.internal.people.v2.InternalPeopleService"
@@ -38,6 +54,9 @@ class InternalPeopleServiceRpc(RpcService):
 class InternalPeopleMinimalServiceRpc(RpcService):
     hostname = "people-pa.clients6.google.com"
     service = "google.internal.people.v2.minimal.InternalPeopleMinimalService"
+
+    async def list_ranked_targets(self, data=None):
+        return await self._call_rpc("ListRankedTargets", data=data)
 
     async def list_people_by_known_id(self, data=None):
         return await self._call_rpc("ListPeopleByKnownId", data=data)
@@ -290,6 +309,25 @@ class MakerSuiteServiceRpc(RpcService):
 
     async def generate_content(self, data=None):
         return await self._call_rpc("GenerateContent", data=data)
+
+    async def create_tuned_model(self, data=None):
+        return await self._call_rpc("CreateTunedModel", data=data)
+
+
+class MetricServiceRpc(RpcService):
+    hostname = "alkalimetricsink-pa.clients6.google.com"
+    service = "google.internal.alkali.applications.metricsink.v1.MetricService"
+
+    async def record_metrics(self, data=None):
+        return await self._call_rpc("RecordMetrics", data=data)
+
+
+class AddOnServiceRpc(RpcService):
+    hostname = "addons-pa.clients6.google.com"
+    service = "google.internal.apps.addons.v1.AddOnService"
+
+    async def list_installations(self, data=None):
+        return await self._call_rpc("ListInstallations", data=data)
 
 
 class WaaRpc(RpcService):
