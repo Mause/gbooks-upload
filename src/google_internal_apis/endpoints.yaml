@@ -6,6 +6,12 @@ playatoms-pa.clients6.google.com:
       - method: GetDomainFilter
       - method: GetIntentFilter
 
+calendar-pa.clients6.google.com:
+  google.internal.calendar.v1.AppointmentBookingService:
+    methods:
+      - method: ListAvailableSlots
+        data: [null,null,"cal_id",null,[['from_timestamp'],['end_timestamp']]]
+
 meet.google.com:
   google.rtc.meetings.v1.MeetingDeviceService:
     methods:

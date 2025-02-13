@@ -18,6 +18,14 @@ class WhApiServiceRpc(RpcService):
         return await self._call_rpc("GetIntentFilter", data=data)
 
 
+class AppointmentBookingServiceRpc(RpcService):
+    hostname = "calendar-pa.clients6.google.com"
+    service = "google.internal.calendar.v1.AppointmentBookingService"
+
+    async def list_available_slots(self, data=None):
+        return await self._call_rpc("ListAvailableSlots", data=data)
+
+
 class MeetingDeviceServiceRpc(RpcService):
     hostname = "meet.google.com"
     service = "google.rtc.meetings.v1.MeetingDeviceService"
