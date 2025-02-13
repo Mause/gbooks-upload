@@ -4,7 +4,7 @@ from mimetypes import guess_type
 import httpx
 import requests
 import uvloop
-from ghunt.helpers import auth
+from google_internal_apis.ghunt.helpers import auth
 from googleapiclient.discovery import Resource
 
 
