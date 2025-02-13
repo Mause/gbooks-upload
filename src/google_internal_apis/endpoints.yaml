@@ -12,6 +12,25 @@ calendar-pa.clients6.google.com:
       - method: ListAvailableSlots
         data: [null,null,"cal_id",null,[['from_timestamp'],['end_timestamp']]]
 
+instantmessaging-pa.googleapis.com:
+  google.internal.communications.instantmessaging.v1.Pairing:
+    methods:
+      - method: RegisterPhoneRelay
+      - method: RefreshPhoneRelay
+      - method: GetWebEncryptionKey
+      - method: RevokeRelayPairing
+
+  google.internal.communications.instantmessaging.v1.Messaging:
+    methods:
+      - method: ReceiveMessages
+      - method: SendMessage
+      - method: AckMessages
+
+  google.internal.communications.instantmessaging.v1.Registration:
+    methods:
+      - method: SignInGaia
+      - method: RegisterRefresh
+
 meet.google.com:
   google.rtc.meetings.v1.MeetingDeviceService:
     methods:
