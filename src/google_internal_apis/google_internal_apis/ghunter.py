@@ -2,12 +2,10 @@ from email.message import Message
 
 import httpx
 
-from .ghunt import globals as gb
+from .ghunt import config
 from .ghunt.knowledge.keys import keys
 from .ghunt.objects.apis import GAPI, EndpointConfig
 from .ghunt.objects.base import GHuntCreds
-
-gb.init_globals()
 
 keys.update(
     {
@@ -33,7 +31,7 @@ class RpcService(GAPI):
         super().__init__()
 
         if not headers:
-            headers = gb.config.headers
+            headers = config.headers
 
         base_headers = {
             "Content-Type": "application/json+protobuf",
