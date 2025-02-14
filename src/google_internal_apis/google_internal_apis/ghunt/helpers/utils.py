@@ -2,13 +2,9 @@
 import hashlib
 from copy import deepcopy
 from time import time
-from typing import *
+from typing import Dict
 
 import httpx
-
-# import imagehash
-
-# from ghunt import globals as gb
 
 
 def gen_sapisidhash(
