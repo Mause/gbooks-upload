@@ -1,15 +1,19 @@
 import asyncio
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import *
+from typing import Any, Dict, List
 
 import httpx
 
-from ..errors import *
-from ..errors import GHuntCorruptedHeadersError
-from ..helpers.auth import *
+from ..errors import (
+    GHuntCorruptedHeadersError,
+    GHuntInsufficientCreds,
+    GHuntUnknownRequestDataTypeError,
+    GHuntUnknownVerbError,
+)
+from ..helpers.auth import android_oauth_app, gen_sapisidhash
 from ..helpers.knowledge import get_api_key, get_origin_of_key
-from ..helpers.utils import *
+from ..helpers.utils import is_headers_syntax_good
 from ..objects.base import GHuntCreds, SmartObj
 
 # APIs objects
@@ -157,7 +161,7 @@ class GAPI(SmartObj):
                     "expiry": expiry_timestamp,
                 }
                 creds.save_creds(silent=True)
-                gb.rc.print(
+                print(
                     f"\n[+] New token for {self.api_name} has been generated",
                     style="italic",
                 )

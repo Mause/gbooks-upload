@@ -2,7 +2,7 @@ import base64
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import *
+from typing import Dict, List
 
 from ..errors import GHuntInvalidSession
 
