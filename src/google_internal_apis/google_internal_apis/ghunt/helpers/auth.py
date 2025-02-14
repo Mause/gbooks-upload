@@ -1,6 +1,4 @@
 import asyncio
-import base64
-import json
 from typing import *
 
 import httpx
@@ -11,7 +9,6 @@ from ..knowledge.services import services_baseurls
 
 # from ghunt import globals as gb
 from ..objects.base import GHuntCreds
-from . import listener
 from .knowledge import get_domain_of_service, get_package_sig
 from .utils import *
 
