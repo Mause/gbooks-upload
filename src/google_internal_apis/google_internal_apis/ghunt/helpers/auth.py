@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup as bs
 from ..errors import *
 from ..knowledge.services import services_baseurls
 
-# from ghunt import globals as gb
+from .. import config
 from ..objects.base import GHuntCreds
 from .knowledge import get_domain_of_service, get_package_sig
 
@@ -96,7 +96,7 @@ async def gen_osid(
         "https://accounts.google.com/ServiceLogin",
         params=params,
         cookies=cookies,
-        headers=gb.config.headers,
+        headers=config.headers,
     )
 
     body = bs(req.text, "html.parser")
@@ -107,7 +107,7 @@ async def gen_osid(
     }
 
     headers = {
-        **gb.config.headers,
+        **config.headers,
         **{"Content-Type": "application/x-www-form-urlencoded"},
     }
     req = await as_client.post(
@@ -160,7 +160,7 @@ async def check_osid(
     req = await as_client.get(
         f"https://accounts.google.com/ServiceLogin?service={service}&osid=1&continue=https://{domain}/&followup=https://{domain}/&authuser=0",
         cookies=cookies,
-        headers=gb.config.headers,
+        headers=config.headers,
     )
 
     body = bs(req.text, "html.parser")
