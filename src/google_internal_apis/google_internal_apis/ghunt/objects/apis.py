@@ -11,9 +11,9 @@ from ..errors import (
     GHuntUnknownRequestDataTypeError,
     GHuntUnknownVerbError,
 )
-from ..helpers.auth import android_oauth_app, gen_sapisidhash
+from ..helpers.auth import android_oauth_app
 from ..helpers.knowledge import get_api_key, get_origin_of_key
-from ..helpers.utils import is_headers_syntax_good
+from ..helpers.utils import gen_sapisidhash, is_headers_syntax_good
 from ..objects.base import GHuntCreds, SmartObj
 
 # APIs objects
