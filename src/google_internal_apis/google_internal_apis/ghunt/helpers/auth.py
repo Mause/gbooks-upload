@@ -237,44 +237,6 @@ async def check_and_gen(as_client: httpx.AsyncClient, ghunt_creds: GHuntCreds):
     gb.rc.print("[+] Authenticated !\n", style="sea_green3")
 
 
-def auth_dialog() -> Tuple[Dict[str, str], str]:
-    """
-    Launch the dialog that asks the user
-    how he want to generate its credentials.
-    """
-    choices = (
-        "You can facilitate configuring GHunt by using the GHunt Companion extension on Firefox, Chrome, Edge and Opera here :\n"
-        "=> https://github.com/mxrch/ghunt_companion\n\n"
-        "[1] (Companion) Put GHunt on listening mode (currently not compatible with docker)\n"
-        "[2] (Companion) Paste base64-encoded authentication\n"
-        '[3] Enter the oauth_token (stats with "oauth2_4/")\n'
-        '[4] Enter the master token (starts with "aas_et/")\n'
-        "Choice => "
-    )
-
-    oauth_token = ""
-    master_token = ""
-    choice = input(choices)
-    if choice in ["1", "2"]:
-        if choice == "1":
-            received_data = listener.run()
-        elif choice == "2":
-            received_data = input("Paste the encoded credentials here => ")
-        data = json.loads(base64.b64decode(received_data))
-        oauth_token = data["oauth_token"]
-
-    elif choice == "3":
-        oauth_token = input("OAuth token => ").strip('" ')
-
-    elif choice == "4":
-        master_token = input("Master token => ").strip('" ')
-
-    else:
-        exit("Please choose a valid choice. Exiting...")
-
-    return oauth_token, master_token
-
-
 async def load_and_auth(as_client: httpx.AsyncClient, help=True) -> GHuntCreds:
     """Returns an authenticated GHuntCreds object."""
     creds = GHuntCreds()
