@@ -43,6 +43,9 @@ cli = [
     "uvloop>=0.21.0",
 ]
 
+[tool.ruff]
+exclude = ["google_internal_apis/*_pb2.py", "google_internal_apis/*_pb2.pyi"]
+
 [tool.ruff.lint]
 select = ["I", "E", "W", "F", "C", "R"]
 
