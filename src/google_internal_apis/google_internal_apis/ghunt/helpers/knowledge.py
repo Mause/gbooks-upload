@@ -28,22 +28,6 @@ def get_api_key(key_name: str) -> str:
     return keys.get(key_name, {}).get("key")
 
 
-def get_gmaps_type_translation(type_name: str) -> str:
-    if type_name not in types_translations:
-        raise GHuntKnowledgeError(
-            f'The gmaps type "{type_name}" has not been found in GHunt\'s knowledge.\nPlease open an issue on the GHunt Github or submit a PR to add it !'
-        )
-    return types_translations.get(type_name)
-
-
-def get_user_type_definition(type_name: str) -> str:
-    if type_name not in user_types:
-        raise GHuntKnowledgeError(
-            f'The user type "{type_name}" has not been found in GHunt\'s knowledge.\nPlease open an issue on the GHunt Github or submit a PR to add it !'
-        )
-    return user_types.get(type_name)
-
-
 def get_package_sig(package_name: str) -> str:
     if package_name not in sigs:
         raise GHuntKnowledgeError(
