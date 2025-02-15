@@ -17,9 +17,6 @@ dependencies = [
 [project.urls]
 repository = "https://github.com/Mause/gbooks-upload"
 
-[tool.setuptools.packages]
-find = { include = ["google_internal_apis"] }
-
 [project.scripts]
 google-internal-apis = "google_internal_apis.cli:rpc"
 
@@ -53,9 +50,6 @@ ignore = ['E501', 'C901']
 
 [tool.uv]
 package = true
-
-[tool.uv.sources]
-google-internal-apis = { path = "google_internal_apis" }
 
 [tool.mypy]
 ignore_missing_imports = true
