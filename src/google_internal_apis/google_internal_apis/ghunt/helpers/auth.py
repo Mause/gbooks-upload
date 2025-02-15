@@ -10,6 +10,7 @@ from ..knowledge.services import services_baseurls
 from .. import config
 from ..objects.base import GHuntCreds
 from .knowledge import get_domain_of_service, get_package_sig
+from .utils import parse_oauth_flow_response
 
 
 async def android_master_auth(
