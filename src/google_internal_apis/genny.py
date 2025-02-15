@@ -32,8 +32,11 @@ def key(x):
 
 template = """
 class {{classname}}Rpc(RpcService):
-    hostname = "{{hostname}}"
     service = "{{service}}"
+
+    def __init__(self, creds, client):
+        super().__init__(creds, client)
+        self.hostname = "{{hostname}}"
 
     {% for method in methods %}
     async def {{method.method | lower}}(self, data={% if method.body %}
