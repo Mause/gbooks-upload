@@ -49,13 +49,13 @@ class RpcService(GAPI):
     async def _call_rpc(self, method, data=None):
         assert self.hostname, self
         self._load_endpoint(
-                EndpointConfig(
-                    name=method,
-                    verb="POST",
-                    authentication_mode="sapisidhash",
-                    require_key=self.require_key,
-                    data_type="json",
-                )
+            EndpointConfig(
+                name=method,
+                verb="POST",
+                authentication_mode="sapisidhash",
+                require_key=self.require_key,
+                data_type="json",
+            )
         )
 
         message = Message()
