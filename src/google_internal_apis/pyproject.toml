@@ -49,7 +49,7 @@ exclude = ["google_internal_apis/*_pb2.py", "google_internal_apis/*_pb2.pyi"]
 
 [tool.ruff.lint]
 select = ["I", "E", "W", "F", "C", "R"]
-ignore = ['E501']
+ignore = ['E501', 'C901']
 
 [tool.uv]
 package = true
