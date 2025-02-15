@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from typing import Dict, List, Tuple
 
 import httpx
@@ -16,6 +17,8 @@ from ..knowledge.services import services_baseurls
 from ..objects.base import GHuntCreds
 from .knowledge import get_domain_of_service, get_package_sig
 from .utils import parse_oauth_flow_response
+
+logger = logging.getLogger(__name__)
 
 
 async def android_master_auth(
@@ -236,7 +239,7 @@ async def check_and_gen(as_client: httpx.AsyncClient, ghunt_creds: GHuntCreds):
             )
 
     ghunt_creds.save_creds(silent=True)
-    print("[+] Authenticated !\n", style="sea_green3")
+    logger.info("[+] Authenticated !\n")
 
 
 async def load_and_auth(as_client: httpx.AsyncClient, help=True) -> GHuntCreds:
