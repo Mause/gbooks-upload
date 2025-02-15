@@ -171,7 +171,7 @@ async def check_osid(
 
     body = bs(req.text, "html.parser")
     params = [x.attrs["name"] for x in body.find_all("input", {"type": "hidden"})]
-    if not all([param in wanted for param in params]):
+    if not all(param in wanted for param in params):
         return False
 
     return True
@@ -236,7 +236,7 @@ async def check_and_gen(as_client: httpx.AsyncClient, ghunt_creds: GHuntCreds):
             )
 
     ghunt_creds.save_creds(silent=True)
-    gb.rc.print("[+] Authenticated !\n", style="sea_green3")
+    print("[+] Authenticated !\n", style="sea_green3")
 
 
 async def load_and_auth(as_client: httpx.AsyncClient, help=True) -> GHuntCreds:
