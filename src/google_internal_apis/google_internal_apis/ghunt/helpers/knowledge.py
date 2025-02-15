@@ -1,7 +1,7 @@
-from typing import *
-
 from ..errors import GHuntKnowledgeError
 from ..knowledge.keys import keys
+from ..knowledge.services import services_baseurls
+from ..knowledge.sig import sigs
 
 
 def get_domain_of_service(service: str) -> str:
