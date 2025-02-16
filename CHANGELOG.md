@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/Mause/gbooks-upload/compare/gbooks-upload-v0.6.1...gbooks-upload-v0.7.0) (2025-02-16)
+
+
+### Features
+
+* add instantmessaging services ([baa3459](https://github.com/Mause/gbooks-upload/commit/baa345996a74876b7ff18065ee4e6eedd529e9ca))
+
 ## [0.6.1](https://github.com/Mause/gbooks-upload/compare/gbooks-upload-v0.6.0...gbooks-upload-v0.6.1) (2025-02-12)
 
 
