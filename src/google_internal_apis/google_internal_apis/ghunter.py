@@ -1,10 +1,10 @@
 from email.message import Message
 
-import ghunt.globals as gb
 import httpx
-from ghunt.knowledge.keys import keys
-from ghunt.objects.apis import GAPI
-from ghunt.objects.base import GHuntCreds
+
+from .ghunt.knowledge.keys import keys
+from .ghunt.objects.apis import GAPI, EndpointConfig
+from .ghunt.objects.base import GHuntCreds
 
 keys.update(
     {
@@ -29,9 +29,6 @@ class RpcService(GAPI):
     ):
         super().__init__()
 
-        if not headers:
-            headers = gb.config.headers
-
         base_headers = {
             "Content-Type": "application/json+protobuf",
             "X-User-Agent": "grpc-web-javascript/0.1",
@@ -50,20 +47,27 @@ class RpcService(GAPI):
         self._load_api(creds, headers)
 
     async def _call_rpc(self, method, data=None):
-        self._load_endpoint(method)
+        assert self.hostname, self
+        self._load_endpoint(
+            EndpointConfig(
+                name=method,
+                verb="POST",
+                authentication_mode="sapisidhash",
+                require_key=self.require_key,
+                data_type="json",
+            )
+        )
 
         message = Message()
-        for k, v in self.loaded_endpoints[method].headers.items():
+        for k, v in self.loaded_endpoints[method]._computed_headers.items():
             message.add_header(k, v)
 
         res = await self._query(
-            self.as_client,
-            "POST",
             method,
+            self.as_client,
             f"/$rpc/{self.service}/{method}",
             {"$httpHeaders": message.as_string()},
             data,
-            "data" if isinstance(data, str) else "json",
         )
         try:
             data = res.json()

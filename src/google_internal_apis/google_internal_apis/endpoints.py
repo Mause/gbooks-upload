@@ -2,8 +2,11 @@ from .ghunter import RpcService
 
 
 class WhApiServiceRpc(RpcService):
-    hostname = "playatoms-pa.clients6.google.com"
     service = "google.internal.play.atoms.api.v1.WhApiService"
+
+    def __init__(self, creds, client):
+        super().__init__(creds, client)
+        self.hostname = "playatoms-pa.clients6.google.com"
 
     async def get_app_splits(self, data=None):
         return await self._call_rpc("GetAppSplits", data=data)
@@ -19,8 +22,11 @@ class WhApiServiceRpc(RpcService):
 
 
 class InternalPeopleServiceRpc(RpcService):
-    hostname = "people-pa.clients6.google.com"
     service = "google.internal.people.v2.InternalPeopleService"
+
+    def __init__(self, creds, client):
+        super().__init__(creds, client)
+        self.hostname = "people-pa.clients6.google.com"
 
     async def get_people(
         self,
@@ -36,16 +42,22 @@ class InternalPeopleServiceRpc(RpcService):
 
 
 class InternalPeopleMinimalServiceRpc(RpcService):
-    hostname = "people-pa.clients6.google.com"
     service = "google.internal.people.v2.minimal.InternalPeopleMinimalService"
+
+    def __init__(self, creds, client):
+        super().__init__(creds, client)
+        self.hostname = "people-pa.clients6.google.com"
 
     async def list_people_by_known_id(self, data=None):
         return await self._call_rpc("ListPeopleByKnownId", data=data)
 
 
 class AudiobookServiceRpc(RpcService):
-    hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.audiobook.v1.AudiobookService"
+
+    def __init__(self, creds, client):
+        super().__init__(creds, client)
+        self.hostname = "playbooks-pa.clients6.google.com"
 
     async def get_audio_events(
         self, data='["AQAAAEAszz6PAM","8af46ef0d127346baff59518",[8],4976830,6776830]'
@@ -60,10 +72,13 @@ class AudiobookServiceRpc(RpcService):
 
 
 class CloudLoadingOnePlatformServiceRpc(RpcService):
-    hostname = "playbooks-pa.clients6.google.com"
     service = (
         "google.internal.play.books.cloudloading.v1.CloudLoadingOnePlatformService"
     )
+
+    def __init__(self, creds, client):
+        super().__init__(creds, client)
+        self.hostname = "playbooks-pa.clients6.google.com"
 
     async def delete(self, data=None):
         return await self._call_rpc("Delete", data=data)
@@ -73,8 +88,11 @@ class CloudLoadingOnePlatformServiceRpc(RpcService):
 
 
 class EnterpriseServiceRpc(RpcService):
-    hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.enterprise.v1.EnterpriseService"
+
+    def __init__(self, creds, client):
+        super().__init__(creds, client)
+        self.hostname = "playbooks-pa.clients6.google.com"
 
     async def add_classroom_books_attachment(self, data=None):
         return await self._call_rpc("AddClassroomBooksAttachment", data=data)
@@ -108,8 +126,11 @@ class EnterpriseServiceRpc(RpcService):
 
 
 class FamilyOnePlatformServiceRpc(RpcService):
-    hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.family.v1.FamilyOnePlatformService"
+
+    def __init__(self, creds, client):
+        super().__init__(creds, client)
+        self.hostname = "playbooks-pa.clients6.google.com"
 
     async def share(self, data=None):
         return await self._call_rpc("Share", data=data)
@@ -119,8 +140,11 @@ class FamilyOnePlatformServiceRpc(RpcService):
 
 
 class VolumeAnnotationServiceRpc(RpcService):
-    hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.layers.v1.VolumeAnnotationService"
+
+    def __init__(self, creds, client):
+        super().__init__(creds, client)
+        self.hostname = "playbooks-pa.clients6.google.com"
 
     async def get_dictionary_definition(
         self, data='[null," unwrapping",[null,null,"en"]]'
@@ -129,8 +153,11 @@ class VolumeAnnotationServiceRpc(RpcService):
 
 
 class LibraryServiceRpc(RpcService):
-    hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.library.v1.LibraryService"
+
+    def __init__(self, creds, client):
+        super().__init__(creds, client)
+        self.hostname = "playbooks-pa.clients6.google.com"
 
     async def add_annotation(
         self,
@@ -207,8 +234,11 @@ class LibraryServiceRpc(RpcService):
 
 
 class SeriesOnePlatformServiceRpc(RpcService):
-    hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.series.v1.SeriesOnePlatformService"
+
+    def __init__(self, creds, client):
+        super().__init__(creds, client)
+        self.hostname = "playbooks-pa.clients6.google.com"
 
     async def fetch(
         self,
@@ -221,8 +251,11 @@ class SeriesOnePlatformServiceRpc(RpcService):
 
 
 class SettingsOnePlatformServiceRpc(RpcService):
-    hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.settings.v1.SettingsOnePlatformService"
+
+    def __init__(self, creds, client):
+        super().__init__(creds, client)
+        self.hostname = "playbooks-pa.clients6.google.com"
 
     async def get_user_settings(self, data=None):
         return await self._call_rpc("GetUserSettings", data=data)
@@ -232,8 +265,11 @@ class SettingsOnePlatformServiceRpc(RpcService):
 
 
 class UserAnnotationServiceRpc(RpcService):
-    hostname = "playbooks-pa.clients6.google.com"
     service = "google.internal.play.books.userannotations.v1.UserAnnotationService"
+
+    def __init__(self, creds, client):
+        super().__init__(creds, client)
+        self.hostname = "playbooks-pa.clients6.google.com"
 
     async def create_annotations(self, data=None):
         return await self._call_rpc("CreateAnnotations", data=data)
@@ -271,8 +307,11 @@ class UserAnnotationServiceRpc(RpcService):
 
 
 class PlayGatewayBooksServiceRpc(RpcService):
-    hostname = "playgateway-pa.clients6.google.com"
     service = "play.gateway.adapter.books.v1.PlayGatewayBooksService"
+
+    def __init__(self, creds, client):
+        super().__init__(creds, client)
+        self.hostname = "playgateway-pa.clients6.google.com"
 
     async def get_in_app_stream(
         self,
@@ -285,16 +324,22 @@ class PlayGatewayBooksServiceRpc(RpcService):
 
 
 class MakerSuiteServiceRpc(RpcService):
-    hostname = "alkalimakersuite-pa.clients6.google.com"
     service = "google.internal.alkali.applications.makersuite.v1.MakerSuiteService"
+
+    def __init__(self, creds, client):
+        super().__init__(creds, client)
+        self.hostname = "alkalimakersuite-pa.clients6.google.com"
 
     async def generate_content(self, data=None):
         return await self._call_rpc("GenerateContent", data=data)
 
 
 class WaaRpc(RpcService):
-    hostname = "waa-pa.clients6.google.com"
     service = "google.internal.waa.v1.Waa"
+
+    def __init__(self, creds, client):
+        super().__init__(creds, client)
+        self.hostname = "waa-pa.clients6.google.com"
 
     async def create(self, data=None):
         return await self._call_rpc("Create", data=data)
