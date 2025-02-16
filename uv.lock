@@ -1,4 +1,5 @@
 version = 1
+revision = 1
 requires-python = ">=3.10, <4.0"
 resolution-markers = [
     "python_full_version >= '3.13' and platform_python_implementation == 'PyPy'",
@@ -557,7 +558,7 @@ wheels = [
 
 [[package]]
 name = "google-internal-apis"
-version = "0.4.1"
+version = "0.5.0"
 source = { editable = "src/google_internal_apis" }
 dependencies = [
     { name = "ghunt", version = "2.2.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -594,6 +595,7 @@ requires-dist = [
     { name = "rich-click", marker = "extra == 'cli'", specifier = ">=1.8.5" },
     { name = "uvloop", marker = "extra == 'cli'", specifier = ">=0.21.0" },
 ]
+provides-extras = ["cli"]
 
 [package.metadata.requires-dev]
 dev = [
