@@ -256,6 +256,12 @@ developerprofiles-pa.clients6.google.com:
      - method: GetPublicProfile
        data: '["{user_id}"]'
 
+maps.googleapis.com:
+  google.internal.maps.mapsjs.v1.MapsJsInternalService:
+    methods:
+     - method: GetMetadata
+     - method: SingleImageSearch
+
 addons-pa.clients6.google.com:
   google.internal.apps.addons.v1.AddOnService:
     methods:

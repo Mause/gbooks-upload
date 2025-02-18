@@ -380,6 +380,17 @@ class ProfileServiceRpc(RpcService):
         return await self._call_rpc("GetPublicProfile", data=data)
 
 
+class MapsJsInternalServiceRpc(RpcService):
+    hostname = "maps.googleapis.com"
+    service = "google.internal.maps.mapsjs.v1.MapsJsInternalService"
+
+    async def get_metadata(self, data=None):
+        return await self._call_rpc("GetMetadata", data=data)
+
+    async def single_image_search(self, data=None):
+        return await self._call_rpc("SingleImageSearch", data=data)
+
+
 class AddOnServiceRpc(RpcService):
     hostname = "addons-pa.clients6.google.com"
     service = "google.internal.apps.addons.v1.AddOnService"
