@@ -273,6 +273,11 @@ fonts.google.com:
      - method: FamilyDetail
      - method: License
 
+peoplestackwebexperiments-pa.clients6.google.com:
+  peoplestackwebexperiments.PeopleStackExperimentsService:
+    methods:
+     - method: GetExperimentFlags
+
 waa-pa.clients6.google.com:
   google.internal.waa.v1.Waa:
     methods:
