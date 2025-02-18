@@ -396,6 +396,20 @@ class SpeechRpc(RpcService):
         return await self._call_rpc("Recognize", data=data)
 
 
+class MetadataServiceRpc(RpcService):
+    hostname = "fonts.google.com"
+    service = "fonts.fe.catalog.actions.metadata.MetadataService"
+
+    async def sample_text(self, data=None):
+        return await self._call_rpc("SampleText", data=data)
+
+    async def family_detail(self, data=None):
+        return await self._call_rpc("FamilyDetail", data=data)
+
+    async def license(self, data=None):
+        return await self._call_rpc("License", data=data)
+
+
 class WaaRpc(RpcService):
     hostname = "waa-pa.clients6.google.com"
     service = "google.internal.waa.v1.Waa"
