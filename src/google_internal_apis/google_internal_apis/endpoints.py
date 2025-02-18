@@ -380,6 +380,14 @@ class AddOnServiceRpc(RpcService):
         return await self._call_rpc("ListInstallations", data=data)
 
 
+class SpeechRpc(RpcService):
+    hostname = "speech.googleapis.com"
+    service = "google.cloud.speech.v1.Speech"
+
+    async def recognize(self, data=None):
+        return await self._call_rpc("Recognize", data=data)
+
+
 class WaaRpc(RpcService):
     hostname = "waa-pa.clients6.google.com"
     service = "google.internal.waa.v1.Waa"

@@ -254,6 +254,11 @@ addons-pa.clients6.google.com:
     methods:
       - method: ListInstallations
 
+speech.googleapis.com:
+  google.cloud.speech.v1.Speech:
+    methods:
+     - method: Recognize
+
 waa-pa.clients6.google.com:
   google.internal.waa.v1.Waa:
     methods:
