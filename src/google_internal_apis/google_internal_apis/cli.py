@@ -43,7 +43,9 @@ def verbose_flag(func):
 def validate_method(ctx, param, value):
     service = ctx.params["service"]
 
-    stype = click.Choice([k for k, v in vars(service).items() if callable(v)])
+    stype = click.Choice(
+        [k for k, v in vars(service).items() if callable(v) and k != "__init__"]
+    )
 
     return stype(value)
 
