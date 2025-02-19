@@ -9,7 +9,7 @@ license = {text = "MIT"}
 requires-python = "<4.0,>=3.11"
 readme = "README.md"
 dependencies = [
-    "ghunt==2.2.0",
+    "ghunt>=2.2.3",
     "googleapis-common-protos>=1.66.0",
 ]
 
