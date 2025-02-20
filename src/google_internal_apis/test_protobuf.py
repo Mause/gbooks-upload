@@ -44,7 +44,9 @@ async def test_case():
         creds.cookies = {"SAPISID": "test"}
         client = WaaRpc(creds, AsyncClient())
 
-        with raises(Exception, match="Request is missing required authentication credential."):
+        with raises(
+            Exception, match="Request is missing required authentication credential."
+        ):
             await client.ping()
 
 
