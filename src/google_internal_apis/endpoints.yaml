@@ -266,6 +266,13 @@ speech.googleapis.com:
     methods:
      - method: Recognize
 
+fonts.google.com:
+  fonts.fe.catalog.actions.metadata.MetadataService:
+    methods:
+     - method: SampleText
+     - method: FamilyDetail
+     - method: License
+
 waa-pa.clients6.google.com:
   google.internal.waa.v1.Waa:
     methods:
