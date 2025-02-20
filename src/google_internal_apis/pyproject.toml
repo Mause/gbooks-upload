@@ -6,10 +6,10 @@ authors = [
     {name = "Elliana May", email = "me@mause.me"},
 ]
 license = {text = "MIT"}
-requires-python = "<4.0,>=3.10"
+requires-python = "<4.0,>=3.11"
 readme = "README.md"
 dependencies = [
-    "ghunt>=0.1",
+    "ghunt>=2.2.3",
     "googleapis-common-protos>=1.66.0",
 ]
 
