@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/Mause/gbooks-upload/compare/google_internal_apis-v0.6.0...google_internal_apis-v0.6.1) (2025-02-20)
+
+
+### Bug Fixes
+
+* raise minimum python to 3.11 ([6607552](https://github.com/Mause/gbooks-upload/commit/6607552ecf10afc8bf280f617e3bda7f53131dc5))
+
 ## [0.6.0](https://github.com/Mause/gbooks-upload/compare/google_internal_apis-v0.5.0...google_internal_apis-v0.6.0) (2025-02-20)
 
 
