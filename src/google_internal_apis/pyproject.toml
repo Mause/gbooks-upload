@@ -9,15 +9,13 @@ license = {text = "MIT"}
 requires-python = "<4.0,>=3.11"
 readme = "README.md"
 dependencies = [
-    "ghunt>=2.2.3",
+    "bs4>=0.0.2",
     "googleapis-common-protos>=1.66.0",
+    "httpx>=0.28.1",
 ]
 
 [project.urls]
 repository = "https://github.com/Mause/gbooks-upload"
-
-[tool.setuptools.packages]
-find = { include = ["google_internal_apis"] }
 
 [project.scripts]
 google-internal-apis = "google_internal_apis.cli:rpc"
@@ -48,12 +46,10 @@ exclude = ["google_internal_apis/*_pb2.py", "google_internal_apis/*_pb2.pyi"]
 
 [tool.ruff.lint]
 select = ["I", "E", "W", "F", "C", "R"]
+ignore = ['E501', 'C901']
 
 [tool.uv]
 package = true
-
-[tool.uv.sources]
-google-internal-apis = { path = "google_internal_apis" }
 
 [tool.mypy]
 ignore_missing_imports = true
