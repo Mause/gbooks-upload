@@ -410,6 +410,14 @@ class MetadataServiceRpc(RpcService):
         return await self._call_rpc("License", data=data)
 
 
+class PeopleStackExperimentsServiceRpc(RpcService):
+    hostname = "peoplestackwebexperiments-pa.clients6.google.com"
+    service = "peoplestackwebexperiments.PeopleStackExperimentsService"
+
+    async def get_experiment_flags(self, data=None):
+        return await self._call_rpc("GetExperimentFlags", data=data)
+
+
 class WaaRpc(RpcService):
     hostname = "waa-pa.clients6.google.com"
     service = "google.internal.waa.v1.Waa"
