@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.6.0](https://github.com/Mause/gbooks-upload/compare/google_internal_apis-v0.5.0...google_internal_apis-v0.6.0) (2025-02-20)
+
+
+### Features
+
+* add MapsJsInternalService ([0f9ab58](https://github.com/Mause/gbooks-upload/commit/0f9ab58e4745e134e2d7dabe8ecf752a5a4e8b73))
+* developer profiles ([48c4a39](https://github.com/Mause/gbooks-upload/commit/48c4a39efb01300416693f3414051969ab6fab7e))
+* font service ([1e0486a](https://github.com/Mause/gbooks-upload/commit/1e0486a95d850e3c30b668c055d4c21a88b27a7f))
+* peoplestackwebexperiments ([8aca8e4](https://github.com/Mause/gbooks-upload/commit/8aca8e40b702911233f47b1917cd09545eff2f56))
+* speech ([0f4376e](https://github.com/Mause/gbooks-upload/commit/0f4376e1ce858dfd8388b77d4f2a38cc1a3e7aca))
+
 ## [0.5.0](https://github.com/Mause/gbooks-upload/compare/google_internal_apis-v0.4.1...google_internal_apis-v0.5.0) (2025-02-17)
 
 

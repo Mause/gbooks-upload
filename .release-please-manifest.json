@@ -1,4 +1,7 @@
 {
+
   ".": "0.7.0",
-  "src/google_internal_apis": "0.5.0"
+
+  "src/google_internal_apis": "0.6.0"
+
 }
