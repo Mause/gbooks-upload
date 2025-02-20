@@ -447,8 +447,11 @@ class ProfileServiceRpc(RpcService):
 
 
 class MapsJsInternalServiceRpc(RpcService):
-    hostname = "maps.googleapis.com"
     service = "google.internal.maps.mapsjs.v1.MapsJsInternalService"
+
+    def __init__(self, creds, client):
+        super().__init__(creds, client)
+        self.hostname = "maps.googleapis.com"
 
     async def get_metadata(self, data=None):
         return await self._call_rpc("GetMetadata", data=data)
@@ -469,16 +472,22 @@ class AddOnServiceRpc(RpcService):
 
 
 class SpeechRpc(RpcService):
-    hostname = "speech.googleapis.com"
     service = "google.cloud.speech.v1.Speech"
+
+    def __init__(self, creds, client):
+        super().__init__(creds, client)
+        self.hostname = "speech.googleapis.com"
 
     async def recognize(self, data=None):
         return await self._call_rpc("Recognize", data=data)
 
 
 class MetadataServiceRpc(RpcService):
-    hostname = "fonts.google.com"
     service = "fonts.fe.catalog.actions.metadata.MetadataService"
+
+    def __init__(self, creds, client):
+        super().__init__(creds, client)
+        self.hostname = "fonts.google.com"
 
     async def sample_text(self, data=None):
         return await self._call_rpc("SampleText", data=data)
@@ -491,8 +500,11 @@ class MetadataServiceRpc(RpcService):
 
 
 class PeopleStackExperimentsServiceRpc(RpcService):
-    hostname = "peoplestackwebexperiments-pa.clients6.google.com"
     service = "peoplestackwebexperiments.PeopleStackExperimentsService"
+
+    def __init__(self, creds, client):
+        super().__init__(creds, client)
+        self.hostname = "peoplestackwebexperiments-pa.clients6.google.com"
 
     async def get_experiment_flags(self, data=None):
         return await self._call_rpc("GetExperimentFlags", data=data)
