@@ -1,3 +1,4 @@
+import logging
 import re
 from pathlib import Path
 from subprocess import check_call
@@ -6,6 +7,9 @@ from typing import NamedTuple
 
 import yaml
 from jinja2 import Environment
+from rich.logging import RichHandler
+
+logging.basicConfig(level=logging.INFO, handlers=[RichHandler()])
 
 HERE = Path(__file__).parent
 
@@ -69,6 +73,9 @@ def main():
 
         for hostname, services in methods.items():
             for service, methods in services.items():
+                if isinstance(methods, str):
+                    logging.warning(f"Skipping {hostname}.{service}")
+                    continue
                 f.write(
                     t.render(
                         classname=service.split(".")[-1],

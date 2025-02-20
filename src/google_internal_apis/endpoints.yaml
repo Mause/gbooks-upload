@@ -249,6 +249,13 @@ content-developerprofiles-pa.googleapis.com: {}
 alkalicore-pa.clients6.google.com: {}
 generativelanguage.googleapis.com: {}
 
+developerprofiles-pa.clients6.google.com:
+  X-Goog-Api-Key: AIzaSyAP-jjEJBzmIyKR4F-3XITp8yM9T1gEEI8
+  google.internal.developerprofiles.v1.profile.ProfileService:
+    methods:
+     - method: GetPublicProfile
+       data: '["{user_id}"]'
+
 addons-pa.clients6.google.com:
   google.internal.apps.addons.v1.AddOnService:
     methods:

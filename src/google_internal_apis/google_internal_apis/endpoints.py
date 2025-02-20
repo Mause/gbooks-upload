@@ -372,6 +372,14 @@ class MetricServiceRpc(RpcService):
         return await self._call_rpc("RecordMetrics", data=data)
 
 
+class ProfileServiceRpc(RpcService):
+    hostname = "developerprofiles-pa.clients6.google.com"
+    service = "google.internal.developerprofiles.v1.profile.ProfileService"
+
+    async def get_public_profile(self, data=None):
+        return await self._call_rpc("GetPublicProfile", data=data)
+
+
 class AddOnServiceRpc(RpcService):
     hostname = "addons-pa.clients6.google.com"
     service = "google.internal.apps.addons.v1.AddOnService"
