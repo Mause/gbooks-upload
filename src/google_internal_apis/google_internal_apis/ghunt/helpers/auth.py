@@ -8,7 +8,6 @@ from bs4 import BeautifulSoup as bs
 from .. import config
 from ..errors import (
     GHuntAndroidAppOAuth2Error,
-    GHuntAndroidMasterAuthError,
     GHuntInvalidSession,
     GHuntLoginError,
     GHuntOSIDAuthError,
@@ -19,39 +18,6 @@ from .knowledge import get_domain_of_service, get_package_sig
 from .utils import parse_oauth_flow_response
 
 logger = logging.getLogger(__name__)
-
-
-async def android_master_auth(
-    as_client: httpx.AsyncClient, oauth_token: str
-) -> Tuple[str, List[str], str, str]:
-    """
-    Takes an oauth_token to perform an android authentication
-    to get the master token and other informations.
-
-    Returns the master token, connected services, account email and account full name.
-    """
-    data = {
-        "Token": oauth_token,
-        "service": "ac2dm",
-        "get_accountid": 1,
-        "ACCESS_TOKEN": 1,
-        "add_account": 1,
-        "callerSig": "38918a453d07199354f8b19af05ec6562ced5788",
-    }
-
-    req = await as_client.post("https://android.googleapis.com/auth", data=data)
-    resp = parse_oauth_flow_response(req.text)
-    for keyword in ["Token", "Email", "services", "firstName", "lastName"]:
-        if keyword not in resp:
-            raise GHuntAndroidMasterAuthError(
-                f'Expected "{keyword}" in the response of the Android Master Authentication.\nThe oauth_token may be expired.'
-            )
-    return (
-        resp["Token"],
-        resp["services"].split(","),
-        resp["Email"],
-        f"{resp['firstName']} {resp['lastName']}",
-    )
 
 
 async def android_oauth_app(
@@ -187,20 +153,6 @@ async def check_osids(
     tasks = [check_osid(as_client, cookies, service) for service in osids]
     results = await asyncio.gather(*tasks)
     return all(results)
-
-
-async def check_master_token(as_client: httpx.AsyncClient, master_token: str) -> str:
-    """Checks the validity of the android master token."""
-    try:
-        await android_oauth_app(
-            as_client,
-            master_token,
-            "com.google.android.play.games",
-            ["https://www.googleapis.com/auth/games.firstparty"],
-        )
-    except GHuntAndroidAppOAuth2Error:
-        return False
-    return True
 
 
 async def gen_cookies_and_osids(
