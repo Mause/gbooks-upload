@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/Mause/gbooks-upload/compare/gbooks-upload-v0.7.0...gbooks-upload-v0.7.1) (2025-02-26)
+
+
+### Bug Fixes
+
+* raise minimum python to 3.11 ([6607552](https://github.com/Mause/gbooks-upload/commit/6607552ecf10afc8bf280f617e3bda7f53131dc5))
+
 ## [0.7.0](https://github.com/Mause/gbooks-upload/compare/gbooks-upload-v0.6.1...gbooks-upload-v0.7.0) (2025-02-20)
 
 
