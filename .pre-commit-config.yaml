@@ -14,20 +14,20 @@ repos:
     -   id: debug-statements
     -   id: check-toml
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.9.7
+  rev: v0.11.8
   hooks:
   - id: ruff
     args: [ --fix ]
   - id: ruff-format
 
 - repo: https://github.com/astral-sh/uv-pre-commit
-  rev: 0.6.2
+  rev: 0.7.2
   hooks:
     - id: uv-lock
       files: '.'
     - id: uv-lock
       files: src/google_internal_apis
 -   repo: https://github.com/yoheimuta/protolint
-    rev: v0.53.0
+    rev: v0.54.1
     hooks:
     - id: protolint
