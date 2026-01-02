@@ -12,6 +12,7 @@ import rich_click as click
 import uvloop
 from click.exceptions import BadParameter
 from click.globals import get_current_context
+from google_internal_apis.cli import asyncio, verbose_flag
 from googleapiclient.discovery import Resource, build
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
@@ -20,7 +21,6 @@ from rich import print
 from rich.logging import RichHandler
 
 from google_internal_apis import cli, get_client
-from google_internal_apis.cli import asyncio, verbose_flag
 
 from .const import COOKIE_TXT, PATH
 from .drive import upload_with_drive

@@ -1,13 +1,14 @@
 from datetime import datetime
 from uuid import uuid4
 
-from google_internal_apis import LibraryServiceRpc
 from google_internal_apis.input_pb2 import (
     LibraryDocumentResponse,
     TagRequest,
     TagsResponse,
 )
 from google_internal_apis.json_format import dump, from_datetime, parse
+
+from google_internal_apis import LibraryServiceRpc
 
 
 class LibraryService(LibraryServiceRpc):

@@ -3,7 +3,7 @@
 exclude: '_pb2.pyi?$'
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
     -   id: trailing-whitespace
         exclude: '.*\.ambr'
@@ -14,20 +14,20 @@ repos:
     -   id: debug-statements
     -   id: check-toml
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.11.8
+  rev: v0.14.10
   hooks:
   - id: ruff
     args: [ --fix ]
   - id: ruff-format
 
 - repo: https://github.com/astral-sh/uv-pre-commit
-  rev: 0.7.2
+  rev: 0.9.18
   hooks:
     - id: uv-lock
       files: '.'
     - id: uv-lock
       files: src/google_internal_apis
 -   repo: https://github.com/yoheimuta/protolint
-    rev: v0.54.1
+    rev: v0.56.4
     hooks:
     - id: protolint
